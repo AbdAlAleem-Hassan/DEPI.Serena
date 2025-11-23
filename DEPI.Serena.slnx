@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Serena.BLL/Serena.BLL.csproj" />
+  <Project Path="Serena.DAL/Serena.DAL.csproj" />
+  <Project Path="Serena.Presentation/Serena.Presentation.csproj" />
+</Solution>
