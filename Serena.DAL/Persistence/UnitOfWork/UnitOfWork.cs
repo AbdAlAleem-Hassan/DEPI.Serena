@@ -1,4 +1,7 @@
-﻿using Serena.DAL.Persistence.Data;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Serena.DAL.Persistence.Data;
+using Serena.DAL.Persistence.Repositories.Departments;
 using Serena.DAL.Persistence.Repositories.DoctorLanguages;
 using Serena.DAL.Persistence.Repositories.Doctors;
 using Serena.DAL.Persistence.Repositories.DoctorServices;
@@ -17,8 +20,9 @@ namespace Serena.DAL.Persistence.UnitOfWork
 		public ILanguageRepository LanguageRepository => new LanguageRepository(_dbContext);
 
 		public IDoctorLanguageRepository DoctorLanguageRepository => new DoctorLanguageRepositity(_dbContext);
+		public IDepartmentRepository DepartmentRepository => new DepartmentRepository(_dbContext);
 
-		public UnitOfWork(ApplicationDbContext dbContext)
+        public UnitOfWork(ApplicationDbContext dbContext)
 		{
 			_dbContext = dbContext;
 		}
@@ -31,5 +35,7 @@ namespace Serena.DAL.Persistence.UnitOfWork
 		{
 			return _dbContext.DisposeAsync();
 		}
+
+		
 	}
 }

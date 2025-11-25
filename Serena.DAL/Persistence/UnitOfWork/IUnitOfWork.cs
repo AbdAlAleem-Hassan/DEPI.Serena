@@ -1,4 +1,5 @@
-﻿using Serena.DAL.Persistence.Repositories.DoctorLanguages;
+﻿using Serena.DAL.Persistence.Repositories.Departments;
+using Serena.DAL.Persistence.Repositories.DoctorLanguages;
 using Serena.DAL.Persistence.Repositories.Doctors;
 using Serena.DAL.Persistence.Repositories.DoctorServices;
 using Serena.DAL.Persistence.Repositories.Languages;
@@ -14,7 +15,9 @@ namespace Serena.DAL.Persistence.UnitOfWork
 		public IServiceRepository ServiceRepository { get;  }
 		public ILanguageRepository LanguageRepository { get;  }
 		public IDoctorLanguageRepository DoctorLanguageRepository { get;  }
+		public IDepartmentRepository DepartmentRepository { get; }
 
-		Task<int> CompleteAsync();
-	}
+        Task<int> CompleteAsync();
+        
+    }
 }
