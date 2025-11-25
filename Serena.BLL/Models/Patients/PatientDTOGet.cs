@@ -1,13 +1,20 @@
 ﻿using Serena.DAL.Common.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace Serena.DAL.Entities
+namespace Serena.BLL.Models.Patients
 {
-    public class Patient : ModelBase
+    public class PatientDtoGet
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
+        [Phone]
         public string PhoneNumber { get; set; }
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -19,11 +26,6 @@ namespace Serena.DAL.Entities
         public string City { get; set; }
         public string Street { get; set; }
         public string ZipCode { get; set; }
-		//Navigation Properties
-		public virtual ICollection<PatientDoctorReview>? PatientDoctorReviews { get; set; } = new HashSet<PatientDoctorReview>();
 
-		public ICollection<Appointment>? Appointments = new HashSet<Appointment>();
-
-        public virtual ICollection<PatientHospitalReview>? PatientHospitalReviews { get; set; } = new HashSet<PatientHospitalReview>();
-	}
+    }
 }

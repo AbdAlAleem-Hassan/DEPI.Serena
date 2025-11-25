@@ -12,6 +12,6 @@ namespace Serena.DAL.Persistence.Repositories.DoctorLanguages
 		public DoctorLanguageRepositity(ApplicationDbContext dbContext) : base(dbContext)
 		{
 		}
-	{
+	
 	}
 }

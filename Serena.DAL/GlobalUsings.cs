@@ -1,0 +1,9 @@
+﻿global using Serena.DAL.Entities;
+global using Serena.DAL.Persistence.Repositories._GenericRepository;
+global using Serena.DAL.Persistence.Data;
+global using Serena.DAL.Persistence.Repositories.DoctorLanguages;
+global using Serena.DAL.Persistence.Repositories.Doctors;
+global using Serena.DAL.Persistence.Repositories.DoctorServices;
+global using Serena.DAL.Persistence.Repositories.Languages;
+global using Serena.DAL.Persistence.Repositories.Patients;
+global using Microsoft.EntityFrameworkCore;
