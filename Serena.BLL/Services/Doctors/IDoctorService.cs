@@ -7,7 +7,7 @@ namespace Serena.BLL.Services.Doctors
 		Task<IEnumerable<DoctorDTO>> GetAllDoctorsAsync();
 		Task<DoctorDetailsDTO?> GetDoctorByIdAsync(int doctorId);
 		Task<int> CreateDoctorAsync(CreateAndUpdateDoctorDTO doctorDto);
-		Task<int> UpdateDoctorAsync(CreateAndUpdateDoctorDTO doctorDto);
+		Task<int> UpdateDoctorAsync(int id,CreateAndUpdateDoctorDTO doctorDto);
 		Task<int> DeleteDoctorAsync(int id);
 	}
 }

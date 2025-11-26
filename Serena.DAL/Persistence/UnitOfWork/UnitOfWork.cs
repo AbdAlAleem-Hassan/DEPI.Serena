@@ -1,4 +1,9 @@
 ﻿
+using Microsoft.EntityFrameworkCore.Migrations;
+using Serena.DAL.Persistence.Repositories.Departments;
+using Serena.DAL.Persistence.Repositories.HospitalAddresses;
+using Serena.DAL.Persistence.Repositories.Hospitals;
+
 namespace Serena.DAL.Persistence.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
@@ -15,7 +20,13 @@ public class UnitOfWork : IUnitOfWork
 
 	public IPatientRepository PatientRepository => new PatientRepository(_dbContext);
 
-        public UnitOfWork(ApplicationDbContext dbContext)
+	public IHospitalRepository HospitalRepository => new HospitalRepository(_dbContext);
+
+	public IHospitalAddressRepository HospitalAddressRepository => new HospitalAddressRepository(_dbContext);
+
+	public IDepartmentRepository DepartmentRepository => new DepartmentRepository(_dbContext);
+
+	public UnitOfWork(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
 	}

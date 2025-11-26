@@ -3,7 +3,6 @@ using Serena.BLL.Common.Services.Attachments;
 using Serena.BLL.Models.Doctors;
 using Serena.DAL.Entities;
 using Serena.DAL.Persistence.UnitOfWork;
-using System.Linq.Expressions;
 
 namespace Serena.BLL.Services.Doctors
 {
@@ -139,48 +138,36 @@ namespace Serena.BLL.Services.Doctors
 
 		}
 
-		public async Task<int> UpdateDoctorAsync(CreateAndUpdateDoctorDTO doctorDto)
+		public async Task<int> UpdateDoctorAsync(int id,CreateAndUpdateDoctorDTO doctorDto)
 		{
-			var doctor = new Doctor
-			{
-				FirstName = doctorDto.FirstName,
-				MiddleName = doctorDto.MiddleName,
-				LastName = doctorDto.LastName,
-				ImageUrl = doctorDto.Image != null ? await _attachment.UploadAsync(doctorDto.Image, "Imgs") : null,
-				Rank = doctorDto.Rank,
-				YearsOfExperience = doctorDto.YearsOfExperience,
-				City = doctorDto.City,
-				Street = doctorDto.Street,
-				Country = doctorDto.Country,
-				District = doctorDto.District,
-				Email = doctorDto.Email,
-				PhoneNumber = doctorDto.PhoneNumber,
-				Gender = doctorDto.Gender,
-				DateOfBirth = doctorDto.DateOfBirth,
-				MaritalStatus = doctorDto.MaritalStatus,
-				Specialization = doctorDto.Specialization,
-				SubSpecialization = doctorDto.SubSpecialization,
-				LicenseNumber = doctorDto.LicenseNumber,
-				DepartmentId = doctorDto.DepartmentId,
-				HospitalId = doctorDto.HospitalId,
-				NationalID = doctorDto.NationalID,
-				ZipCode = doctorDto.ZipCode,
-				HospitalAddressId = doctorDto.HospitalAddressId,
-				
-			};
-
-			foreach (var service in doctorDto.Services)
-			{
-				var Service = new Service
-				{
-					DoctorId = doctor.Id,
-					Name = service.Name,
-					Description = service.Description,
-					Price = service.Price,
-				};
-				_unitOfWork.ServiceRepository.Update(Service);
-			}
-
+			var doctor = await _unitOfWork.DoctorRepository.GetAsync(id);
+			
+				doctor.FirstName = doctorDto.FirstName;
+				doctor.MiddleName = doctorDto.MiddleName;
+				doctor.LastName = doctorDto.LastName;
+				doctor.ImageUrl = doctorDto.Image != null ? await _attachment.UploadAsync(doctorDto.Image, "Imgs") : null;
+				doctor.Rank = doctorDto.Rank;
+				doctor.YearsOfExperience = doctorDto.YearsOfExperience;
+				doctor.City = doctorDto.City;
+				doctor.Street = doctorDto.Street;
+				doctor.Country = doctorDto.Country;
+				doctor.District = doctorDto.District;
+				doctor.Email = doctorDto.Email;
+				doctor.PhoneNumber = doctorDto.PhoneNumber;
+				doctor.Gender = doctorDto.Gender;
+				doctor.DateOfBirth = doctorDto.DateOfBirth;
+				doctor.MaritalStatus = doctorDto.MaritalStatus;
+				doctor.Specialization = doctorDto.Specialization;
+				doctor.SubSpecialization = doctorDto.SubSpecialization;
+				doctor.LicenseNumber = doctorDto.LicenseNumber;
+				doctor.DepartmentId = doctorDto.DepartmentId;
+				doctor.HospitalId = doctorDto.HospitalId;
+				doctor.NationalID = doctorDto.NationalID;
+				doctor.ZipCode = doctorDto.ZipCode;
+				doctor.HospitalAddressId = doctorDto.HospitalAddressId;
+			
+			
+			_unitOfWork.DoctorRepository.Update(doctor);
 
 			foreach (var langId in doctorDto.LanguageIds)
 			{
@@ -202,9 +189,15 @@ namespace Serena.BLL.Services.Doctors
 			return await _unitOfWork.CompleteAsync();
 		}
 
-		public Task<int> DeleteDoctorAsync(int id)
+		public async Task<int> DeleteDoctorAsync(int id)
 		{
-			throw new NotImplementedException();
+			var doctor = await _unitOfWork.DoctorRepository.GetAsync(id);
+			if (doctor == null)
+			{
+				return 0;
+			}
+			_unitOfWork.DoctorRepository.Delete(doctor);
+			return await _unitOfWork.CompleteAsync();
 		}
 
 	}
