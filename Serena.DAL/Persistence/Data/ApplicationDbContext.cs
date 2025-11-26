@@ -13,7 +13,7 @@ namespace Serena.DAL.Persistence.Data
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("Server= LAPTOP-IS2G4V1K\\\\SQLEXPRESS; Database = DEPI_PROJECT; Trusted_Connection=True; TrustServerCertificate = True;")
+			optionsBuilder.UseSqlServer("Server= .; Database = DEPI_PROJECT; Trusted_Connection=True; TrustServerCertificate = True;")
 				.UseLazyLoadingProxies();
 		}
 
@@ -29,7 +29,7 @@ namespace Serena.DAL.Persistence.Data
 		public DbSet<HospitalAddress> HospitalAddresses { get; set; }
 		public DbSet<Service> Services { get; set; }
 		public DbSet<Schedule> Schedules { get; set; }
-		public DbSet<PatientDoctorReview> patientDoctorReviews { get; set; }
+		public DbSet<PatientDoctorReview> PatientDoctorReviews { get; set; }
 		public DbSet<PatientHospitalReview> PatientHospitalReviews { get; set; }
 		public DbSet<DoctorHospitalReview> DoctorHospitalReviews { get; set; }
 		public DbSet<DoctorLangauge> DoctorLangauges { get; set; }
