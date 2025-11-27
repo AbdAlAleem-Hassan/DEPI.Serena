@@ -2,7 +2,7 @@
 
 namespace Serena.DAL.Entities
 {
-    public class Department : ModelBase
+    public class DepartmentListDto : ModelBase
     {
         public string Name { get; set; }
 

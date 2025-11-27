@@ -1,4 +1,7 @@
-﻿
+﻿using Serena.DAL.Persistence.Repositories.Departments;
+
+
+
 namespace Serena.DAL.Persistence.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
@@ -15,7 +18,8 @@ public class UnitOfWork : IUnitOfWork
 
 	public IPatientRepository PatientRepository => new PatientRepository(_dbContext);
 
-        public UnitOfWork(ApplicationDbContext dbContext)
+	public IDepartmentRepository DepartmentRepository => new DepartmentRepository(_dbContext);
+    public UnitOfWork(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
 	}

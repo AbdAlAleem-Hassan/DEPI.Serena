@@ -1,4 +1,6 @@
 ﻿
+using Serena.DAL.Persistence.Repositories.Departments;
+
 namespace Serena.DAL.Persistence.UnitOfWork;
 
 public interface IUnitOfWork : IAsyncDisposable
@@ -8,6 +10,6 @@ public interface IUnitOfWork : IAsyncDisposable
 	public ILanguageRepository LanguageRepository { get;  }
 	public IDoctorLanguageRepository DoctorLanguageRepository { get;  }
 	public IPatientRepository PatientRepository { get; }
-
+	public IDepartmentRepository DepartmentRepository { get; }
     Task<int> CompleteAsync();
 }

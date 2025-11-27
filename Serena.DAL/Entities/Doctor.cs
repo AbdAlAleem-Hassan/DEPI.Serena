@@ -31,7 +31,7 @@ namespace Serena.DAL.Entities
         [ForeignKey(nameof( Department))]
 		public int? DepartmentId { get; set; }
 		[InverseProperty(nameof(Department.Doctors))]
-		public virtual Department? Department { get; set; }
+		public virtual DepartmentListDto? Department { get; set; }
 
         [ForeignKey(nameof(Hospital))]
 		public int? HospitalId { get; set; }

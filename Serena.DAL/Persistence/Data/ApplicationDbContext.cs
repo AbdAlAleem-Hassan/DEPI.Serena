@@ -24,7 +24,7 @@ namespace Serena.DAL.Persistence.Data
 		public DbSet<Patient> Patients { get; set; }
 		public DbSet<Doctor> Doctors { get; set; }
 		public DbSet<Appointment> Appointments { get; set; }
-		public DbSet<Department> Departments { get; set; }
+		public DbSet<DepartmentListDto> Departments { get; set; }
 		public DbSet<Hospital> Hospitals { get; set; }
 		public DbSet<HospitalAddress> HospitalAddresses { get; set; }
 		public DbSet<Service> Services { get; set; }

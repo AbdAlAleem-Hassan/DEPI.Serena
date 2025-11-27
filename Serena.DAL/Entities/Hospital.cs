@@ -12,7 +12,7 @@ namespace Serena.DAL.Entities
         public string EmergencyPhone { get; set; }
 
         //navigation properties
-        public virtual ICollection<Department>? Departments { get; set; } = new HashSet<Department>();
+        public virtual ICollection<DepartmentListDto>? Departments { get; set; } = new HashSet<DepartmentListDto>();
 		public virtual ICollection<Doctor>? Doctors { get; set; } = new HashSet<Doctor>();
 
         public virtual ICollection<HospitalAddress>? HospitalAddresses { get; set; } = new HashSet<HospitalAddress>();
