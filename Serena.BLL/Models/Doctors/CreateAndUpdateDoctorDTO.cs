@@ -9,6 +9,7 @@ namespace Serena.BLL.Models.Doctors
 {
 	public class CreateAndUpdateDoctorDTO
 	{
+		public string UserId { get; set; }
 		public string FirstName { get; set; }
 		public string MiddleName { get; set; }
 		public string LastName { get; set; }
@@ -26,18 +27,11 @@ namespace Serena.BLL.Models.Doctors
 		public string NationalID { get; set; }
 		public string Street { get; set; }
 		public string City { get; set; }
-		public string District { get; set; }
 		public string Country { get; set; }
-		public int ZipCode { get; set; }
-
+		public string ZipCode { get; set; }
 		public int? DepartmentId { get; set; }
 		public int? HospitalId { get; set; }
 		public int? HospitalAddressId { get; set; }
-
-		public List<Service>? Services { get; set; }
-		public List<int>? LanguageIds { get; set; }
-
-
 
 	}
 }

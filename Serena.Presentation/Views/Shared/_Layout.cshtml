@@ -1,50 +1,363 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Identity
+@using Serena.DAL.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Serena.Presentation</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Serena.Presentation.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serena - Next-Generation Healthcare Management Platform">
+    <title>@ViewData["Title"] - Serena</title>
+
+    <!-- CSS Files -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+
+
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/auth.css">
+    <link rel="stylesheet" href="~/css/index.css">
+    <link rel="stylesheet" href="~/css/theme-loader.css">
+    <link rel="stylesheet" href="~/css/toaster.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/userProfile.css">
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Serena.Presentation</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+    <!-- Toaster Container -->
+    <div id="toasterContainer" class="toaster-container"></div>
+
+    <!-- TempData Messages (hidden) -->
+    @if (TempData["Error"] != null)
+    {
+        <div data-error="@TempData["Error"]" style="display: none;"></div>
+    }
+    @if (TempData["Warning"] != null)
+    {
+        <div data-warning="@TempData["Warning"]" style="display: none;"></div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div data-success="@TempData["Success"]" style="display: none;"></div>
+    }
+    @if (TempData["Info"] != null)
+    {
+        <div data-info="@TempData["Info"]" style="display: none;"></div>
+    }
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <div class="logo">
+                <div class="logo-placeholder">S</div>
+                <span class="logo-text">Serena</span>
+            </div>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <!-- Navbar when user is logged in -->
+                <div class="nav-links">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link active">Home</a>
+
+                    <!-- Role-based navigation -->
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <div class="dropdown">
+                            <button class="nav-link dropdown-toggle">
+                                <span>Doctor Dashboard</span> <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a asp-controller="Doctor" asp-action="Dashboard" class="dropdown-link">My Dashboard</a>
+                                <a asp-controller="Doctor" asp-action="Appointments" class="dropdown-link">Appointments</a>
+                                <a asp-controller="Doctor" asp-action="Patients" class="dropdown-link">My Patients</a>
+                                <a asp-controller="Doctor" asp-action="Schedule" class="dropdown-link">Schedule</a>
+                            </div>
+                        </div>
+                    }
+                    else if (User.IsInRole("Patient"))
+                    {
+                        <div class="dropdown">
+                            <button class="nav-link dropdown-toggle">
+                                <span>Patient Portal</span> <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a asp-controller="Patient" asp-action="Dashboard" class="dropdown-link">My Dashboard</a>
+                                <a asp-controller="Patient" asp-action="Appointments" class="dropdown-link">My Appointments</a>
+                                <a asp-controller="Patient" asp-action="Doctors" class="dropdown-link">Find Doctors</a>
+                            </div>
+                        </div>
+                    }
+
+                    <a asp-controller="Hospital" asp-action="Index" class="nav-link">Find Hospital</a>
+                    <a asp-controller="Doctor" asp-action="Index" class="nav-link">Find Doctors</a>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="lang-toggle" id="langToggle">
+                        EN
+                    </button>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown">
+                        <button class="user-profile-btn">
+                            @{
+                                var user = await UserManager.GetUserAsync(User);
+                                var firstName = user?.FirstName ?? user?.Email?.Split('@')[0];
+                                var lastName = user?.LastName ?? "";
+                                var userInitials = $"{firstName?[0]}{lastName?[0]}";
+                            }
+                            <div class="user-avatar">
+                                @userInitials
+                            </div>
+                            <span class="user-name">@firstName</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content user-dropdown">
+                            <div class="user-info">
+                                <div class="user-avatar-large">
+                                    @userInitials
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-fullname">@firstName @lastName</div>
+                                    <div class="user-email">@user?.Email</div>
+                                    <div class="user-role">
+                                        @if (User.IsInRole("Doctor"))
+                                        {
+                                            <span class="role-badge">Doctor</span>
+                                        }
+                                        else if (User.IsInRole("Patient"))
+                                        {
+                                            <span class="role-badge">Patient</span>
+                                        }
+                                        else if (User.IsInRole("Admin"))
+                                        {
+                                            <span class="role-badge">Admin</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <a asp-controller="Account" asp-action="Profile" class="dropdown-link">
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a asp-controller="Account" asp-action="Settings" class="dropdown-link">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                <button type="submit" class="dropdown-link logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <!-- Navbar when user is NOT logged in (Original) -->
+                <div class="nav-links">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link active">Home</a>
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle">
+                            <span>Services</span> <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a asp-controller="Hospital" asp-action="Index" class="dropdown-link">Find Hospital</a>
+                            <a asp-controller="Doctor" asp-action="Index" class="dropdown-link">Find Doctors</a>
+                            <a href="#" class="dropdown-link">Blogs</a>
+                            <a href="#" class="dropdown-link">Reviews</a>
+                        </div>
+                    </div>
+                    <a asp-controller="Home" asp-action="About" class="nav-link">About Us</a>
+                    <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact Us</a>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="lang-toggle" id="langToggle">
+                        EN
+                    </button>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-login">Login</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Register</a>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            }
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <!-- Mobile menu when logged in -->
+                <a asp-controller="Home" asp-action="Index" class="mobile-nav-link active">Home</a>
+
+                @if (User.IsInRole("Doctor"))
+                {
+                    <a asp-controller="Doctor" asp-action="Dashboard" class="mobile-nav-link">Doctor Dashboard</a>
+                    <a asp-controller="Doctor" asp-action="Appointments" class="mobile-nav-link">Appointments</a>
+                    <a asp-controller="Doctor" asp-action="Patients" class="mobile-nav-link">My Patients</a>
+                    <a asp-controller="Doctor" asp-action="Schedule" class="mobile-nav-link">Schedule</a>
+                }
+                else if (User.IsInRole("Patient"))
+                {
+                    <a asp-controller="Patient" asp-action="Dashboard" class="mobile-nav-link">Patient Dashboard</a>
+                    <a asp-controller="Patient" asp-action="Appointments" class="mobile-nav-link">My Appointments</a>
+                    <a asp-controller="Patient" asp-action="Doctors" class="mobile-nav-link">Find Doctors</a>
+                    <a asp-controller="Patient" asp-action="MedicalRecords" class="mobile-nav-link">Medical Records</a>
+                }
+
+                <a asp-controller="Hospital" asp-action="Index" class="mobile-nav-link">Find Hospital</a>
+                <a asp-controller="Doctor" asp-action="Index" class="mobile-nav-link">Find Doctors</a>
+                <a asp-controller="Account" asp-action="Profile" class="mobile-nav-link">My Profile</a>
+                <a asp-controller="Account" asp-action="Settings" class="mobile-nav-link">Settings</a>
+
+                <div class="mobile-auth-buttons">
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="btn btn-logout">Logout</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <!-- Mobile menu when NOT logged in (Original) -->
+                <a asp-controller="Home" asp-action="Index" class="mobile-nav-link active">Home</a>
+
+                <div class="mobile-dropdown">
+                    <button class="mobile-nav-link mobile-dropdown-toggle">
+                        <span>Services</span> <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="mobile-dropdown-content">
+                        <a asp-controller="Hospital" asp-action="Index" class="mobile-dropdown-link">Find Hospital</a>
+                        <a asp-controller="Doctor" asp-action="Index" class="mobile-dropdown-link">Find Doctors</a>
+                        <a href="#" class="mobile-dropdown-link">Blogs</a>
+                        <a href="#" class="mobile-dropdown-link">Reviews</a>
+                    </div>
+                </div>
+
+                <a asp-controller="Home" asp-action="About" class="mobile-nav-link">About Us</a>
+                <a asp-controller="Home" asp-action="Contact" class="mobile-nav-link">Contact Us</a>
+                <div class="mobile-auth-buttons">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-login">Login</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Register</a>
+                </div>
+            }
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <div class="logo-placeholder">S</div>
+                        <span class="footer-logo-text">Serena</span>
+                    </div>
+                    <p class="footer-text">
+                        Next-generation healthcare management platform connecting patients, doctors, and hospitals.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="footer-link"><a asp-controller="Doctor" asp-action="Index">Find a Doctor</a></li>
+                        <li class="footer-link"><a asp-controller="Hospital" asp-action="Index">Find a Hospital</a></li>
+                        <li class="footer-link"><a href="#">Blog</a></li>
+                        <li class="footer-link"><a asp-controller="Home" asp-action="About">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Services</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Patient Portal</a></li>
+                        <li class="footer-link"><a href="#">Doctor Dashboard</a></li>
+                        <li class="footer-link"><a href="#">Hospital Management</a></li>
+                        <li class="footer-link"><a href="#">Medical Records</a></li>
+                        <li class="footer-link"><a href="#">Appointments</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Contact Info</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#"><i class="fas fa-map-marker-alt"></i> <span>123 Healthcare St, Medical City</span></a></li>
+                        <li class="footer-link"><a href="#"><i class="fas fa-phone"></i> +1 234 567 8900</a></li>
+                        <li class="footer-link"><a href="#"><i class="fas fa-envelope"></i> info@serena.com</a></li>
+                        <li class="footer-link"><a href="#"><i class="fas fa-clock"></i> <span>Mon-Fri: 9AM-6PM</span></a></li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Serena.Presentation - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Serena Healthcare. <span>All rights reserved.</span></p>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- JavaScript Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/map.js"></script>
+    <script src="~/js/theme-loader.js"></script>
+    <script src="~/js/language-loader.js"></script>
+    <script src="~/js/toast.js"></script>
+    <script src="~/js/auth.js"></script>
+
+
+    <script>
+        // Initialize toast messages from TempData
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for hidden divs with temp data
+            const errorDiv = document.querySelector('[data-error]');
+            const warningDiv = document.querySelector('[data-warning]');
+            const successDiv = document.querySelector('[data-success]');
+            const infoDiv = document.querySelector('[data-info]');
+
+            if (errorDiv && errorDiv.dataset.error && window.toastManager) {
+                window.toastManager.error(errorDiv.dataset.error);
+            }
+            if (warningDiv && warningDiv.dataset.warning && window.toastManager) {
+                window.toastManager.warning(warningDiv.dataset.warning);
+            }
+            if (successDiv && successDiv.dataset.success && window.toastManager) {
+                window.toastManager.success(successDiv.dataset.success);
+            }
+            if (infoDiv && infoDiv.dataset.info && window.toastManager) {
+                window.toastManager.info(infoDiv.dataset.info);
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

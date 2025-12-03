@@ -8,5 +8,6 @@ namespace Serena.DAL.Persistence.Repositories.DoctorServices
 {
 	public interface IServiceRepository : IGenericRepository<Service>
 	{
-	}
+        IQueryable<Service> GetIQueryableWithDoctor();
+    }
 }

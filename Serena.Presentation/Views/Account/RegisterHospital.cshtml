@@ -1,0 +1,447 @@
+﻿@* @using Serena.BLL.Models.Account
+@model RegisterHospitalViewModel
+@{
+    ViewData["Title"] = "Register as Hospital";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <div class="logo-placeholder">S</div>
+                <span class="logo-text">Serena</span>
+            </div>
+            <h2 class="auth-title">HOSPITAL REGISTRATION</h2>
+            <p class="auth-subtitle" data-en="Register your healthcare facility" data-ar="سجل منشأة الرعاية الصحية الخاصة بك">
+                Register your healthcare facility
+            </p>
+        </div>
+
+        <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Step Indicator -->
+            <div class="registration-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Hospital Info</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Administrator</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Account</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Hospital Information -->
+            <div class="step-content active" data-step="1">
+                <div class="section-title">Hospital Information</div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="HospitalName"></label>
+                    <input asp-for="HospitalName" class="form-input" placeholder="Enter hospital name" />
+                    <span asp-validation-for="HospitalName" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="LicenseNumber"></label>
+                            <input asp-for="LicenseNumber" class="form-input" placeholder="License number" />
+                            <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="HospitalType"></label>
+                            <select asp-for="HospitalType" class="form-input">
+                                <option value="">Select Type</option>
+                                <option value="Public">Public</option>
+                                <option value="Private">Private</option>
+                                <option value="Teaching">Teaching</option>
+                                <option value="Specialty">Specialty</option>
+                            </select>
+                            <span asp-validation-for="HospitalType" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Email"></label>
+                    <input asp-for="Email" class="form-input" placeholder="hospital@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-input" placeholder="Hospital phone number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Website"></label>
+                    <input asp-for="Website" class="form-input" placeholder="https://hospital.com" />
+                    <span asp-validation-for="Website" class="text-danger"></span>
+                </div>
+
+                <div class="section-title">Address Information</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Country"></label>
+                            <input asp-for="Country" class="form-input" placeholder="Country" />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="City"></label>
+                            <input asp-for="City" class="form-input" placeholder="City" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Street"></label>
+                            <input asp-for="Street" class="form-input" placeholder="Street address" />
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="ZipCode"></label>
+                            <input asp-for="ZipCode" class="form-input" placeholder="Zip code" />
+                            <span asp-validation-for="ZipCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" disabled>Previous</button>
+                    <button type="button" class="btn-next" data-next="2">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Administrator Information -->
+            <div class="step-content" data-step="2">
+                <div class="section-title">Administrator Information</div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminFirstName"></label>
+                            <input asp-for="AdminFirstName" class="form-input" placeholder="First name" />
+                            <span asp-validation-for="AdminFirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminMiddleName"></label>
+                            <input asp-for="AdminMiddleName" class="form-input" placeholder="Middle name" />
+                            <span asp-validation-for="AdminMiddleName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminLastName"></label>
+                            <input asp-for="AdminLastName" class="form-input" placeholder="Last name" />
+                            <span asp-validation-for="AdminLastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminEmail"></label>
+                            <input asp-for="AdminEmail" class="form-input" placeholder="admin@email.com" />
+                            <span asp-validation-for="AdminEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminPhone"></label>
+                            <input asp-for="AdminPhone" class="form-input" placeholder="Admin phone" />
+                            <span asp-validation-for="AdminPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminPosition"></label>
+                            <input asp-for="AdminPosition" class="form-input" placeholder="Position/Role" />
+                            <span asp-validation-for="AdminPosition" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="AdminDepartment"></label>
+                            <input asp-for="AdminDepartment" class="form-input" placeholder="Department" />
+                            <span asp-validation-for="AdminDepartment" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Hospital Logo</div>
+                <div class="image-upload-container" onclick="document.getElementById('hospitalLogo').click()">
+                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                    <p class="mb-2">Click to upload hospital logo</p>
+                    <p class="text-muted small">PNG, JPG, SVG up to 5MB</p>
+                    <input asp-for="Logo" type="file" id="hospitalLogo" style="display: none;" accept="image/*" />
+                    <img id="logoPreview" class="image-preview" />
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" data-prev="1">Previous</button>
+                    <button type="button" class="btn-next" data-next="3">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Account Information -->
+            <div class="step-content" data-step="3">
+                <div class="section-title">Account Security</div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Password"></label>
+                            <div class="password-input-wrapper">
+                                <input asp-for="Password" type="password" class="form-input" placeholder="Password" />
+                                <button type="button" class="password-toggle" onclick="togglePassword('Password')">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="ConfirmPassword"></label>
+                            <div class="password-input-wrapper">
+                                <input asp-for="ConfirmPassword" type="password" class="form-input" placeholder="Confirm password" />
+                                <button type="button" class="password-toggle" onclick="togglePassword('ConfirmPassword')">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Additional Information</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="NumberOfBeds"></label>
+                            <input asp-for="NumberOfBeds" type="number" class="form-input" placeholder="0" min="0" />
+                            <span asp-validation-for="NumberOfBeds" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="NumberOfDoctors"></label>
+                            <input asp-for="NumberOfDoctors" type="number" class="form-input" placeholder="0" min="0" />
+                            <span asp-validation-for="NumberOfDoctors" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Specialties"></label>
+                    <textarea asp-for="Specialties" class="form-input" rows="3" placeholder="List hospital specialties (comma separated)"></textarea>
+                    <span asp-validation-for="Specialties" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Facilities"></label>
+                    <textarea asp-for="Facilities" class="form-input" rows="3" placeholder="List available facilities"></textarea>
+                    <span asp-validation-for="Facilities" class="text-danger"></span>
+                </div>
+
+                <div class="terms-checkbox">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+                        <label class="form-check-label" for="termsAgreement">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" data-prev="2">Previous</button>
+                    <button type="submit" class="auth-submit-btn">
+                        <span class="btn-text">Complete Registration</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p data-en="Already have an account?" data-ar="هل لديك حساب بالفعل؟">
+                Already have an account? <a class="auth-link" asp-action="Login">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize registration steps
+            initRegistrationSteps();
+
+            // Image preview
+            const logoInput = document.getElementById('hospitalLogo');
+            const logoPreview = document.getElementById('logoPreview');
+
+            if (logoInput && logoPreview) {
+                logoInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            logoPreview.src = e.target.result;
+                            logoPreview.style.display = 'block';
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Form submission validation
+            const hospitalForm = document.getElementById('hospitalForm');
+            if (hospitalForm) {
+                hospitalForm.addEventListener('submit', function(e) {
+                    const termsCheckbox = document.getElementById('termsAgreement');
+                    if (!termsCheckbox.checked) {
+                        e.preventDefault();
+                        showNotification('Please agree to the Terms of Service and Privacy Policy', 'error');
+                    }
+                });
+            }
+        });
+
+        function initRegistrationSteps() {
+            const steps = document.querySelectorAll('.step');
+            const stepContents = document.querySelectorAll('.step-content');
+            const nextButtons = document.querySelectorAll('.btn-next');
+            const prevButtons = document.querySelectorAll('.btn-prev');
+
+            function updateProgress(currentStep) {
+                // Update step indicators
+                steps.forEach(step => {
+                    const stepNum = parseInt(step.dataset.step);
+                    if (stepNum < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (stepNum === currentStep) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+
+                // Update step contents
+                stepContents.forEach(content => {
+                    const contentStep = parseInt(content.dataset.step);
+                    if (contentStep === currentStep) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+
+                // Update button states
+                prevButtons.forEach(btn => {
+                    btn.disabled = currentStep === 1;
+                });
+            }
+
+            // Next button functionality
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentStep = getCurrentStep();
+                    const nextStep = parseInt(this.dataset.next);
+
+                    if (validateStep(currentStep)) {
+                        updateProgress(nextStep);
+                    }
+                });
+            });
+
+            // Previous button functionality
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const prevStep = parseInt(this.dataset.prev);
+                    updateProgress(prevStep);
+                });
+            });
+
+            function getCurrentStep() {
+                const activeStep = document.querySelector('.step.active');
+                return activeStep ? parseInt(activeStep.dataset.step) : 1;
+            }
+
+            function validateStep(step) {
+                const currentContent = document.querySelector(`.step-content[data-step="${step}"]`);
+                const requiredFields = currentContent.querySelectorAll('[required]');
+                let isValid = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('error');
+
+                        // Scroll to first error
+                        if (!document.querySelector('.scroll-to-error')) {
+                            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            field.classList.add('scroll-to-error');
+                            setTimeout(() => field.classList.remove('scroll-to-error'), 1000);
+                        }
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+
+                if (!isValid) {
+                    showNotification('Please fill all required fields', 'error');
+                }
+
+                return isValid;
+            }
+        }
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggleBtn = field.nextElementSibling;
+
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggleBtn.innerHTML = `<i class="far fa-eye-slash"></i>`;
+            } else {
+                field.type = 'password';
+                toggleBtn.innerHTML = `<i class="far fa-eye"></i>`;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Use existing notification system from login page
+            if (typeof window.showNotification === 'function') {
+                window.showNotification(message, type);
+            } else {
+                // Fallback notification
+                alert(message);
+            }
+        }
+    </script>
+} *@

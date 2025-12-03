@@ -1,6 +1,115 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy Policy - Serena Healthcare";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="privacy-page">
+    <div class="privacy-hero">
+        <div class="container">
+            <h1>Privacy Policy</h1>
+            <p>Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+        </div>
+    </div>
+
+    <div class="container privacy-content">
+        <div class="privacy-section">
+            <h2>Introduction</h2>
+            <p>At Serena Healthcare, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Information We Collect</h2>
+            <ul>
+                <li><strong>Personal Information:</strong> Name, email, phone number, date of birth, gender</li>
+                <li><strong>Medical Information:</strong> Medical history, appointments, prescriptions</li>
+                <li><strong>Usage Data:</strong> How you interact with our platform</li>
+                <li><strong>Device Information:</strong> IP address, browser type, device type</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>How We Use Your Information</h2>
+            <ul>
+                <li>To provide and maintain our healthcare services</li>
+                <li>To process appointments and medical records</li>
+                <li>To communicate with you about your healthcare</li>
+                <li>To improve our platform and services</li>
+                <li>To comply with legal obligations</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Data Security</h2>
+            <p>We implement industry-standard security measures to protect your data, including encryption, access controls, and regular security audits.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Your Rights</h2>
+            <p>You have the right to access, correct, delete, or restrict the processing of your personal data. Contact us at privacy@serenahealthcare.com to exercise these rights.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>Contact Us</h2>
+            <p>If you have questions about this Privacy Policy, contact us at:</p>
+            <p>
+                Email: privacy@serenahealthcare.com<br>
+                Phone: +1 (234) 567-8900
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .privacy-page {
+        min-height: 100vh;
+        background: var(--primary-white);
+        color: var(--text-dark);
+    }
+
+    .privacy-hero {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+        .privacy-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+    .privacy-content {
+        padding: 4rem 0;
+        max-width: 900px;
+    }
+
+    .privacy-section {
+        margin-bottom: 3rem;
+    }
+
+        .privacy-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--soft-gray);
+            padding-bottom: 0.5rem;
+        }
+
+        .privacy-section p, .privacy-section li {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--charcoal-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .privacy-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .privacy-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .privacy-section strong {
+            color: var(--text-dark);
+        }
+</style>

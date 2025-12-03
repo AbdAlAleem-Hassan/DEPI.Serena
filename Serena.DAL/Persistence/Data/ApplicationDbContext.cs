@@ -1,25 +1,26 @@
 ﻿using Castle.Core.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Serena.DAL.Entities;
 using System.Reflection;
 
 namespace Serena.DAL.Persistence.Data
 {
-	public class ApplicationDbContext : DbContext
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			
-		}
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlServer("Server= LAPTOP-IS2G4V1K\\SQLEXPRESS; Database = DEPI_PROJECT; Trusted_Connection=True; TrustServerCertificate = True;")
+			optionsBuilder.UseSqlServer("Server=.; Database = DEPI_PROJECT; Trusted_Connection=True; TrustServerCertificate = True;")
 				.UseLazyLoadingProxies();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+			base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 		public DbSet<Patient> Patients { get; set; }
 		public DbSet<Doctor> Doctors { get; set; }

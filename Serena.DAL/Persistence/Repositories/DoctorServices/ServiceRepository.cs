@@ -9,8 +9,11 @@ namespace Serena.DAL.Persistence.Repositories.DoctorServices
 {
 	public class ServiceRepository : GenericRepository<Service>, IServiceRepository
 	{
-		public ServiceRepository(ApplicationDbContext dbContext) : base(dbContext)
-		{
-		}
-	}
+        public ServiceRepository(ApplicationDbContext dbContext) : base(dbContext) { }
+
+        public IQueryable<Service> GetIQueryableWithDoctor()
+        {
+            return _dbContext.Set<Service>().Include(s => s.Doctor).Where(s => !s.IsDeleted);
+        }
+    }
 }

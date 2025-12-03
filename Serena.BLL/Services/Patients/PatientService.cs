@@ -14,14 +14,13 @@ public class PatientService : IPatientService
         _mapper = mapper;
     }
 
-    public async Task<CreateAndUpdatePatientDTO> CreatePatientAsync(CreateAndUpdatePatientDTO patientDto)
+    public async Task CreatePatientAsync(CreateAndUpdatePatientDTO patientDto)
     {
         var patient = _mapper.Map<Patient>(patientDto);
 
          _unitOfWork.PatientRepository.Add(patient);
          await _unitOfWork.CompleteAsync();
 
-        return patientDto;
     }
 
     public async Task DeletePatientAsync(int id)

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Serena.DAL.Persistence.Repositories.Languages
 {
-	internal class LanguageRepository : GenericRepository<Language>, ILanguageRepository
+	public class LanguageRepository : GenericRepository<Language>, ILanguageRepository
 	{
 		public LanguageRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{

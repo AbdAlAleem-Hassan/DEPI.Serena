@@ -1,9 +1,11 @@
 ﻿using Serena.DAL.Common.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Serena.DAL.Entities
 {
     public class Patient : ModelBase
     {
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -22,8 +24,11 @@ namespace Serena.DAL.Entities
 		//Navigation Properties
 		public virtual ICollection<PatientDoctorReview>? PatientDoctorReviews { get; set; } = new HashSet<PatientDoctorReview>();
 
-		public ICollection<Appointment>? Appointments = new HashSet<Appointment>();
+		public virtual ICollection<Appointment>? Appointments { get; set; } = new HashSet<Appointment>();
 
         public virtual ICollection<PatientHospitalReview>? PatientHospitalReviews { get; set; } = new HashSet<PatientHospitalReview>();
-	}
+
+        [ForeignKey(nameof(UserId))]
+        public virtual ApplicationUser User { get; set; }
+    }
 }
