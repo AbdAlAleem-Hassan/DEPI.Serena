@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "My Patients";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: var(--light-gray);
+        }
+
+        /* Header Styling with Divider */
+        .patients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem; /* Space above the line */
+            margin-bottom: 1rem; /* Space below the line */
+            border-bottom: 1px solid #cbd5e1; /* The Divider Line */
+        }
+
+            /* Specific override to ensure no border on the text itself */
+            .patients-header .section-title {
+                border: none !important;
+                margin: 0;
+                text-align: left;
+            }
+
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .patient-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent; /* Hidden border for hover effect */
+        }
+
+            .patient-card:hover {
+                transform: translateY(-5px);
+                border-color: var(--accent-blue);
+            }
+
+        .patient-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--light-gray);
+        }
+
+        .patient-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .patient-meta {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+            .info-row:last-of-type {
+                border-bottom: none;
+                margin-bottom: 1rem;
+            }
+
+        .info-label {
+            opacity: 0.7;
+        }
+
+        .info-val {
+            font-weight: 500;
+        }
+
+        /* Dark Mode Adjustments */
+        .dark-mode body {
+            background-color: #0f172a;
+        }
+
+        .dark-mode .patient-card {
+            background: var(--charcoal);
+        }
+
+        .dark-mode .info-row {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .dark-mode .patients-header {
+            border-bottom-color: #334155;
+        }
+    </style>
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+
+    <div class="patients-header">
+        <h1 class="section-title">My Patients</h1>
+        <div class="search-box">
+            <input type="text" placeholder="Search patients..." class="form-input" style="width: 250px;">
+        </div>
+    </div>
+
+    <div class="patients-grid">
+        <div class="patient-card">
+            <img src="https://ui-avatars.com/api/?name=John+Doe&background=3b82f6&color=fff" class="patient-avatar" alt="Patient">
+            <h3 class="patient-name">John Doe</h3>
+            <p class="patient-meta">ID: #88219 • Male</p>
+
+            <div class="info-row">
+                <span class="info-label">Age</span>
+                <span class="info-val">34 Years</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Last Visit</span>
+                <span class="info-val">2 Days ago</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Condition</span>
+                <span class="info-val" style="color: var(--accent-green);">Stable</span>
+            </div>
+
+            <button class="hero-btn hero-btn-secondary" style="width: 100%; margin-top: 1rem; font-size: 0.9rem;">
+                View Records
+            </button>
+        </div>
+
+        <div class="patient-card">
+            <img src="https://ui-avatars.com/api/?name=Alice+Wonder&background=10b981&color=fff" class="patient-avatar" alt="Patient">
+            <h3 class="patient-name">Alice Wonderland</h3>
+            <p class="patient-meta">ID: #99210 • Female</p>
+
+            <div class="info-row">
+                <span class="info-label">Age</span>
+                <span class="info-val">28 Years</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Last Visit</span>
+                <span class="info-val">1 Month ago</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Condition</span>
+                <span class="info-val" style="color: #eab308;">Under Observation</span>
+            </div>
+
+            <button class="hero-btn hero-btn-secondary" style="width: 100%; margin-top: 1rem; font-size: 0.9rem;">
+                View Records
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple Search Filter
+            const searchInput = document.querySelector('.search-box input');
+            const cards = document.querySelectorAll('.patient-card');
+
+            searchInput.addEventListener('keyup', function(e) {
+                const term = e.target.value.toLowerCase();
+                cards.forEach(card => {
+                    const name = card.querySelector('.patient-name').textContent.toLowerCase();
+                    if(name.includes(term)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+}

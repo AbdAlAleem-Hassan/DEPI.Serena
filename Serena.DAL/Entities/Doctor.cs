@@ -6,6 +6,7 @@ namespace Serena.DAL.Entities
 {
     public class Doctor : ModelBase
     {
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -23,9 +24,8 @@ namespace Serena.DAL.Entities
         public string NationalID { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
-        public string District { get; set; }
         public string Country { get; set; }
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
         //Navigation Properties
 
         [ForeignKey(nameof( Department))]
@@ -38,7 +38,7 @@ namespace Serena.DAL.Entities
         [InverseProperty(nameof(Hospital.Doctors))]
 		public virtual Hospital? Hospital { get; set; }
 
-        public ICollection<Appointment>? Appointments = new HashSet<Appointment>();
+        public virtual ICollection<Appointment>? Appointments { get; set; } = new HashSet<Appointment>();
 
         [ForeignKey(nameof(HospitalAddress))]
 		public int? HospitalAddressId { get; set; }
@@ -52,5 +52,8 @@ namespace Serena.DAL.Entities
         public virtual ICollection<PatientDoctorReview>? PatientDoctorReviews { get; set; } = new HashSet<PatientDoctorReview>();
 
         public virtual ICollection<DoctorHospitalReview>? DoctorHospitalReviews { get; set; } = new HashSet<DoctorHospitalReview>();
-	}
+
+        [ForeignKey(nameof(UserId))]
+        public virtual ApplicationUser User { get; set; }
+    }
 }

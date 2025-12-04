@@ -1,0 +1,201 @@
+﻿@{
+    ViewData["Title"] = "My Schedule";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: var(--light-gray);
+        }
+
+        .dark-mode body {
+            background-color: #0f172a;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.5rem;
+        }
+
+        .schedule-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-white);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .date-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .current-date {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .time-slot {
+            background: var(--primary-white);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--light-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+            .time-slot:hover {
+                border-color: var(--accent-blue);
+            }
+
+            .time-slot.available {
+                border-left: 4px solid var(--accent-green);
+            }
+
+            .time-slot.booked {
+                border-left: 4px solid var(--accent-blue);
+                background: rgb(59 130 246 / 27%);
+            }
+
+            .time-slot.off {
+                opacity: 0.5;
+                background: #bcbcbc;
+                pointer-events: none;
+            }
+
+        .slot-time {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .slot-status {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .booked .slot-status {
+            color: var(--accent-blue);
+        }
+
+        .available .slot-status {
+            color: var(--accent-green);
+        }
+
+        /* Dark mode */
+        .dark-mode .section-title {
+            border-color: #334155;
+        }
+        .dark-mode .schedule-controls, .dark-mode .time-slot {
+            background: var(--charcoal);
+        }
+
+        .dark-mode .time-slot {
+            background-color: #253145;
+        }
+
+            .dark-mode .time-slot.booked {
+                background: rgba(59, 130, 246, 0.1);
+            }
+    </style>
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+    <h1 class="section-title" style="text-align: left;">Manage Schedule</h1>
+
+    <div class="schedule-controls">
+        <div class="date-nav">
+            <button class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+            <span class="current-date" id="displayDate">December 12, 2025</span>
+            <button class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div>
+            <button class="hero-btn hero-btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                <i class="fas fa-plus"></i> Add Slot
+            </button>
+        </div>
+    </div>
+
+    <div class="time-grid">
+        <div class="time-slot available" onclick="toggleSlot(this)">
+            <div class="slot-time">09:00 AM</div>
+            <div class="slot-status">Available</div>
+        </div>
+
+        <div class="time-slot booked" onclick="viewAppointment(123)">
+            <div class="slot-time">10:00 AM</div>
+            <div class="slot-status">Booked</div>
+            <div style="font-size: 0.8rem; margin-top: 5px;">John Doe</div>
+        </div>
+
+        <div class="time-slot available" onclick="toggleSlot(this)">
+            <div class="slot-time">11:00 AM</div>
+            <div class="slot-status">Available</div>
+        </div>
+
+        <div class="time-slot off">
+            <div class="slot-time">12:00 PM</div>
+            <div class="slot-status">Break</div>
+        </div>
+
+        <div class="time-slot available" onclick="toggleSlot(this)">
+            <div class="slot-time">01:00 PM</div>
+            <div class="slot-status">Available</div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('displayDate').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+            window.toggleSlot = function(element) {
+                // Logic to toggle availability via AJAX would go here
+                if(element.classList.contains('available')) {
+                    if(confirm('Mark this slot as unavailable?')) {
+                        element.classList.remove('available');
+                        element.classList.add('off');
+                        element.querySelector('.slot-status').textContent = "Blocked";
+                    }
+                }
+            };
+
+            window.viewAppointment = function(id) {
+                // Logic to open modal with appointment details
+                if(window.toastManager) {
+                    window.toastManager.info("Opening appointment details for ID: " + id);
+                } else {
+                    alert("View details for booking #" + id);
+                }
+            };
+        });
+    </script>
+}

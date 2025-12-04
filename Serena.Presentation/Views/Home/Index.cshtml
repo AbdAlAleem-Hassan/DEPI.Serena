@@ -1,8 +1,342 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Serena.BLL.Models.Home.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Serena - Next-Generation Healthcare";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css">
+}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-background">
+        <div class="hero-orbs">
+            <div class="hero-orb"></div>
+            <div class="hero-orb"></div>
+            <div class="hero-orb"></div>
+        </div>
+    </div>
+
+    <div class="hero-container">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    ✨ Powered by AI & Advanced Technology
+                </div>
+                <h1 class="hero-title">
+                    Next-Generation Healthcare Management
+                </h1>
+                <p class="hero-subtitle">
+                    Serena connects and manages multiple hospitals under one unified ecosystem, providing advanced healthcare technology for patients, doctors, and administrators.
+                </p>
+
+                <div class="hero-actions">
+                    <a asp-controller="Appointment" asp-action="Create" class="hero-btn hero-btn-primary">
+                        <span>Book Appointment</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a asp-controller="Doctor" asp-action="Index" class="hero-btn hero-btn-secondary">
+                        <i class="fas fa-play"></i>
+                        <span>Explore Platform</span>
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">@Model.TotalHospitals+</div>
+                        <div class="hero-stat-label">Hospitals</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">@Model.TotalDoctors+</div>
+                        <div class="hero-stat-label">Doctors</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">@Model.TotalPatients+</div>
+                        <div class="hero-stat-label">Patients</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <img src="https://images.unsplash.com/photo-1631563020941-c0c6bc534b8e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwdGVjaG5vbG9neSUyMGZ1dHVyaXN0aWN8ZW58MXx8fHwxNzYwOTc3NzU1fDA&ixlib=rb-4.1.0&q=80&w=1080" 
+                         alt="Medical Technology" class="hero-image">
+                    <div class="hero-image-overlay"></div>
+                </div>
+
+                <div class="hero-floating-card floating-card-1">
+                    <div class="floating-card-content">
+                        <div class="floating-card-icon">❤️</div>
+                        <div class="floating-card-text">
+                            <div class="floating-card-label">Health Score</div>
+                            <div class="floating-card-value">@Model.HealthScore%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-floating-card floating-card-2">
+                    <div class="floating-card-content">
+                        <div class="floating-card-icon">🏥</div>
+                        <div class="floating-card-text">
+                            <div class="floating-card-label">Appointments</div>
+                            <div class="floating-card-value">@Model.TodayAppointments Today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll-indicator">
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners">
+    <div class="partners-track">
+        <!-- سيتم إضافة شعارات الشركاء ديناميكياً -->
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">
+            Comprehensive healthcare solutions for patients, doctors, and hospitals
+        </p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3 class="service-title">Hospital Management</h3>
+                <p class="service-description">
+                    Streamline hospital operations with our comprehensive management system.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3 class="service-title">Doctor Portal</h3>
+                <p class="service-description">
+                    Manage appointments, patients, and medical records efficiently.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <h3 class="service-title">Patient Portal</h3>
+                <p class="service-description">
+                    Book appointments, access medical records, and connect with doctors.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                </div>
+                <h3 class="service-title">Pharmacy Integration</h3>
+                <p class="service-description">
+                    Seamlessly connect with pharmacies for prescription management.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <h3 class="service-title">Medical Records</h3>
+                <p class="service-description">
+                    Secure and accessible digital medical records for patients and providers.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-ambulance"></i>
+                </div>
+                <h3 class="service-title">Emergency Services</h3>
+                <p class="service-description">
+                    Quick access to emergency care and ambulance services.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="features-background">
+        <div class="features-orb"></div>
+        <div class="features-orb"></div>
+    </div>
+
+    <div class="container features-container">
+        <div class="text-center mb-12">
+            <div class="features-badge">
+                ✨ Why Choose Serena
+            </div>
+            <h2 class="section-title">
+                Advanced Technology for Healthcare
+            </h2>
+            <p class="section-subtitle">
+                We combine innovation and care to deliver an unparalleled healthcare experience
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- سيتم إضافة بطاقات الميزات ديناميكياً -->
+        </div>
+    </div>
+</section>
+
+<!-- Hospitals Section -->
+<section class="hospitals">
+    <div class="container">
+        <div class="text-center mb-12">
+            <h2 class="section-title">Top Hospitals</h2>
+            <p class="section-subtitle">Discover the best hospitals in our network</p>
+        </div>
+
+        <div class="hospitals-grid" id="hospitalsGrid">
+            @if (Model.TopHospitals.Any())
+            {
+                foreach (var hospital in Model.TopHospitals)
+                {
+                    <div class="hospital-card">
+                        <div class="hospital-card-header">
+                            <i class="fas fa-hospital hospital-icon"></i>
+                        </div>
+                        <div class="hospital-card-body">
+                            <h3 class="hospital-name">@hospital.Name</h3>
+                            <div class="hospital-rank">@hospital.Rank</div>
+                            <div class="hospital-info">
+                                <div class="hospital-cost">
+                                    Average Cost: $@hospital.AverageCost.ToString("N2")
+                                    <span>per visit</span>
+                                </div>
+                                <div class="hospital-phone">
+                                    <i class="fas fa-phone"></i> @hospital.HospitalPhone
+                                </div>
+                                @if (!string.IsNullOrEmpty(hospital.EmergencyPhone))
+                                {
+                                    <div class="hospital-phone">
+                                        <i class="fas fa-ambulance"></i> @hospital.EmergencyPhone
+                                    </div>
+                                }
+                            </div>
+                            @if (hospital.Addresses != null && hospital.Addresses.Any())
+                            {
+                                <div class="hospital-addresses">
+                                    <span class="address-count">
+                                        @hospital.Addresses.Count location@(hospital.Addresses.Count != 1 ? "s" : "")
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-data">
+                    <i class="fas fa-hospital fa-3x"></i>
+                    <p>No hospitals available yet. Be the first to add one!</p>
+                </div>
+            }
+        </div>
+
+        <div class="text-center">
+            <a asp-controller="Hospital" asp-action="Index" class="view-all-btn">
+                <span>View All Hospitals</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Doctors Section -->
+<section class="doctors">
+    <div class="container">
+        <div class="text-center mb-12">
+            <h2 class="section-title">Top Doctors</h2>
+            <p class="section-subtitle">Meet our highly qualified medical professionals</p>
+        </div>
+
+        <div class="doctors-grid" id="doctorsGrid">
+            @if (Model.TopDoctors.Any())
+            {
+                foreach (var doctor in Model.TopDoctors)
+                {
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
+                            @if (!string.IsNullOrEmpty(doctor.Image))
+                            {
+                                <img src="@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image">
+                            }
+                            else
+                            {
+                                <i class="fas fa-user-md doctor-icon"></i>
+                            }
+                            <div class="available-badge">Available</div>
+                        </div>
+                        <div class="doctor-card-body">
+                            <h3 class="doctor-name">Dr. @doctor.FirstName @doctor.LastName</h3>
+                            <div class="doctor-rank">@doctor.Rank</div>
+                            <p class="doctor-specialization">@doctor.Specialization</p>
+                            <div class="doctor-experience">
+                                <i class="fas fa-briefcase"></i>
+                                <span>@doctor.YearsOfExperience years experience</span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(doctor.Department))
+                            {
+                                <div class="doctor-department">@doctor.Department</div>
+                            }
+                            @if (!string.IsNullOrEmpty(doctor.Hospital))
+                            {
+                                <p class="doctor-hospital">
+                                    <i class="fas fa-hospital"></i> @doctor.Hospital
+                                </p>
+                            }
+                        </div>
+                        <div class="doctor-card-footer">
+                            <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="view-btn" style="flex: 1;">
+                                View Profile
+                            </a>
+                            <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-btn">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-data">
+                    <i class="fas fa-user-md fa-3x"></i>
+                    <p>No doctors available yet. Be the first to register!</p>
+                </div>
+            }
+        </div>
+
+        <div class="text-center">
+            <a asp-controller="Doctor" asp-action="Index" class="view-all-btn">
+                <span>View All Doctors</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/home.js"></script>
+}

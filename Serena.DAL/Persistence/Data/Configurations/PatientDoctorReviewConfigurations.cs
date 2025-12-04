@@ -15,6 +15,17 @@ namespace Serena.DAL.Persistence.Data.Configurations
 
 			builder.Property(pdr => pdr.ReviewingDate)
 				.HasComputedColumnSql("GETDATE()");
-		}
+
+            builder.HasOne(pdr => pdr.Doctor)
+                .WithMany(d => d.PatientDoctorReviews)
+                .HasForeignKey(pdr => pdr.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(pdr => pdr.Patient)
+                .WithMany(p => p.PatientDoctorReviews)
+                .HasForeignKey(pdr => pdr.PatientId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+        }
 	}
 }

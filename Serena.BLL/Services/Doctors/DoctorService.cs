@@ -55,7 +55,6 @@ namespace Serena.BLL.Services.Doctors
 				City = doctor.City,
 				Street = doctor.Street,
 				Country = doctor.Country,
-				District = doctor.District,
 				Email = doctor.Email,
 				PhoneNumber = doctor.PhoneNumber,
 				Gender = doctor.Gender,
@@ -78,6 +77,7 @@ namespace Serena.BLL.Services.Doctors
 		{
 			var doctor = new Doctor
 			{
+				UserId=doctorDto.UserId,
 				FirstName = doctorDto.FirstName,
 				MiddleName = doctorDto.MiddleName,
 				LastName = doctorDto.LastName,
@@ -87,7 +87,6 @@ namespace Serena.BLL.Services.Doctors
 				City = doctorDto.City,
 				Street = doctorDto.Street,
 				Country = doctorDto.Country,
-				District = doctorDto.District,
 				Email = doctorDto.Email,
 				PhoneNumber = doctorDto.PhoneNumber,
 				Gender = doctorDto.Gender,
@@ -107,33 +106,6 @@ namespace Serena.BLL.Services.Doctors
 			_unitOfWork.DoctorRepository.Add(doctor);
 			await _unitOfWork.CompleteAsync();
 
-			foreach (var service in doctorDto.Services)
-			{
-				var Service = new Service
-				{
-					DoctorId = doctor.Id,
-					Name = service.Name,
-					Description = service.Description,
-					Price = service.Price,
-				};
-				_unitOfWork.ServiceRepository.Add(Service);
-			}
-
-			foreach (var langId in doctorDto.LanguageIds)
-			{
-				var langaue = await _unitOfWork.LanguageRepository.GetAsync(langId);
-				if (langaue != null)
-				{
-					var doctorLanguage = new DoctorLangauge
-					{
-						DoctorId = doctor.Id,
-						LanguageId = langaue.Id,
-						Level = "Fluent"
-					};
-					_unitOfWork.DoctorLanguageRepository.Add(doctorLanguage);
-				}
-			}
-
 			return await _unitOfWork.CompleteAsync();
 
 		}
@@ -151,7 +123,6 @@ namespace Serena.BLL.Services.Doctors
 				doctor.City = doctorDto.City;
 				doctor.Street = doctorDto.Street;
 				doctor.Country = doctorDto.Country;
-				doctor.District = doctorDto.District;
 				doctor.Email = doctorDto.Email;
 				doctor.PhoneNumber = doctorDto.PhoneNumber;
 				doctor.Gender = doctorDto.Gender;
@@ -168,23 +139,6 @@ namespace Serena.BLL.Services.Doctors
 			
 			
 			_unitOfWork.DoctorRepository.Update(doctor);
-
-			foreach (var langId in doctorDto.LanguageIds)
-			{
-				var langaue = await _unitOfWork.LanguageRepository.GetAsync(langId);
-
-				if (langaue != null)
-				{
-					var doctorLanguage = new DoctorLangauge
-					{
-						DoctorId = doctor.Id,
-						LanguageId = langaue.Id,
-						Level = "Fluent"
-					};
-
-					_unitOfWork.DoctorLanguageRepository.Update(doctorLanguage);
-				}
-			}
 
 			return await _unitOfWork.CompleteAsync();
 		}

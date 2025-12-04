@@ -1,0 +1,576 @@
+﻿@model IEnumerable<Serena.BLL.Models.Doctors.DoctorDTO>
+
+@{
+    ViewData["Title"] = "Find Doctors - Serena";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/doctors.css">
+    <link rel="stylesheet" href="~/css/toaster.css">
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="page-header-background">
+        <div class="page-header-orbs">
+            <div class="page-header-orb"></div>
+            <div class="page-header-orb"></div>
+            <div class="page-header-orb"></div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="page-title">Find Doctors</h1>
+        <p class="page-subtitle">
+            Discover top medical professionals in our network
+        </p>
+    </div>
+</section>
+
+<!-- Search and Filters Section -->
+<section class="search-section">
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="search-main-row">
+            <div class="search-bar">
+                <div class="search-input-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="doctorSearch" class="search-input"
+                           placeholder="Search by doctor name or specialty or hospital name...">
+                    <div class="search-autocomplete" id="doctorSearchAutocomplete"></div>
+                </div>
+                <button class="btn btn-primary search-btn">Search</button>
+            </div>
+        </div>
+
+        <!-- Filters Panel -->
+        <div class="filters-container">
+            <div class="filters-header">
+                <h3 class="filters-title">Advanced Filters</h3>
+                <div class="filters-actions">
+                    <button class="btn btn-secondary" id="moreDoctorFiltersBtn">
+                        <span>More Filters</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <button class="btn btn-clear" id="clearDoctorFilters">Clear All</button>
+                </div>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Specialties Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">Specialty</label>
+                    <div class="custom-dropdown">
+                        <div class="custom-dropdown-select">
+                            <span>All Specialties</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-option" data-value="">All Specialties</div>
+                            <div class="custom-dropdown-option" data-value="cardiology">Cardiology</div>
+                            <div class="custom-dropdown-option" data-value="neurology">Neurology</div>
+                            <div class="custom-dropdown-option" data-value="orthopedics">Orthopedics</div>
+                            <div class="custom-dropdown-option" data-value="pediatrics">Pediatrics</div>
+                            <div class="custom-dropdown-option" data-value="surgery">Surgery</div>
+                        </div>
+                        <select class="filter-select" id="doctorSpecialtyFilter" style="display: none;">
+                            <option value="">All Specialties</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="neurology">Neurology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="surgery">Surgery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">Minimum Rating</label>
+                    <div class="custom-dropdown">
+                        <div class="custom-dropdown-select">
+                            <span>Any Rating</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-option" data-value="0">Any Rating</div>
+                            <div class="custom-dropdown-option" data-value="3">3+ <i class="fas fa-star"></i></div>
+                            <div class="custom-dropdown-option" data-value="4">4+ <i class="fas fa-star"></i></div>
+                            <div class="custom-dropdown-option" data-value="4.5">4.5+ <i class="fas fa-star"></i></div>
+                        </div>
+                        <select class="filter-select" id="doctorRatingFilter" style="display: none;">
+                            <option value="0">Any Rating</option>
+                            <option value="3">3+ <i class="fas fa-star"></i></option>
+                            <option value="4">4+ <i class="fas fa-star"></i></option>
+                            <option value="4.5">4.5+ <i class="fas fa-star"></i></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Language Filter -->
+                <div class="filter-group">
+                    <label class="filter-label">Language</label>
+                    <div class="custom-dropdown">
+                        <div class="custom-dropdown-select">
+                            <span>All Languages</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-option" data-value="">All Languages</div>
+                            <div class="custom-dropdown-option" data-value="arabic">Arabic</div>
+                            <div class="custom-dropdown-option" data-value="english">English</div>
+                            <div class="custom-dropdown-option" data-value="french">French</div>
+                        </div>
+                        <select class="filter-select" id="languageFilter" style="display: none;">
+                            <option value="">All Languages</option>
+                            <option value="arabic">Arabic</option>
+                            <option value="english">English</option>
+                            <option value="french">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Additional Filters -->
+                <div class="additional-filters" id="additionalDoctorFilters">
+                    <!-- Consultation Fee Filter -->
+                    <div class="filter-group">
+                        <label class="filter-label">Consultation Fee</label>
+                        <div class="custom-dropdown">
+                            <div class="custom-dropdown-select">
+                                <span>Any Fee</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <div class="custom-dropdown-option" data-value="">Any Fee</div>
+                                <div class="custom-dropdown-option" data-value="low">Low (0-100)</div>
+                                <div class="custom-dropdown-option" data-value="medium">Medium (100-300)</div>
+                                <div class="custom-dropdown-option" data-value="high">High (300+)</div>
+                            </div>
+                            <select class="filter-select" id="feeFilter" style="display: none;">
+                                <option value="">Any Fee</option>
+                                <option value="low">Low (0-100)</option>
+                                <option value="medium">Medium (100-300)</option>
+                                <option value="high">High (300+)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-filters-container">
+            <!-- Quick Filters -->
+            <div class="quick-filters">
+                <button class="quick-filter-btn" data-filter="available-now">Available Now</button>
+                <button class="quick-filter-btn" data-filter="high-rating">High Rating</button>
+                <button class="quick-filter-btn" data-filter="video-consultation">Video Consultation</button>
+                <button class="quick-filter-btn" data-filter="english-speaking">English Speaking</button>
+            </div>
+
+            <!-- Active Filters Display -->
+            <div class="active-filters-container" id="activeDoctorFilters">
+                <!-- Active filters will appear here -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section class="results-section">
+    <div class="container">
+        <!-- Results Header -->
+        <div class="results-header">
+            <div class="results-count">
+                <span id="doctorsResultsCount">Showing @Model.Count() doctors</span>
+            </div>
+            <div class="results-controls">
+                <!-- View Toggle -->
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-table"></i>
+                    </button>
+                </div>
+                <div class="results-sort">
+                    <label for="doctorSortBy">Sort by:</label>
+                    <select id="doctorSortBy" class="sort-select">
+                        <option value="name">Name</option>
+                        <option value="rating">Rating</option>
+                        <option value="experience">Experience</option>
+                        <option value="fee">Consultation Fee</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Content -->
+        <div class="results-content">
+            <!-- Grid View -->
+            <div class="results-grid active" id="doctorsGridView">
+                <div class="doctors-grid" id="doctorsGrid">
+                    @foreach (var doctor in Model)
+                    {
+                        <div class="doctor-card" data-doctor-id="@doctor.Id">
+                            <div class="doctor-image">
+                                @if (!string.IsNullOrEmpty(doctor.Image))
+                                {
+                                    <img src="@doctor.Image" alt="Dr. @doctor.FirstName @doctor.LastName">
+                                }
+                                else
+                                {
+                                    <img src="~/images/doctor-default.jpg" alt="Dr. @doctor.FirstName @doctor.LastName">
+                                }
+                                <div class="doctor-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            <div class="doctor-content">
+                                <h3 class="doctor-name">Dr. @doctor.FirstName @doctor.LastName</h3>
+                                <div class="doctor-specialty">
+                                    <i class="fas fa-stethoscope"></i>
+                                    <span>@doctor.Specialization</span>
+                                </div>
+                                <div class="doctor-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>@doctor.Hospital</span>
+                                </div>
+                                <div class="doctor-experience">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>@doctor.YearsOfExperience years experience</span>
+                                </div>
+                                <div class="doctor-fee">
+                                    <span>Consultation Fee</span>
+                                    <span>$50</span>
+                                </div>
+                                <div class="doctor-actions">
+                                    <div class="top-action-buttons">
+                                        <a asp-action="Details" asp-route-id="@doctor.Id" class="doctor-btn">
+                                            <i class="fas fa-eye"></i>
+                                            View Profile
+                                        </a>
+                                        <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="doctor-btn book-btn">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            Book Now
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <div class="results-list" id="doctorsListView">
+                <div class="doctors-table-container">
+                    <table class="doctors-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialty</th>
+                                <th>Hospital</th>
+                                <th>Experience</th>
+                                <th>Rating</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var doctor in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="doctor-table-info">
+                                            @if (!string.IsNullOrEmpty(doctor.Image))
+                                            {
+                                                <img src="@doctor.Image" alt="Dr. @doctor.FirstName @doctor.LastName" class="doctor-table-img">
+                                            }
+                                            else
+                                            {
+                                                <div class="doctor-table-img placeholder">
+                                                    <i class="fas fa-user-md"></i>
+                                                </div>
+                                            }
+                                            <div>
+                                                <div class="doctor-table-name">Dr. @doctor.FirstName @doctor.LastName</div>
+                                                <div class="doctor-table-rank">@doctor.Rank</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@doctor.Specialization</td>
+                                    <td>@doctor.Hospital</td>
+                                    <td>@doctor.YearsOfExperience years</td>
+                                    <td>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <span>4.8</span>
+                                        </div>
+                                    </td>
+                                    <td>$50</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-sm btn-outline">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="doctorPagination">
+            <!-- سيتم إضافة Pagination ديناميكياً -->
+        </div>
+    </div>
+</section>
+
+<!-- Toaster Container for Notifications -->
+<div id="toasterContainer" class="toaster-container"></div>
+
+@section Scripts {
+    <script src="~/js/doctors.js"></script>
+
+    <script>
+        // Initialize doctors page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize filters
+            initializeDoctorFilters();
+
+            // Initialize view toggles
+            initializeViewToggles();
+
+            // Initialize search functionality
+            initializeDoctorSearch();
+        });
+
+        function initializeDoctorFilters() {
+            // Custom dropdown functionality
+            const dropdowns = document.querySelectorAll('.custom-dropdown');
+            dropdowns.forEach(dropdown => {
+                const select = dropdown.querySelector('.custom-dropdown-select');
+                const options = dropdown.querySelector('.custom-dropdown-options');
+
+                select.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    options.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function() {
+                    options.classList.remove('show');
+                });
+
+                // Handle option selection
+                const optionElements = options.querySelectorAll('.custom-dropdown-option');
+                optionElements.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        const text = this.textContent;
+                        select.querySelector('span').textContent = text;
+                        options.classList.remove('show');
+
+                        // Update hidden select if exists
+                        const hiddenSelect = dropdown.querySelector('.filter-select');
+                        if (hiddenSelect) {
+                            hiddenSelect.value = value;
+                        }
+
+                        // Trigger filter update
+                        updateDoctorFilters();
+                    });
+                });
+            });
+
+            // More filters toggle
+            const moreFiltersBtn = document.getElementById('moreDoctorFiltersBtn');
+            const additionalFilters = document.getElementById('additionalDoctorFilters');
+
+            if (moreFiltersBtn && additionalFilters) {
+                moreFiltersBtn.addEventListener('click', function() {
+                    additionalFilters.classList.toggle('show');
+                    const icon = this.querySelector('i');
+                    if (additionalFilters.classList.contains('show')) {
+                        icon.className = 'fas fa-chevron-up';
+                        this.querySelector('span').textContent = 'Less Filters';
+                    } else {
+                        icon.className = 'fas fa-chevron-down';
+                        this.querySelector('span').textContent = 'More Filters';
+                    }
+                });
+            }
+
+            // Clear filters
+            const clearFiltersBtn = document.getElementById('clearDoctorFilters');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', function() {
+                    // Reset all dropdowns
+                    dropdowns.forEach(dropdown => {
+                        const select = dropdown.querySelector('.custom-dropdown-select');
+                        const firstOption = dropdown.querySelector('.custom-dropdown-option[data-value=""]');
+                        if (firstOption) {
+                            select.querySelector('span').textContent = firstOption.textContent;
+                        }
+
+                        const hiddenSelect = dropdown.querySelector('.filter-select');
+                        if (hiddenSelect) {
+                            hiddenSelect.value = '';
+                        }
+                    });
+
+                    // Reset quick filters
+                    const quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
+                    quickFilterBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    // Clear active filters display
+                    const activeFiltersContainer = document.getElementById('activeDoctorFilters');
+                    if (activeFiltersContainer) {
+                        activeFiltersContainer.innerHTML = '';
+                    }
+
+                    updateDoctorFilters();
+                });
+            }
+
+            // Quick filters
+            const quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
+            quickFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    updateDoctorFilters();
+                });
+            });
+        }
+
+        function initializeViewToggles() {
+            const viewBtns = document.querySelectorAll('.view-btn');
+            const resultsGrid = document.getElementById('doctorsGridView');
+            const resultsList = document.getElementById('doctorsListView');
+
+            viewBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const viewType = this.getAttribute('data-view');
+
+                    // Update active button
+                    viewBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Show/hide views
+                    if (viewType === 'grid') {
+                        resultsGrid.classList.add('active');
+                        resultsList.classList.remove('active');
+                    } else if (viewType === 'list') {
+                        resultsGrid.classList.remove('active');
+                        resultsList.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function initializeDoctorSearch() {
+            const searchInput = document.getElementById('doctorSearch');
+            const searchBtn = document.querySelector('.search-btn');
+
+            if (searchInput && searchBtn) {
+                // Search on button click
+                searchBtn.addEventListener('click', function() {
+                    performDoctorSearch();
+                });
+
+                // Search on enter key
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performDoctorSearch();
+                    }
+                });
+            }
+        }
+
+        function performDoctorSearch() {
+            const searchTerm = document.getElementById('doctorSearch').value;
+            const specialty = document.getElementById('doctorSpecialtyFilter').value;
+            const rating = document.getElementById('doctorRatingFilter').value;
+            const language = document.getElementById('languageFilter').value;
+
+            // Show loading state
+            const resultsGrid = document.getElementById('doctorsGrid');
+            const resultsTable = document.querySelector('.doctors-table tbody');
+
+            if (resultsGrid) resultsGrid.innerHTML = '<div class="loading">Searching doctors...</div>';
+            if (resultsTable) resultsTable.innerHTML = '<tr><td colspan="7" class="loading">Searching doctors...</td></tr>';
+
+            // Simulate API call (ستتم استبدالها بـ API حقيقي)
+            setTimeout(() => {
+                updateDoctorFilters();
+            }, 500);
+        }
+
+        function updateDoctorFilters() {
+            // Update results count
+            const resultsCount = document.getElementById('doctorsResultsCount');
+            const doctorCards = document.querySelectorAll('.doctor-card');
+            const visibleCards = Array.from(doctorCards).filter(card => {
+                return card.style.display !== 'none';
+            });
+
+            if (resultsCount) {
+                resultsCount.textContent = `Showing ${visibleCards.length} doctors`;
+            }
+
+            // Update active filters display
+            updateActiveFiltersDisplay();
+        }
+
+        function updateActiveFiltersDisplay() {
+            const activeFiltersContainer = document.getElementById('activeDoctorFilters');
+            if (!activeFiltersContainer) return;
+
+            activeFiltersContainer.innerHTML = '';
+
+            // Add active filters here based on current selections
+            // This is a simplified version - you can expand it based on your needs
+        }
+
+        // Show success message when booking
+        function showBookingSuccess(doctorName) {
+            showToaster(`Appointment booked with Dr. ${doctorName}`, 'success');
+        }
+
+        // Toaster notification function
+        function showToaster(message, type = 'info') {
+            const toasterContainer = document.getElementById('toasterContainer');
+            if (!toasterContainer) return;
+
+            const toaster = document.createElement('div');
+            toaster.className = `toaster toaster-${type}`;
+            toaster.innerHTML = `
+                <div class="toaster-content">
+                    <span class="toaster-message">${message}</span>
+                    <button class="toaster-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            toasterContainer.appendChild(toaster);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toaster.parentElement) {
+                    toaster.remove();
+                }
+            }, 5000);
+        }
+    </script>
+}

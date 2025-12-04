@@ -1,0 +1,415 @@
+﻿@using Serena.BLL.Models.Account
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+<!-- Login Form -->
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <div class="logo-placeholder">S</div>
+                <span class="logo-text">Serena</span>
+            </div>
+            <h2 class="auth-title">HELLO!</h2>
+            <p class="auth-subtitle" data-en="Please enter Admin account to continue" data-ar="يرجى إدخال إنشاء حساب المسؤول للمتابعة">Please enter your details to continue</p>
+        </div>
+
+        <form class="auth-form" id="loginForm" asp-action="RegisterHospital" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="form-label" data-en="Email Address" data-ar="عنوان البريد الإلكتروني">Email Address</label>
+                <div class="email-fields">
+                    <div class="form-group">
+                        <input asp-for="Email" type="text" id="login-email-user" class="form-input" placeholder="Enter your email" data-en="Enter your email" data-ar=" أدخل عنوان البريد الإلكتروني" data-validation="email-user">
+                    </div>
+                </div>
+                <!-- Validation message مشترك لـ email -->
+                <div class="validation-message" id="login-email-validation"></div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label" for="login-password" data-en="Password" data-ar="كلمة المرور">Password</label>
+                <div class="password-input-wrapper">
+                    <input asp-for="Password" type="password" id="login-password" class="form-input" placeholder data-en="Enter your password" data-ar="أدخل كلمة المرور" data-validation="password">
+                    <button type="button" class="password-toggle" id="login-password-toggle">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+                <div class="password-strength-container">
+                    <div class="password-strength">
+                        <div class="strength-bar" id="login-password-strength"></div>
+                    </div>
+                    <div class="strength-text" id="login-password-strength-text"></div>
+                </div>
+                <div class="validation-message" id="login-password-validation"></div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+            </div>
+
+            <button type="submit" class="auth-submit-btn" id="login-submit">
+                <span class="btn-text" data-en="Log In" data-ar="تسجيل الدخول">Log In</span>
+                <div class="loading-spinner"></div>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // =======================
+        // Bilingual Messages
+        // =======================
+        const validationMessages = {
+            en: {
+                required: 'This field is required',
+                emailUser: 'Invalid email username',
+                emailDomain: 'Invalid domain',
+                passwordRequired: 'Password is required',
+                passwordWeak: 'Password is too weak',
+                valid: 'Valid'
+            },
+            ar: {
+                required: 'هذا الحقل مطلوب',
+                emailUser: 'اسم مستخدم البريد الإلكتروني غير صالح',
+                emailDomain: 'نطاق البريد الإلكتروني غير صالح',
+                passwordRequired: 'كلمة المرور مطلوبة',
+                passwordWeak: 'كلمة المرور ضعيفة جداً',
+                valid: 'صحيح'
+            }
+        };
+
+        const passwordStrengthTexts = {
+            en: {
+                weak: 'Weak',
+                medium: 'Medium',
+                strong: 'Strong'
+            },
+            ar: {
+                weak: 'ضعيف',
+                medium: 'متوسط',
+                strong: 'قوي'
+            }
+        };
+
+        // =======================
+        // Helper Functions
+        // =======================
+        function getCurrentLanguage() {
+            return document.documentElement.getAttribute("lang") === "ar" ? "ar" : "en";
+        }
+
+        function getMessage(key) {
+            const lang = getCurrentLanguage();
+            return validationMessages[lang][key] || validationMessages.en[key];
+        }
+
+        function getPasswordStrengthText(strength) {
+            const lang = getCurrentLanguage();
+            const texts = passwordStrengthTexts[lang];
+
+            if (strength < 40) return texts.weak;
+            if (strength < 70) return texts.medium;
+            return texts.strong;
+        }
+
+        // =======================
+        // Password Toggle
+        // =======================
+        const passwordToggle = document.getElementById("login-password-toggle");
+        const passwordInput = document.getElementById("login-password");
+
+        if (passwordToggle && passwordInput) {
+            passwordToggle.addEventListener("click", function () {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    passwordToggle.innerHTML = `<i class="far fa-eye-slash"></i>`;
+                    passwordToggle.setAttribute("aria-label", "Hide password");
+                } else {
+                    passwordInput.type = "password";
+                    passwordToggle.innerHTML = `<i class="far fa-eye"></i>`;
+                    passwordToggle.setAttribute("aria-label", "Show password");
+                }
+                passwordInput.focus();
+            });
+        }
+
+        // =======================
+        // Password Strength
+        // =======================
+        const strengthBar = document.getElementById("login-password-strength");
+        const strengthText = document.getElementById("login-password-strength-text");
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+
+            if (password.length >= 8) strength += 25;
+            if (/[a-z]/.test(password)) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+
+            return strength;
+        }
+
+        function updatePasswordStrength() {
+            const password = passwordInput.value.trim();
+            const strength = calculatePasswordStrength(password);
+
+            if (!password) {
+                strengthBar.style.width = "0%";
+                strengthText.textContent = "";
+                return;
+            }
+
+            strengthBar.className = "strength-bar";
+
+            if (strength < 40) {
+                strengthBar.classList.add("strength-weak");
+                strengthText.textContent = getPasswordStrengthText(strength);
+                strengthText.style.color = "#ef4444";
+            } else if (strength < 70) {
+                strengthBar.classList.add("strength-medium");
+                strengthText.textContent = getPasswordStrengthText(strength);
+                strengthText.style.color = "#f59e0b";
+            } else {
+                strengthBar.classList.add("strength-strong");
+                strengthText.textContent = getPasswordStrengthText(strength);
+                strengthText.style.color = "#10b981";
+            }
+        }
+
+        if (passwordInput && strengthBar && strengthText) {
+            passwordInput.addEventListener("input", function () {
+                this.classList.add("interacted");
+                updatePasswordStrength();
+            });
+        }
+
+        // =======================
+        // Email Validation
+        // =======================
+        function validateEmailFields() {
+            const userInput = document.getElementById("login-email-user");
+            const validationMessage = document.getElementById("login-email-validation");
+
+            if (!userInput || !validationMessage) return true;
+
+            const value = userInput.value.trim();
+            let isValid = true;
+            let errorMessage = "";
+
+            if (!value) {
+                isValid = false;
+                errorMessage = getMessage("required");
+            } else if (!value.includes('@@')) {
+                // Check if it's a complete email (single field)
+                if (!/^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+                    isValid = false;
+                    errorMessage = getMessage("emailUser");
+                }
+            }
+
+            if (!isValid) {
+                userInput.classList.add("error");
+                userInput.classList.remove("success");
+                validationMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${errorMessage}`;
+                validationMessage.className = "validation-message validation-error";
+                return false;
+            } else {
+                userInput.classList.remove("error");
+                userInput.classList.add("success");
+                validationMessage.innerHTML = `<i class="fas fa-check-circle"></i> ${getMessage("valid")}`;
+                validationMessage.className = "validation-message validation-success";
+                return true;
+            }
+        }
+
+        // =======================
+        // Password Validation
+        // =======================
+        function validatePassword() {
+            const password = document.getElementById("login-password");
+            const validationMessage = document.getElementById("login-password-validation");
+
+            if (!password || !validationMessage) return true;
+
+            const value = password.value.trim();
+            const strength = calculatePasswordStrength(value);
+
+            if (!value) {
+                password.classList.add("error");
+                password.classList.remove("success");
+                validationMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${getMessage("passwordRequired")}`;
+                validationMessage.className = "validation-message validation-error";
+                return false;
+            } else if (strength < 40) {
+                password.classList.add("error");
+                password.classList.remove("success");
+                validationMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${getMessage("passwordWeak")}`;
+                validationMessage.className = "validation-message validation-error";
+                return false;
+            } else {
+                password.classList.remove("error");
+                password.classList.add("success");
+                validationMessage.innerHTML = `<i class="fas fa-check-circle"></i> ${getMessage("valid")}`;
+                validationMessage.className = "validation-message validation-success";
+                return true;
+            }
+        }
+
+        // =======================
+        // Form Submission
+        // =======================
+        const loginForm = document.getElementById("loginForm");
+
+        if (loginForm) {
+            // Real-time validation
+            const inputs = loginForm.querySelectorAll('input[data-validation]');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (!input.classList.contains('interacted')) {
+                        input.classList.add('interacted');
+                    }
+
+                    if (input.id === 'login-email-user') {
+                        validateEmailFields();
+                    } else if (input.id === 'login-password') {
+                        validatePassword();
+                    }
+                });
+
+                input.addEventListener('blur', () => {
+                    if (!input.classList.contains('interacted')) {
+                        input.classList.add('interacted');
+                    }
+
+                    if (input.id === 'login-email-user') {
+                        validateEmailFields();
+                    } else if (input.id === 'login-password') {
+                        validatePassword();
+                    }
+                });
+            });
+
+
+        }
+
+        // =======================
+        // Notification System
+        // =======================
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.auth-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = `auth-notification auth-notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            // Add styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                max-width: 400px;
+                animation: slideIn 0.3s ease;
+            `;
+
+            // Close button
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.remove();
+            });
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+
+            document.body.appendChild(notification);
+
+            // Add CSS animations if not already present
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @@keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+
+                    @@keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+
+                    .notification-close {
+                        background: none;
+                        border: none;
+                        color: white;
+                        cursor: pointer;
+                        padding: 0.25rem;
+                        border-radius: 0.25rem;
+                        transition: background-color 0.2s;
+                    }
+
+                    .notification-close:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                    }
+
+                    .notification-content {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    .loading {
+                        opacity: 0.7;
+                        pointer-events: none;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // =======================
+        // Forgot Password Link
+        // =======================
+        const forgotPasswordLink = document.querySelector('.forgot-password');
+        if (forgotPasswordLink) {
+            forgotPasswordLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const message = getCurrentLanguage() === 'ar'
+                    ? 'سيتم تنفيذ وظيفة استعادة كلمة المرور قريباً'
+                    : 'Forgot password functionality will be implemented soon';
+                showNotification(message, 'info');
+            });
+        }
+    });
+</script>

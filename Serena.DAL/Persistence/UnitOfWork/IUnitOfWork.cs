@@ -1,8 +1,10 @@
-﻿
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Serena.DAL.Persistence.Repositories.Appointments;
 using Serena.DAL.Persistence.Repositories.Departments;
+using Serena.DAL.Persistence.Repositories.DoctorHospitalReviews;
 using Serena.DAL.Persistence.Repositories.HospitalAddresses;
 using Serena.DAL.Persistence.Repositories.Hospitals;
+using Serena.DAL.Persistence.Repositories.PatientHospitalReviews;
+using Serena.DAL.Persistence.Repositories.Schedules;
 
 namespace Serena.DAL.Persistence.UnitOfWork;
 
@@ -16,6 +18,13 @@ public interface IUnitOfWork : IAsyncDisposable
 	public IHospitalRepository	HospitalRepository { get; }
 	public IHospitalAddressRepository HospitalAddressRepository { get; }
 	public IDepartmentRepository DepartmentRepository { get; }
+
+	public IAppointmentRepository AppointmentRepository { get; }
+	public IScheduleRepository ScheduleRepository { get; }
+
+	public IPatientHospitalReviewRepository PatientHospitalReviewRepository { get; }
+
+    IDoctorHospitalReviewRepository DoctorHospitalReviewRepository { get; }
 
     Task<int> CompleteAsync();
 }

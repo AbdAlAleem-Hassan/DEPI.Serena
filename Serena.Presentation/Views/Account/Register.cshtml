@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "Choose Registration Type";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="auth-container">
+    <div class="register-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <div class="logo-placeholder">S</div>
+                <span class="logo-text">Serena</span>
+            </div>
+            <h2 class="auth-title">JOIN OUR HEALTHCARE COMMUNITY</h2>
+            <p class="auth-subtitle" data-en="Choose your account type to get started" data-ar="اختر نوع حسابك للبدء">
+                Choose your account type to get started
+            </p>
+        </div>
+
+        <div class="registration-type-grid">
+            <!-- Patient Card -->
+            <div class="registration-type-card" onclick="location.href='@Url.Action("RegisterPatient")'">
+                <div class="registration-icon icon-patient">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <h3 class="registration-type-title">Patient</h3>
+                <p class="registration-type-desc">
+                    Book appointments, access medical records, and connect with healthcare providers from the comfort of your home.
+                </p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Book appointments online 24/7</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Secure access to medical records</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Connect with trusted doctors</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Medication reminders & health tips</span>
+                    </div>
+                </div>
+                <button class="card-button card-button-patient">
+                    <span class="card-button-text">Register as Patient</span>
+                    <i class="fas fa-arrow-right card-button-icon"></i>
+                </button>
+            </div>
+
+            <!-- Doctor Card -->
+            <div class="registration-type-card" onclick="location.href='@Url.Action("RegisterDoctor")'">
+                <div class="registration-icon icon-doctor">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3 class="registration-type-title">Doctor</h3>
+                <p class="registration-type-desc">
+                    Expand your practice, manage appointments efficiently, and provide better care with our professional tools.
+                </p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Smart appointment scheduling</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Patient management system</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Medical tools & resources</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Secure patient communication</span>
+                    </div>
+                </div>
+                <button class="card-button card-button-doctor">
+                    <span class="card-button-text">Register as Doctor</span>
+                    <i class="fas fa-arrow-right card-button-icon"></i>
+                </button>
+            </div>
+
+            <!-- Hospital Card -->
+            <div class="registration-type-card" onclick="location.href='@Url.Action("Admin")'">
+                <div class="registration-icon icon-hospital">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3 class="registration-type-title">Hospital</h3>
+                <p class="registration-type-desc">
+                    Streamline your healthcare facility operations, manage staff, and enhance patient services with our comprehensive platform.
+                </p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Doctor & staff management</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Centralized appointment system</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Billing & financial reports</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check feature-icon"></i>
+                        <span>Inventory & resource tracking</span>
+                    </div>
+                </div>
+                <button class="card-button card-button-hospital">
+                    <span class="card-button-text">Register Hospital</span>
+                    <i class="fas fa-arrow-right card-button-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="auth-footer" style="margin-top: 3rem;">
+            <p data-en="Already have an account?" data-ar="هل لديك حساب بالفعل؟">
+                Already have an account? <a class="auth-link" asp-action="Login">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click handlers to cards for better accessibility
+        const cards = document.querySelectorAll('.registration-type-card');
+
+        cards.forEach(card => {
+            // Remove inline onclick for better separation
+            const link = card.getAttribute('onclick');
+            if (link) {
+                const url = link.match(/location\.href='([^']+)'/)[1];
+                card.removeAttribute('onclick');
+
+                card.addEventListener('click', function(e) {
+                    // Don't navigate if clicking on the button
+                    if (!e.target.closest('.card-button')) {
+                        window.location.href = url;
+                    }
+                });
+
+                // Make the button work
+                const button = card.querySelector('.card-button');
+                if (button) {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        window.location.href = url;
+                    });
+                }
+            }
+
+            // Add keyboard navigation
+            card.setAttribute('tabindex', '0');
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const url = card.querySelector('.card-button')?.dataset.url ||
+                                card.getAttribute('data-url');
+                    if (url) {
+                        window.location.href = url;
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Remove the inline style and use CSS instead */
+    .auth-footer[style*="margin-top: 2rem;"] {
+        margin-top: 3rem !important;
+    }
+
+    /* Ensure cards have proper focus states for accessibility */
+    .registration-type-card:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+
+    /* Smooth transition for all interactive elements */
+    .registration-type-card,
+    .card-button,
+    .registration-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-button{
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(to right, #3b82f6, #10b981);
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+        .card-button:hover {
+            background: linear-gradient(to right, #2563eb, #059669);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+</style>

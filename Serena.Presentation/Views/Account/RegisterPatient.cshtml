@@ -1,0 +1,843 @@
+﻿@using Serena.BLL.Models.Account
+@model RegisterPatientViewModel
+@{
+    ViewData["Title"] = "Register as Patient";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <div class="logo-placeholder">S</div>
+                <span class="logo-text">Serena</span>
+            </div>
+            <h2 class="auth-title">PATIENT REGISTRATION</h2>
+            <p class="auth-subtitle" data-en="Create your healthcare account" data-ar="أنشئ حساب الرعاية الصحية الخاص بك">
+                Create your healthcare account
+            </p>
+        </div>
+
+        <form class="auth-form" id="patientForm" asp-action="RegisterPatient" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Step Indicator -->
+            <div class="registration-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Personal</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Account</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Medical</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Personal Information -->
+            <div class="step-content active" data-step="1">
+                <div class="section-title">Personal Information</div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="FirstName"></label>
+                            <input asp-for="FirstName" class="form-input" placeholder="First name" required />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="MiddleName"></label>
+                            <input asp-for="MiddleName" class="form-input" placeholder="Middle name" />
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="LastName"></label>
+                            <input asp-for="LastName" class="form-input" placeholder="Last name" required />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Email"></label>
+                            <input asp-for="Email" class="form-input" placeholder="patient@email.com" type="email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="validation-message" id="email-validation"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" class="form-input" placeholder="Phone number" required />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <div class="validation-message" id="phone-validation"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Gender"></label>
+                            <select asp-for="Gender" class="form-input" required>
+                                <option value="">Select Gender</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="DateOfBirth"></label>
+                            <input asp-for="DateOfBirth" type="date" class="form-input" required />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                            <div class="validation-message" id="dob-validation"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" disabled>Previous</button>
+                    <button type="button" class="btn-next" data-next="2">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Account Information -->
+            <div class="step-content" data-step="2">
+                <div class="section-title">Account Security</div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Password"></label>
+                            <div class="password-input-wrapper">
+                                <input asp-for="Password" type="password" class="form-input"
+                                       placeholder="Password" id="registerPassword" required
+                                       data-validation="password" />
+                                <button type="button" class="password-toggle" id="password-toggle">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <!-- Password Strength Bar (مشابه لصفحة Login) -->
+                            <div class="password-strength-container">
+                                <div class="password-strength">
+                                    <div class="strength-bar" id="register-password-strength"></div>
+                                </div>
+                                <div class="strength-text" id="register-password-strength-text"></div>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="validation-message" id="password-validation"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="ConfirmPassword"></label>
+                            <div class="password-input-wrapper">
+                                <input asp-for="ConfirmPassword" type="password" class="form-input"
+                                       placeholder="Confirm password" id="ConfirmPassword" required />
+                                <button type="button" class="password-toggle" id="confirm-password-toggle">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            <div class="validation-message" id="confirm-password-validation"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Address Information</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Country"></label>
+                            <input asp-for="Country" class="form-input" placeholder="Country" required />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="City"></label>
+                            <input asp-for="City" class="form-input" placeholder="City" required />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Street"></label>
+                            <input asp-for="Street" class="form-input" placeholder="Street address" required />
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="ZipCode"></label>
+                            <input asp-for="ZipCode" class="form-input" placeholder="Zip code" />
+                            <span asp-validation-for="ZipCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" data-prev="1">Previous</button>
+                    <button type="button" class="btn-next" data-next="3">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Medical Information -->
+            <div class="step-content" data-step="3">
+                <div class="section-title">Medical Information</div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="MaritalStatus"></label>
+                            <select asp-for="MaritalStatus" class="form-input">
+                                <option value="">Select Marital Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="NationalID"></label>
+                            <input asp-for="NationalID" class="form-input" placeholder="National ID" />
+                            <span asp-validation-for="NationalID" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="JobStatus"></label>
+                            <select asp-for="JobStatus" class="form-input">
+                                <option value="">Select Job Status</option>
+                                <option value="Employed">Employed</option>
+                                <option value="Unemployed">Unemployed</option>
+                                <option value="Student">Student</option>
+                                <option value="Retired">Retired</option>
+                            </select>
+                            <span asp-validation-for="JobStatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="InsuranceCompany"></label>
+                            <input asp-for="InsuranceCompany" class="form-input" placeholder="Insurance company" />
+                            <span asp-validation-for="InsuranceCompany" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="terms-checkbox">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+                        <label class="form-check-label" for="termsAgreement">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <div class="validation-message" id="terms-validation"></div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" data-prev="2">Previous</button>
+                    <button type="submit" class="auth-submit-btn" id="submitBtn">
+                        <span class="btn-text">Create Account</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="auth-footer">
+            <p data-en="Already have an account?" data-ar="هل لديك حساب بالفعل؟">
+                Already have an account? <a class="auth-link" asp-action="Login">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ========================
+            // Bilingual Messages (مشابه لـ Login)
+            // ========================
+            const validationMessages = {
+                en: {
+                    required: 'This field is required',
+                    emailUser: 'Invalid email username',
+                    emailDomain: 'Invalid domain',
+                    passwordRequired: 'Password is required',
+                    passwordWeak: 'Password is too weak',
+                    valid: 'Valid'
+                },
+                ar: {
+                    required: 'هذا الحقل مطلوب',
+                    emailUser: 'اسم مستخدم البريد الإلكتروني غير صالح',
+                    emailDomain: 'نطاق البريد الإلكتروني غير صالح',
+                    passwordRequired: 'كلمة المرور مطلوبة',
+                    passwordWeak: 'كلمة المرور ضعيفة جداً',
+                    valid: 'صحيح'
+                }
+            };
+
+            const passwordStrengthTexts = {
+                en: {
+                    weak: 'Weak',
+                    medium: 'Medium',
+                    strong: 'Strong'
+                },
+                ar: {
+                    weak: 'ضعيف',
+                    medium: 'متوسط',
+                    strong: 'قوي'
+                }
+            };
+
+            // ========================
+            // Helper Functions
+            // ========================
+            function getCurrentLanguage() {
+                return document.documentElement.getAttribute("lang") === "ar" ? "ar" : "en";
+            }
+
+            function getMessage(key) {
+                const lang = getCurrentLanguage();
+                return validationMessages[lang][key] || validationMessages.en[key];
+            }
+
+            function getPasswordStrengthText(strength) {
+                const lang = getCurrentLanguage();
+                const texts = passwordStrengthTexts[lang];
+
+                if (strength < 40) return texts.weak;
+                if (strength < 70) return texts.medium;
+                return texts.strong;
+            }
+
+            // ========================
+            // Password Strength (مشابه لـ Login)
+            // ========================
+            const passwordInput = document.getElementById("registerPassword");
+            const strengthBar = document.getElementById("register-password-strength");
+            const strengthText = document.getElementById("register-password-strength-text");
+
+            function calculatePasswordStrength(password) {
+                let strength = 0;
+
+                if (password.length >= 8) strength += 25;
+                if (/[a-z]/.test(password)) strength += 25;
+                if (/[A-Z]/.test(password)) strength += 25;
+                if (/[0-9]/.test(password)) strength += 15;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+
+                return strength;
+            }
+
+            function updatePasswordStrength() {
+                const password = passwordInput.value.trim();
+                const strength = calculatePasswordStrength(password);
+
+                if (!password) {
+                    strengthBar.style.width = "0%";
+                    strengthText.textContent = "";
+                    return;
+                }
+
+                strengthBar.className = "strength-bar";
+
+                if (strength < 40) {
+                    strengthBar.classList.add("strength-weak");
+                    strengthText.textContent = getPasswordStrengthText(strength);
+                    strengthText.style.color = "#ef4444";
+                } else if (strength < 70) {
+                    strengthBar.classList.add("strength-medium");
+                    strengthText.textContent = getPasswordStrengthText(strength);
+                    strengthText.style.color = "#f59e0b";
+                } else {
+                    strengthBar.classList.add("strength-strong");
+                    strengthText.textContent = getPasswordStrengthText(strength);
+                    strengthText.style.color = "#10b981";
+                }
+            }
+
+            // ========================
+            // Password Toggle
+            // ========================
+            const passwordToggle = document.getElementById("password-toggle");
+            const confirmPasswordToggle = document.getElementById("confirm-password-toggle");
+            const confirmPasswordInput = document.getElementById("ConfirmPassword");
+
+            if (passwordToggle && passwordInput) {
+                passwordToggle.addEventListener("click", function () {
+                    if (passwordInput.type === "password") {
+                        passwordInput.type = "text";
+                        passwordToggle.innerHTML = `<i class="far fa-eye-slash"></i>`;
+                        passwordToggle.setAttribute("aria-label", "Hide password");
+                    } else {
+                        passwordInput.type = "password";
+                        passwordToggle.innerHTML = `<i class="far fa-eye"></i>`;
+                        passwordToggle.setAttribute("aria-label", "Show password");
+                    }
+                    passwordInput.focus();
+                });
+            }
+
+            if (confirmPasswordToggle && confirmPasswordInput) {
+                confirmPasswordToggle.addEventListener("click", function () {
+                    if (confirmPasswordInput.type === "password") {
+                        confirmPasswordInput.type = "text";
+                        confirmPasswordToggle.innerHTML = `<i class="far fa-eye-slash"></i>`;
+                        confirmPasswordToggle.setAttribute("aria-label", "Hide password");
+                    } else {
+                        confirmPasswordInput.type = "password";
+                        confirmPasswordToggle.innerHTML = `<i class="far fa-eye"></i>`;
+                        confirmPasswordToggle.setAttribute("aria-label", "Show password");
+                    }
+                    confirmPasswordInput.focus();
+                });
+            }
+
+            // ========================
+            // State management
+            // ========================
+            const state = {
+                currentStep: 1,
+                totalSteps: 3,
+                formData: {},
+                validationErrors: {}
+            };
+
+            // DOM Elements
+            const steps = document.querySelectorAll('.step');
+            const stepContents = document.querySelectorAll('.step-content');
+            const nextButtons = document.querySelectorAll('.btn-next');
+            const prevButtons = document.querySelectorAll('.btn-prev');
+            const form = document.getElementById('patientForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const termsCheckbox = document.getElementById('termsAgreement');
+
+            // Initialize password strength if elements exist
+            if (passwordInput && strengthBar && strengthText) {
+                passwordInput.addEventListener("input", function () {
+                    this.classList.add("interacted");
+                    updatePasswordStrength();
+                });
+            }
+
+            // Initialize step navigation
+            initStepNavigation();
+
+            // Form submission handler
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Validate all steps before submission
+                    if (validateAllSteps()) {
+                        // Check terms agreement
+                        if (!termsCheckbox.checked) {
+                            showValidationError('terms-validation', 'Please agree to the Terms of Service and Privacy Policy');
+                            scrollToElement(termsCheckbox);
+                            return;
+                        }
+
+                        // Show loading state
+                        setLoadingState(true);
+
+                        // Submit the form
+                        form.submit();
+                    } else {
+                        // Go to the first step with errors
+                        goToStep(state.currentStep);
+                    }
+                });
+            }
+
+            // Initialize real-time validations
+            initRealTimeValidations();
+
+            // ========================
+            // Functions
+            // ========================
+            function initStepNavigation() {
+                // Next button click handlers
+                nextButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const nextStep = parseInt(this.dataset.next);
+
+                        // Validate current step before proceeding
+                        if (validateStep(state.currentStep)) {
+                            goToStep(nextStep);
+                        }
+                    });
+                });
+
+                // Previous button click handlers
+                prevButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const prevStep = parseInt(this.dataset.prev);
+                        goToStep(prevStep);
+                    });
+                });
+            }
+
+            function goToStep(step) {
+                // Validate step number
+                if (step < 1 || step > state.totalSteps) return;
+
+                // Update current step
+                state.currentStep = step;
+
+                // Update step indicators
+                steps.forEach(s => {
+                    const stepNumber = parseInt(s.dataset.step);
+                    if (stepNumber < step) {
+                        s.classList.add('completed');
+                        s.classList.remove('active');
+                    } else if (stepNumber === step) {
+                        s.classList.add('active');
+                        s.classList.remove('completed');
+                    } else {
+                        s.classList.remove('active', 'completed');
+                    }
+                });
+
+                // Show/hide step contents
+                stepContents.forEach(content => {
+                    const contentStep = parseInt(content.dataset.step);
+                    if (contentStep === step) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+
+                // Update button states
+                updateButtonStates();
+
+                // Scroll to top of step
+                const activeContent = document.querySelector('.step-content.active');
+                if (activeContent) {
+                    activeContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            function updateButtonStates() {
+                // Update previous buttons
+                const prevButtons = document.querySelectorAll('.btn-prev');
+                prevButtons.forEach(btn => {
+                    btn.disabled = state.currentStep === 1;
+                });
+
+                // Update next buttons visibility
+                const nextButtons = document.querySelectorAll('.btn-next');
+                nextButtons.forEach(btn => {
+                    const nextStep = parseInt(btn.dataset.next);
+                    btn.style.display = nextStep <= state.totalSteps ? 'block' : 'none';
+                });
+
+                // Update submit button visibility
+                if (submitBtn) {
+                    submitBtn.style.display = state.currentStep === state.totalSteps ? 'flex' : 'none';
+                }
+            }
+
+            function validateStep(step) {
+                const stepContent = document.querySelector(`.step-content[data-step="${step}"]`);
+                const requiredFields = stepContent.querySelectorAll('[required]');
+                let isValid = true;
+
+                // Clear previous validation messages
+                clearStepValidationMessages(step);
+
+                // Validate each required field
+                requiredFields.forEach(field => {
+                    if (!validateField(field)) {
+                        isValid = false;
+                        markFieldAsInvalid(field);
+
+                        // Scroll to first invalid field
+                        if (isValid === false) {
+                            scrollToElement(field);
+                            isValid = false; // Set to false and don't change back
+                        }
+                    } else {
+                        markFieldAsValid(field);
+                    }
+                });
+
+                // Step-specific validations
+                if (step === 1) {
+                    const emailField = document.querySelector('[name="Email"]');
+                    const phoneField = document.querySelector('[name="PhoneNumber"]');
+                    const dobField = document.querySelector('[name="DateOfBirth"]');
+
+                    if (emailField && !validateEmail(emailField.value)) {
+                        showValidationError('email-validation', 'Please enter a valid email address');
+                        isValid = false;
+                    }
+
+                    if (phoneField && !validatePhone(phoneField.value)) {
+                        showValidationError('phone-validation', 'Please enter a valid phone number');
+                        isValid = false;
+                    }
+
+                    if (dobField && !validateDateOfBirth(dobField.value)) {
+                        showValidationError('dob-validation', 'You must be at least 18 years old');
+                        isValid = false;
+                    }
+                }
+
+                if (step === 2) {
+                    const passwordField = document.getElementById('registerPassword');
+                    const confirmPasswordField = document.getElementById('ConfirmPassword');
+
+                    // Password strength validation
+                    if (passwordField && passwordField.value.trim()) {
+                        const strength = calculatePasswordStrength(passwordField.value);
+                        if (strength < 40) {
+                            showValidationError('password-validation', getMessage('passwordWeak'));
+                            isValid = false;
+                        } else {
+                            showValidationError('password-validation', getMessage('valid'));
+                        }
+                    }
+
+                    if (passwordField && confirmPasswordField &&
+                        passwordField.value !== confirmPasswordField.value) {
+                        showValidationError('confirm-password-validation', 'Passwords do not match');
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
+
+            function validateAllSteps() {
+                let allValid = true;
+
+                for (let step = 1; step <= state.totalSteps; step++) {
+                    if (!validateStep(step)) {
+                        allValid = false;
+                        if (state.currentStep !== step) {
+                            goToStep(step);
+                        }
+                        break;
+                    }
+                }
+
+                return allValid;
+            }
+
+            function validateField(field) {
+                const value = field.value.trim();
+
+                // Check required fields
+                if (field.required && !value) {
+                    return false;
+                }
+
+                // Check pattern if exists
+                if (field.pattern && value) {
+                    const regex = new RegExp(field.pattern);
+                    if (!regex.test(value)) {
+                        return false;
+                    }
+                }
+
+                // Check min/max for number fields
+                if (field.type === 'number' && value) {
+                    if (field.min && parseFloat(value) < parseFloat(field.min)) {
+                        return false;
+                    }
+                    if (field.max && parseFloat(value) > parseFloat(field.max)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            // Validation helper functions
+            function validateEmail(email) {
+                const regex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                return regex.test(email);
+            }
+
+            function validatePhone(phone) {
+                // Basic phone validation - adjust as needed
+                const regex = /^[\+]?[1-9][\d]{0,15}$/;
+                return regex.test(phone.replace(/[\s\-\(\)]/g, ''));
+            }
+
+            function validateDateOfBirth(dob) {
+                const birthDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                return age >= 18;
+            }
+
+            function validatePassword(password) {
+                // Updated pattern: allows underscores and hashtags
+                // @@$!%*?&.#_- are the allowed special characters
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&.#_-])[A-Za-z\d@@$!%*?&.#_-]{8,}$/;
+                return regex.test(password);
+            }
+
+            // UI helper functions
+            function markFieldAsInvalid(field) {
+                field.classList.add('error');
+                field.classList.remove('success');
+            }
+
+            function markFieldAsValid(field) {
+                field.classList.remove('error');
+                field.classList.add('success');
+            }
+
+            function showValidationError(elementId, message) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = message;
+                    element.className = 'validation-message validation-error';
+                }
+            }
+
+            function clearStepValidationMessages(step) {
+                const stepContent = document.querySelector(`.step-content[data-step="${step}"]`);
+                const validationMessages = stepContent.querySelectorAll('.validation-message');
+                validationMessages.forEach(msg => {
+                    msg.textContent = '';
+                    msg.className = 'validation-message';
+                });
+
+                // Clear field error classes
+                const fields = stepContent.querySelectorAll('.form-input, select');
+                fields.forEach(field => {
+                    field.classList.remove('error', 'success');
+                });
+            }
+
+            function scrollToElement(element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                // Add temporary highlight
+                element.classList.add('highlight');
+                setTimeout(() => {
+                    element.classList.remove('highlight');
+                }, 2000);
+            }
+
+            function setLoadingState(isLoading) {
+                if (submitBtn) {
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    const spinner = submitBtn.querySelector('.loading-spinner');
+
+                    if (isLoading) {
+                        submitBtn.disabled = true;
+                        btnText.style.display = 'none';
+                        spinner.style.display = 'block';
+                        submitBtn.classList.add('loading');
+                    } else {
+                        submitBtn.disabled = false;
+                        btnText.style.display = 'inline-block';
+                        spinner.style.display = 'none';
+                        submitBtn.classList.remove('loading');
+                    }
+                }
+            }
+
+            function initRealTimeValidations() {
+                // Real-time email validation
+                const emailField = document.querySelector('[name="Email"]');
+                if (emailField) {
+                    emailField.addEventListener('blur', function() {
+                        if (this.value && !validateEmail(this.value)) {
+                            showValidationError('email-validation', 'Please enter a valid email address');
+                            markFieldAsInvalid(this);
+                        } else if (this.value) {
+                            showValidationError('email-validation', '');
+                            markFieldAsValid(this);
+                        }
+                    });
+                }
+
+                // Real-time password validation
+                const passwordField = document.getElementById('registerPassword');
+                const confirmPasswordField = document.getElementById('ConfirmPassword');
+
+                if (passwordField) {
+                    passwordField.addEventListener('input', function() {
+                        // Update password strength bar
+                        updatePasswordStrength();
+
+                        // Password validation
+                        if (this.value && !validatePassword(this.value)) {
+                            showValidationError('password-validation',
+                                'Password must be at least 8 characters with uppercase, lowercase, number, and special character');
+                        } else if (this.value) {
+                            const strength = calculatePasswordStrength(this.value);
+                            if (strength >= 40) {
+                                showValidationError('password-validation', 'Strong password');
+                            }
+                        }
+
+                        // Check password match in real-time
+                        if (confirmPasswordField && confirmPasswordField.value) {
+                            if (this.value !== confirmPasswordField.value) {
+                                showValidationError('confirm-password-validation', 'Passwords do not match');
+                                markFieldAsInvalid(confirmPasswordField);
+                            } else {
+                                showValidationError('confirm-password-validation', '');
+                                markFieldAsValid(confirmPasswordField);
+                            }
+                        }
+                    });
+                }
+
+                if (confirmPasswordField) {
+                    confirmPasswordField.addEventListener('input', function() {
+                        if (passwordField && passwordField.value && this.value !== passwordField.value) {
+                            showValidationError('confirm-password-validation', 'Passwords do not match');
+                            markFieldAsInvalid(this);
+                        } else if (passwordField && passwordField.value) {
+                            showValidationError('confirm-password-validation', '');
+                            markFieldAsValid(this);
+                        }
+                    });
+                }
+            }
+
+            // Initialize
+            updateButtonStates();
+        });
+    </script>
+}

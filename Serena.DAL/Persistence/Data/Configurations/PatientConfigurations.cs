@@ -12,6 +12,12 @@ namespace Serena.DAL.Persistence.Data.Configurations
 			builder.Property(d => d.Gender)
 				   .HasConversion<string>()
 				   .HasMaxLength(10);
-		}
+
+            builder
+               .HasOne(p => p.User) 
+			   .WithMany()
+               .HasForeignKey(p => p.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+        }
 	}
 }

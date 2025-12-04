@@ -6,7 +6,7 @@ namespace Serena.DAL.Persistence.Repositories._GenericRepository
 {
 	public class GenericRepository<T> : IGenericRepository<T> where T : ModelBase
 	{
-		private readonly ApplicationDbContext _dbContext;
+		protected readonly ApplicationDbContext _dbContext;
 
 		public GenericRepository(ApplicationDbContext dbContext)
 		{

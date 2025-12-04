@@ -1,0 +1,362 @@
+﻿@{
+    ViewData["Title"] = "My Appointments";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+    // Mock role check for demonstration
+    bool isDoctor = User.IsInRole("Doctor");
+}
+
+@section Styles {
+    <style>
+        /* 1. Make background darker so white cards stand out */
+        body {
+            background-color: var(--light-gray);
+        }
+
+        .dark-mode body {
+            background-color: #0f172a;
+        }
+
+        /* 2. Centered & Wrapped Tabs Styling */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .tabs-wrapper {
+            background-color: rgba(0, 0, 0, 0.05); /* Light container background */
+            padding: 0.5rem;
+            border-radius: 999px; /* Pill shape */
+            display: inline-flex;
+            gap: 0.5rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            padding: 0.75rem 2.5rem;
+            border-radius: 999px;
+            border: none;
+            background: transparent;
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+            .tab-btn:hover {
+                opacity: 1;
+            }
+
+            .tab-btn.active {
+                background-color: var(--primary-white);
+                color: var(--accent-blue);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+        /* 3. Obvious Card Styling */
+        .appt-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            /* Enhanced Shadow and Border for "Pop" */
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+            .appt-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+        .appt-time-box {
+            text-align: center;
+            padding-right: 2rem;
+            border-right: 1px solid var(--light-gray);
+            min-width: 120px;
+        }
+
+        .appt-date {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .appt-time {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .appt-info {
+            flex: 1;
+            padding: 0 2rem;
+        }
+
+        .appt-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .appt-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .appt-meta {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+            .appt-meta i {
+                color: var(--accent-blue);
+                width: 20px;
+                text-align: center;
+            }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .status-upcoming {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .appt-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--light-gray);
+            background: var(--primary-white);
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+            .btn-icon:hover {
+                background: var(--accent-blue);
+                color: white;
+                border-color: var(--accent-blue);
+            }
+
+            .btn-icon.danger:hover {
+                background: #ef4444;
+                border-color: #ef4444;
+                color: white;
+            }
+
+        /* Dark Mode Specifics */
+        .dark-mode .tabs-wrapper {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .tab-btn.active {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .dark-mode .appt-card {
+            background-color: var(--charcoal);
+            /* border: 1px solid #334155; */
+        }
+
+        .dark-mode .appt-time-box {
+            border-right-color: #334155;
+        }
+
+        .dark-mode .status-upcoming {
+            background: rgba(2, 132, 199, 0.2);
+            color: #7dd3fc;
+        }
+
+        @@media (max-width: 768px) {
+            .appt-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                padding: 1.25rem;
+            }
+
+            .appt-time-box {
+                border-right: none;
+                border-bottom: 1px solid var(--light-gray);
+                width: 100%;
+                padding-bottom: 1rem;
+                padding-right: 0;
+                text-align: left;
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .appt-info {
+                padding: 0;
+                width: 100%;
+            }
+
+            .appt-actions {
+                width: 100%;
+                justify-content: flex-end;
+                padding-top: 1rem;
+                border-top: 1px dashed var(--light-gray);
+            }
+
+            .status-badge {
+                float: right;
+                margin: 0;
+            }
+        }
+    </style>
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+    <h1 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">My Appointments</h1>
+
+    <div class="tabs-container">
+        <div class="tabs-wrapper">
+            <button class="tab-btn active" onclick="switchTab('upcoming', this)">Upcoming</button>
+            <button class="tab-btn" onclick="switchTab('history', this)">History</button>
+        </div>
+    </div>
+
+    <div id="upcoming" class="tab-content">
+        <div class="appt-card">
+            <div class="appt-time-box">
+                <div class="appt-date">12 Dec</div>
+                <div class="appt-time">09:30 AM</div>
+            </div>
+            <div class="appt-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="appt-title">@(isDoctor ? "Patient: John Doe" : "Dr. Sarah Wilson")</div>
+                    <span class="status-badge status-upcoming">Confirmed</span>
+                </div>
+                <div class="appt-details">
+                    <div class="appt-meta">
+                        <i class="fas fa-stethoscope"></i> General Checkup
+                    </div>
+                    <div class="appt-meta">
+                        <i class="fas fa-map-marker-alt"></i> New York Central Hospital - Room 304
+                    </div>
+                </div>
+            </div>
+            <div class="appt-actions">
+                <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon" title="Reschedule"><i class="fas fa-calendar-alt"></i></button>
+                <button class="btn-icon danger" title="Cancel"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <div class="appt-card">
+            <div class="appt-time-box">
+                <div class="appt-date">15 Dec</div>
+                <div class="appt-time">11:00 AM</div>
+            </div>
+            <div class="appt-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="appt-title">@(isDoctor ? "Patient: Mike Ross" : "Dr. James House")</div>
+                    <span class="status-badge status-upcoming" style="background-color: #fef3c7; color: #d97706;">Pending</span>
+                </div>
+                <div class="appt-details">
+                    <div class="appt-meta">
+                        <i class="fas fa-user-md"></i> Neurology Consultation
+                    </div>
+                    <div class="appt-meta">
+                        <i class="fas fa-map-marker-alt"></i> West Wing Clinic
+                    </div>
+                </div>
+            </div>
+            <div class="appt-actions">
+                <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon" title="Reschedule"><i class="fas fa-calendar-alt"></i></button>
+                <button class="btn-icon danger" title="Cancel"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="history" class="tab-content" style="display: none;">
+        <div class="appt-card" style="border-left-color: var(--accent-green); opacity: 0.9;">
+            <div class="appt-time-box">
+                <div class="appt-date">10 Nov</div>
+                <div class="appt-time">14:00 PM</div>
+            </div>
+            <div class="appt-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="appt-title">@(isDoctor ? "Patient: Jane Smith" : "Dr. Emily Chen")</div>
+                    <span class="status-badge status-completed">Completed</span>
+                </div>
+                <div class="appt-details">
+                    <div class="appt-meta">
+                        <i class="fas fa-heartbeat"></i> Cardiology Follow-up
+                    </div>
+                    <div class="appt-meta">
+                        <i class="fas fa-notes-medical"></i> Prescription Issued
+                    </div>
+                </div>
+            </div>
+            <div class="appt-actions">
+                <button class="btn-icon" title="View Report"><i class="fas fa-file-medical"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.switchTab = function(tabName, btnElement) {
+                // Hide all contents
+                document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+
+                // Remove active class from all buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+                // Show target content
+                document.getElementById(tabName).style.display = 'block';
+
+                // Activate clicked button
+                btnElement.classList.add('active');
+            }
+        });
+    </script>
+}

@@ -1,0 +1,301 @@
+﻿@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        /* Make page background darker so cards stand out */
+        body {
+            background-color: var(--light-gray);
+        }
+
+        /* Profile Specific Styles */
+        .profile-header {
+            margin-bottom: 2rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            align-items: start; /* Ensures grid items don't stretch, helpful for sticky */
+        }
+
+        /* SIDEBAR CARD: Sticky & Fit Content */
+        .profile-sidebar-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            /* Sticky Positioning */
+            position: sticky;
+            top: 100px; /* Distance from top of viewport */
+            height: fit-content; /* CRITICAL: prevents stretching so sticky works */
+            /* Visual Definition */
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .profile-avatar-upload {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-blue);
+        }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent-green);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--primary-white);
+        }
+
+        /* FORM CARD */
+        .profile-form-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            /* Visual Definition */
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* BUTTONS: Flex & Center */
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Dark mode overrides */
+        .dark-mode body {
+            background-color: #0f172a;
+        }
+        /* Deep Navy background */
+        .dark-mode .profile-sidebar-card,
+        .dark-mode .profile-form-card {
+            background-color: var(--charcoal);
+            border: 1px solid #334155;
+        }
+
+        .dark-mode .form-section-title {
+            border-bottom-color: #334155;
+        }
+
+        .dark-mode .form-actions {
+            border-top-color: #334155;
+        }
+
+        @@media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar-card {
+                position: static;
+                width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+    <div class="profile-header">
+        <h1 class="section-title" style="text-align: left;">Account Settings</h1>
+        <p class="section-subtitle" style="text-align: left; margin: 0;">Manage your personal information and preferences.</p>
+    </div>
+
+    <div class="profile-grid">
+        <div class="profile-sidebar-card">
+            <div class="profile-avatar-upload">
+                <img src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile" class="profile-img" id="profilePreview">
+                <label for="avatarUpload" class="upload-icon">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="avatarUpload" hidden accept="image/*">
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">Dr. Sarah Wilson</h3>
+            <p style="color: var(--accent-blue); margin-bottom: 1rem;">Cardiology Specialist</p>
+            <span class="role-badge">Doctor</span>
+
+            <div style="margin-top: 2rem; text-align: left;">
+                <div style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dark); opacity: 0.7;">
+                    <i class="fas fa-check-circle" style="color: var(--accent-green); width: 20px;"></i> Verified Account
+                </div>
+                <div style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dark); opacity: 0.7;">
+                    <i class="fas fa-calendar-alt" style="color: var(--accent-blue); width: 20px;"></i> Joined Jan 2024
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-form-card">
+            <form id="profileForm">
+                <div class="form-section-title"><i class="fas fa-user-circle"></i> Personal Information</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" value="Sarah Wilson">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="sarah.wilson@serena.com" readonly style="opacity: 0.7; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select class="form-input">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">National ID</label>
+                        <input type="text" class="form-input" placeholder="Enter National ID">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="phone" placeholder="+1 234 567 890">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Marital Status</label>
+                        <select class="form-input">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Job Status</label>
+                        <input type="text" class="form-input" placeholder="Current Job Title">
+                    </div>
+                </div>
+
+                <div class="form-section-title" style="margin-top: 1rem;"><i class="fas fa-map-marker-alt"></i> Address Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <select class="form-input" id="countrySelect">
+                            <option value="US">United States</option>
+                            <option value="EG">Egypt</option>
+                            <option value="UK">United Kingdom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-input" placeholder="City">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Street Address</label>
+                        <input type="text" class="form-input" placeholder="Street Name & No.">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Zip Code</label>
+                        <input type="text" class="form-input" placeholder="Zip Code">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="hero-btn hero-btn-secondary">Cancel</button>
+                    <button type="submit" class="hero-btn hero-btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Image Preview Handler
+            const avatarUpload = document.getElementById('avatarUpload');
+            const profilePreview = document.getElementById('profilePreview');
+
+            avatarUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // Form Submit Animation
+            const form = document.getElementById('profileForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = form.querySelector('.hero-btn-primary');
+                const originalText = btn.innerText;
+
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                btn.style.opacity = '0.8';
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.opacity = '1';
+                    if(window.toastManager) {
+                        window.toastManager.success("Profile updated successfully!");
+                    } else {
+                        alert("Saved!");
+                    }
+                }, 1500);
+            });
+        });
+    </script>
+}
