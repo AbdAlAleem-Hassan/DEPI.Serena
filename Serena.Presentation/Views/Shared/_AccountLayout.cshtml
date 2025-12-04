@@ -102,8 +102,10 @@
                                 <a href="#" class="dropdown-link">Reviews</a>
                             </div>
                         </div>
-                        <a asp-controller="Hospital" asp-action="Index" class="nav-link">Find Hospital</a>
-                        <a asp-controller="Doctor" asp-action="Index" class="nav-link">Find Doctors</a>
+                    }
+
+                    <a asp-controller="Hospital" asp-action="Index" class="nav-link">Find Hospital</a>
+                    <a asp-controller="Doctor" asp-action="Index" class="nav-link">Find Doctors</a>
                     }
 
 
@@ -242,8 +244,8 @@
                     </a>
 
                     <!-- Mobile Dropdowns for logged in users -->
-                    @if (User.IsInRole("Doctor"))
-                    {
+                @if (User.IsInRole("Doctor"))
+                {
                         <div class="mobile-dropdown">
                             <button class="mobile-dropdown-toggle">
                                 <span data-en="Doctor Dashboard" data-ar="لوحة تحكم الطبيب">Doctor Dashboard</span>
@@ -256,9 +258,9 @@
                                 <a asp-controller="Doctor" asp-action="Schedule" class="mobile-dropdown-link">My Schedule</a>
                             </div>
                         </div>
-                    }
-                    else if (User.IsInRole("Patient"))
-                    {
+                }
+                else if (User.IsInRole("Patient"))
+                {
                         <div class="mobile-dropdown">
                             <button class="mobile-dropdown-toggle">
                                 <span data-en="Patient Portal" data-ar="بوابة المريض">Patient Portal</span>
@@ -278,7 +280,7 @@
                         <a asp-controller="Doctor" asp-action="Index" class="mobile-user-action">
                             <i class="fas fa-user-md"></i> <span data-en="Find Doctors" data-ar="البحث عن أطباء">Find Doctors</span>
                         </a>
-                    }
+                }
 
 
 
@@ -293,6 +295,7 @@
 
                     <div class="dropdown-divider"></div>
 
+                <div class="mobile-auth-buttons">
                     <form asp-controller="Account" asp-action="Logout" method="post">
                         <button type="submit" class="mobile-logout-btn">
                             <i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-ar="تسجيل الخروج">Logout</span>
@@ -338,7 +341,7 @@
                     <span>EN</span>
                     <span data-en="Language" data-ar="اللغة">Language</span>
                 </button>
-            </div>
+                </div>
 
             @if (!SignInManager.IsSignedIn(User))
             {

@@ -18,34 +18,34 @@ function getLinkIdentifier(link) {
 // Function to set active link and sync between mobile and desktop
 function setActiveLink(clickedLink) {
     const linkIdentifier = getLinkIdentifier(clickedLink);
-
+    
     console.log('Setting active for:', linkIdentifier);
-
+    
     // Remove active class from all links
     navLinks.forEach(link => link.classList.remove('active'));
     dropdowns.forEach(link => link.classList.remove('active'));
     mobileNavLinks.forEach(link => link.classList.remove('active'));
     mobileDropdownLinks.forEach(link => link.classList.remove('active'));
-
+    
     // Add active class to clicked link
     clickedLink.classList.add('active');
-
+    
     // Find and activate corresponding links in other menus
     const allLinks = [...navLinks, ...dropdowns, ...mobileNavLinks, ...mobileDropdownLinks];
-
+    
     allLinks.forEach(link => {
         if (link !== clickedLink && getLinkIdentifier(link) === linkIdentifier) {
             link.classList.add('active');
             console.log('Activated corresponding link:', getLinkIdentifier(link));
         }
     });
-
+    
     // Close mobile menu after clicking (for mobile only)
     if (window.innerWidth <= 1000) {
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const icon = mobileMenuBtn?.querySelector('i');
-
+        
         if (mobileMenu && mobileMenuBtn && icon) {
             mobileMenu.classList.remove('active');
             icon.classList.add('fa-bars');
@@ -90,7 +90,7 @@ mobileDropdownLinks.forEach(link => {
 // FIX: Dropdown chevron toggle for MULTIPLE dropdowns
 // ---------------------------------------------------------
 const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
+    
 dropdownToggles.forEach(toggle => {
     // Find the parent .dropdown container for this specific toggle
     const dropdown = toggle.closest('.dropdown');
@@ -127,26 +127,29 @@ dropdownToggles.forEach(toggle => {
             }
         }
     });
-
+    
     // Hover functionality for desktop (Attached to the container)
     dropdown.addEventListener('mouseenter', () => {
-        if (window.innerWidth > 1000) {
+    if (window.innerWidth > 1000) {
+        const dropdown = document.querySelector('.dropdown');
+        dropdown.addEventListener('mouseenter', () => {
             dropdownContent.classList.add('active');
             if (icon) {
-                icon.classList.add('fa-chevron-up');
-                icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+            icon.classList.remove('fa-chevron-down');
             }
         }
-    });
-
-    dropdown.addEventListener('mouseleave', () => {
+        });
+        
+        dropdown.addEventListener('mouseleave', () => {
         if (window.innerWidth > 1000) {
             dropdownContent.classList.remove('active');
             if (icon) {
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            }
-        }
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        });
+    }
+}
     });
 });
 // ---------------------------------------------------------
@@ -167,11 +170,11 @@ function initializeTheme() {
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-user-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
+    
     // Update data attribute and class simultaneously
     document.documentElement.setAttribute('data-user-theme', newTheme);
     document.documentElement.classList.toggle('dark-mode');
-
+    
     localStorage.setItem('theme', newTheme);
     updateThemeIcons();
     updateFloatingCards();
@@ -196,7 +199,7 @@ const langToggle = document.getElementById('langToggle');
 // Initialize language and prevent validation on initial load
 function initializeLanguage() {
     const savedLang = localStorage.getItem('lang') || 'en';
-
+    
     // Set initial language without triggering validation
     if (savedLang === 'ar') {
         body.classList.add('rtl');
@@ -207,13 +210,13 @@ function initializeLanguage() {
         document.documentElement.setAttribute('dir', 'ltr');
         document.documentElement.setAttribute('lang', 'en');
     }
-
+    
     updateLangButtons();
     updateTextContent(savedLang);
-
+    
     // Reset form interaction state
     window.formHasInteracted = false;
-
+    
     // Clear any existing validation messages on initial load
     clearAllValidationMessages();
 }
@@ -221,15 +224,15 @@ function initializeLanguage() {
 function toggleLanguage() {
     const currentLang = body.classList.contains('rtl') ? 'ar' : 'en';
     const newLang = currentLang === 'ar' ? 'en' : 'ar';
-
+    
     body.classList.toggle('rtl');
     document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
     document.documentElement.setAttribute('lang', newLang);
-
+    
     localStorage.setItem('lang', newLang);
     updateLangButtons();
     updateTextContent(newLang);
-
+    
     // Only update validation messages for interacted fields
     if (window.formHasInteracted) {
         updateValidationMessages();
@@ -268,7 +271,7 @@ function updateTextContent(lang) {
             }
         }
     });
-
+    
     // Update placeholders
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(input => {
@@ -283,14 +286,14 @@ function updateTextContent(lang) {
 // Track form interaction per field
 function trackFormInteraction() {
     const formInputs = document.querySelectorAll('input, textarea, select');
-
+    
     formInputs.forEach(input => {
         // Add interacted class when user interacts with the field
         const handleInteraction = () => {
             input.classList.add('interacted');
             window.formHasInteracted = true;
         };
-
+        
         input.addEventListener('input', handleInteraction);
         input.addEventListener('change', handleInteraction);
         input.addEventListener('blur', handleInteraction);
@@ -301,13 +304,13 @@ function trackFormInteraction() {
 function updateValidationMessages() {
     // Only update interacted fields
     const interactedFields = document.querySelectorAll('.interacted[data-validation]');
-
+    
     interactedFields.forEach(field => {
         if (typeof validateField === 'function') {
             validateField(field);
         }
     });
-
+    
     // Update password strength texts for interacted fields
     const registerPassword = document.getElementById('register-password');
     if (registerPassword && registerPassword.classList.contains('interacted')) {
@@ -318,7 +321,7 @@ function updateValidationMessages() {
             strengthText.textContent = getPasswordStrengthText(strength);
         }
     }
-
+    
     const loginPassword = document.getElementById('login-password');
     if (loginPassword && loginPassword.classList.contains('interacted')) {
         const strengthBar = document.getElementById('login-password-strength');
@@ -337,24 +340,24 @@ function clearAllValidationMessages() {
         message.innerHTML = '';
         message.className = 'validation-message';
     });
-
+    
     const formInputs = document.querySelectorAll('.form-input');
     formInputs.forEach(input => {
         input.classList.remove('error', 'success');
     });
-
+    
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
         checkbox.classList.remove('error', 'success');
     });
-
+    
     // Clear password strength indicators
     const strengthBars = document.querySelectorAll('.strength-bar');
     strengthBars.forEach(bar => {
         bar.className = 'strength-bar';
         bar.style.width = '0%';
     });
-
+    
     const strengthTexts = document.querySelectorAll('.strength-text');
     strengthTexts.forEach(text => {
         text.textContent = '';
@@ -364,7 +367,7 @@ function clearAllValidationMessages() {
 // Clear only non-interacted validation messages
 function clearNonInteractedValidationMessages() {
     const nonInteractedFields = document.querySelectorAll('input[data-validation]:not(.interacted)');
-
+    
     nonInteractedFields.forEach(field => {
         const validationMessage = field.parentElement.querySelector('.validation-message');
         if (validationMessage) {
@@ -373,7 +376,7 @@ function clearNonInteractedValidationMessages() {
         }
         field.classList.remove('error', 'success');
     });
-
+    
     // Clear non-interacted password strength indicators
     const nonInteractedPasswords = document.querySelectorAll('input[type="password"]:not(.interacted)');
     nonInteractedPasswords.forEach(password => {
@@ -406,7 +409,7 @@ function initializeMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const icon = mobileMenuBtn?.querySelector('i');
-
+    
     if (mobileMenuBtn && mobileMenu && icon) {
         mobileMenuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -415,7 +418,7 @@ function initializeMobileMenu() {
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         });
-
+        
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
@@ -458,20 +461,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Theme is already initialized by theme-loader.js, just update dynamic elements
     initializeTheme();
     initializeLanguage();
-
+    
     // Track form interaction
     trackFormInteraction();
-
+    
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
     }
-
+    
     if (langToggle) {
         langToggle.addEventListener('click', toggleLanguage);
     }
 
     initializeMobileMenu();
-
+    
     // Initialize other components if they exist
     if (typeof initializePartnersCarousel === 'function') {
         initializePartnersCarousel();

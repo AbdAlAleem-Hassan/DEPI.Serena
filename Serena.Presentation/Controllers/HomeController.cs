@@ -55,7 +55,7 @@ namespace Serena.Presentation.Controllers
                 // Get top doctors (by experience)
                 var topDoctors = doctors
                     .OrderByDescending(d => d.YearsOfExperience)
-                    .Take(6)
+                    .Take(3)
                     .ToList();
 
                 // Create view model
