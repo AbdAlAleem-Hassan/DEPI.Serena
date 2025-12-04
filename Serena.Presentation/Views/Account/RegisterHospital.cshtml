@@ -20,8 +20,8 @@
         }
 
         /* --------------------------------------
-                   Multi-Colored Card Logic (Cycle of 4)
-                   -------------------------------------- */
+                           Multi-Colored Card Logic (Cycle of 4)
+                           -------------------------------------- */
 
         /* Color 1: Blue (Default) */
         .dynamic-item:nth-of-type(4n+1) {
@@ -99,7 +99,6 @@
         <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-            <!-- Step Indicator -->
             <div class="registration-steps">
                 <div class="step active" data-step="1">
                     <div class="step-number">1</div>
@@ -115,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- Step 1: Hospital Information -->
             <div class="step-content active" data-step="1">
                 <div class="section-title">Basic Details</div>
 
@@ -138,15 +136,10 @@
                             <label class="form-label" for="AverageCost">Average Cost (<span class="input-group-text">$</span>)</label>
                             <div class="input-group">
                                 <input for="AverageCost" type="number" class="form-input" placeholder="0.00" required />
-                        </div>
+                            </div>
                             @* <span asp-validation-for="AverageCost" class="text-danger"></span> *@
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" asp-for="Email"></label>
-                    <input asp-for="Email" class="form-input" placeholder="hospital@email.com" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="section-title mt-4">Contact Information</div>
@@ -174,7 +167,7 @@
                     <p class="text-muted small">PNG, JPG up to 5MB</p>
                     <input for="Image" type="file" id="hospitalLogo" style="display: none;" accept="image/*" />
                     <img id="logoPreview" class="image-preview" />
-                        </div>
+                </div>
                 @* <span asp-validation-for="Image" class="text-danger"></span> *@
 
                 <div class="nav-buttons">
@@ -183,7 +176,6 @@
                 </div>
             </div>
 
-            <!-- Step 2: Administrator Information -->
             <div class="step-content" data-step="2">
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">
                     <h3 style="flex: 2;">Hospital Addresses</h3>
@@ -192,7 +184,7 @@
                     </button>
                 </div>
 
-                
+
 
                 <div id="addressesContainer">
                     <hr class="section-divider">
@@ -206,69 +198,59 @@
 
                         <div class="card-body" style="padding: 8px;">
                             <input type="hidden" name="Addresses[0].IsPrimary" value="true" />
-                <div class="row">
+                            <div class="row">
                                 <div class="col-md-12">
-                        <div class="form-group">
+                                    <div class="form-group">
                                         <label class="form-label">Street Address</label>
                                         <input name="Addresses[0].Street" class="form-input" required />
                                         <span class="text-danger field-validation-valid" data-valmsg-for="Addresses[0].Street"></span>
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                        <div class="form-group">
+                                    <div class="form-group">
                                         <label class="form-label">City</label>
                                         <input name="Addresses[0].City" class="form-input" required />
-                        </div>
-                    </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
-                        <div class="form-group">
+                                    <div class="form-group">
                                         <label class="form-label">District</label>
                                         <input name="Addresses[0].District" class="form-input" required />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label">Country</label>
                                         <input name="Addresses[0].Country" class="form-input" required />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label">Zip Code</label>
                                         <input name="Addresses[0].ZipCode" class="form-input" required />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label">Latitude</label>
                                         <input name="Addresses[0].Latitude" type="number" step="any" class="form-input" required />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="form-label">Longitude</label>
                                         <input name="Addresses[0].Longitude" type="number" step="any" class="form-input" required />
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="section-title">Hospital Logo</div>
-                <div class="image-upload-container" onclick="document.getElementById('hospitalLogo').click()">
-                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
-                    <p class="mb-2">Click to upload hospital logo</p>
-                    <p class="text-muted small">PNG, JPG, SVG up to 5MB</p>
-                    <input asp-for="Logo" type="file" id="hospitalLogo" style="display: none;" accept="image/*" />
-                    <img id="logoPreview" class="image-preview" />
                 </div>
 
                 <div class="nav-buttons">
@@ -277,7 +259,6 @@
                 </div>
             </div>
 
-            <!-- Step 3: Account Information -->
             <div class="step-content" data-step="3">
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">
                     <h3 style="flex: 2;">Hospital Departments</h3>
@@ -334,68 +315,58 @@
 
         <div class="card-body" style="padding:  8px;">
             <input type="hidden" name="Addresses[{index}].IsPrimary" value="false" />
-                <div class="row">
+            <div class="row">
                 <div class="col-md-12">
-                        <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label">Street Address</label>
                         <input name="Addresses[{index}].Street" class="form-input" required />
-                            </div>
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
                     </div>
+                </div>
+            </div>
             <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="form-label">City</label>
                         <input name="Addresses[{index}].City" class="form-input" required />
                     </div>
-                            </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">District</label>
                         <input name="Addresses[{index}].District" class="form-input" required />
-                        </div>
                     </div>
                 </div>
-
-                <div class="section-title">Additional Information</div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label class="form-label">Country</label>
-                        <input name="Addresses[{index}].Country" class="form-input" required />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label class="form-label">Zip Code</label>
-                        <input name="Addresses[{index}].ZipCode" class="form-input" required />
-                        </div>
-                    </div>
-                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
-                <div class="form-group">
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <input name="Addresses[{index}].Country" class="form-input" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Zip Code</label>
+                        <input name="Addresses[{index}].ZipCode" class="form-input" required />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="form-label">Latitude</label>
                         <input name="Addresses[{index}].Latitude" type="number" step="any" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
-                <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label">Longitude</label>
                         <input name="Addresses[{index}].Longitude" type="number" step="any" class="form-input" required />
                     </div>
                 </div>
-                </div>
-
-                <div class="terms-checkbox">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="termsAgreement" required>
-                        <label class="form-check-label" for="termsAgreement">
-                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                        </label>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template id="departmentTemplate">
@@ -404,28 +375,26 @@
             <h3 class="m-0 fw-bold" style="flex: 2; font-size: 1.25rem;">Department #{displayIndex}</h3>
             <button type="button" class="btn btn-danger btn-sm btn-remove-item" style="background-color: #ffc3c3;" onclick="removeItem(this)">
                 <i class="fas fa-trash-alt" style="color: red; padding: 2px;"></i> Remove
-                    </button>
-                </div>
+            </button>
+        </div>
 
         <div class="card-body" style="padding: 8px;">
             <div class="form-group">
                 <label class="form-label">Department Name</label>
                 <input name="Departments[{index}].Name" class="form-input" required />
             </div>
-        </form>
 
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
                 <textarea name="Departments[{index}].Description" class="form-input" rows="2"></textarea>
+            </div>
         </div>
     </div>
-</div>
 </template>
 
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize registration steps
             initRegistrationSteps();
             initDynamicForms();
 
@@ -474,8 +443,8 @@
                     .replace(/{displayIndex}/g, index + 1);
 
                 container.insertAdjacentHTML('beforeend', newHtml);
-                });
-            }
+            });
+        }
 
         // Remove item function
         window.removeItem = function(btn) {
@@ -490,7 +459,6 @@
             const prevButtons = document.querySelectorAll('.btn-prev');
 
             function updateProgress(currentStep) {
-                // Update step indicators
                 steps.forEach(step => {
                     const stepNum = parseInt(step.dataset.step);
                     if (stepNum < currentStep) {
@@ -504,7 +472,6 @@
                     }
                 });
 
-                // Update step contents
                 stepContents.forEach(content => {
                     const contentStep = parseInt(content.dataset.step);
                     if (contentStep === currentStep) {
@@ -514,25 +481,21 @@
                     }
                 });
 
-                // Update button states
                 prevButtons.forEach(btn => {
                     btn.disabled = currentStep === 1;
                 });
             }
 
-            // Next button functionality
             nextButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const currentStep = getCurrentStep();
                     const nextStep = parseInt(this.dataset.next);
-
                     if (validateStep(currentStep)) {
                         updateProgress(nextStep);
                     }
                 });
             });
 
-            // Previous button functionality
             prevButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const prevStep = parseInt(this.dataset.prev);
@@ -563,24 +526,11 @@
 
                 if (!isValid) {
                     if(typeof showNotification === 'function') {
-                    showNotification('Please fill all required fields', 'error');
-                }
-
-                return isValid;
-            }
-        }
-
-        function togglePassword(fieldId) {
-            const field = document.getElementById(fieldId);
-            const toggleBtn = field.nextElementSibling;
-
-            if (field.type === 'password') {
-                field.type = 'text';
-                toggleBtn.innerHTML = `<i class="far fa-eye-slash"></i>`;
-            } else {
+                        showNotification('Please fill all required fields', 'error');
+                    } else {
                         alert('Please fill all required fields');
-            }
-        }
+                    }
+                }
                 return isValid;
             }
         }
