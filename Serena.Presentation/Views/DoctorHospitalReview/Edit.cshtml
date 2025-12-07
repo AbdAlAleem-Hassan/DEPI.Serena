@@ -1,0 +1,76 @@
+@model Serena.BLL.Models.DoctorHospitalReviews.DoctorHospitalReviewCreateUpdateDTO
+
+@{
+    ViewData["Title"] = "Edit Review";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Edit Review</h6>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    @* IDs are usually immutable in composite key join tables for Edit, OR passed as hidden. 
+                       The Controller Edit(int doctorId, int hospitalId, DTO) handles key from query string. 
+                       DTO has DoctorId/HospitalId but changing them creates a new relationship or moves it. 
+                       Usually we disable editing keys or hide them. 
+                       Let's make them readonly or disabled selects if they shouldn't change. 
+                       If we allow change, we need to handle "update" as likely delete+create or update key fields (if EF supports it easily, but keys update is tricky).
+                       For now, I'll allow editing but usually reviews stick to the entities. 
+                       Actually, UpdateAsync usually updates payload (Rating, Comment), not keys.
+                       Let's keep keys as hidden inputs to ensure they are passed if DTO requires them, 
+                       but the controller update method signature has separate ids.
+                       The DTO properties in the model will be populated. *@
+                    
+                    <input type="hidden" asp-for="DoctorId" />
+                    <input type="hidden" asp-for="HospitalId" />
+
+                    @* If we want to show Names, we'd need them in ViewBag or DTO. 
+                       DTO here is CreateUpdate, so just IDs. 
+                       We can show disabled selects to indicate who it is for. *@
+                    
+                    @if (ViewBag.Doctors != null)
+                    {
+                        <div class="form-group">
+                            <label class="control-label">Doctor</label>
+                            <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.Doctors" disabled>
+                            </select>
+                        </div>
+                    }
+                    @if (ViewBag.Hospitals != null)
+                    {
+                        <div class="form-group">
+                            <label class="control-label">Hospital</label>
+                            <select asp-for="HospitalId" class="form-control" asp-items="ViewBag.Hospitals" disabled>
+                            </select>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label asp-for="Rating" class="control-label"></label>
+                        <input asp-for="Rating" class="form-control" type="number" min="1" max="5" />
+                        <span asp-validation-for="Rating" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Comment" class="control-label"></label>
+                        <textarea asp-for="Comment" class="form-control"></textarea>
+                        <span asp-validation-for="Comment" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-4 text-center">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

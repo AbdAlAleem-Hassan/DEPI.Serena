@@ -1,5 +1,6 @@
 ﻿@using Serena.BLL.Models.Account
-@* @model RegisterHospitalViewModel *@
+@using Serena.BLL.Models.Hospitals
+@model CreateAndUpdateHospitalDTO
 @{
     ViewData["Title"] = "Register as Hospital";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
@@ -20,8 +21,8 @@
         }
 
         /* --------------------------------------
-                           Multi-Colored Card Logic (Cycle of 4)
-                           -------------------------------------- */
+                                   Multi-Colored Card Logic (Cycle of 4)
+                                   -------------------------------------- */
 
         /* Color 1: Blue (Default) */
         .dynamic-item:nth-of-type(4n+1) {
@@ -97,6 +98,7 @@
         </div>
 
         <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             <div class="registration-steps">
@@ -119,25 +121,23 @@
 
                 <div class="form-group">
                     <label class="form-label" for="Name">Hospital Name</label>
-                    <input for="Name" class="form-input" placeholder="Enter hospital name" required />
-                    @* <span asp-validation-for="Name" class="text-danger"></span> *@
+                    <input asp-for="Name" class="form-input" placeholder="Enter hospital name" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="Rank">Rank</label>
-                            <input for="Rank" class="form-input" placeholder="e.g. Public, Private, A-Class" required />
-                            @* <span asp-validation-for="Rank" class="text-danger"></span> *@
+                            <input asp-for="Rank" class="form-input" placeholder="e.g. Public, Private, A-Class" required />
+                            <span asp-validation-for="Rank" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="AverageCost">Average Cost (<span class="input-group-text">$</span>)</label>
-                            <div class="input-group">
-                                <input for="AverageCost" type="number" class="form-input" placeholder="0.00" required />
-                            </div>
-                            @* <span asp-validation-for="AverageCost" class="text-danger"></span> *@
+                            <label class="form-label" for="AverageCost">Average Cost ($)</label>
+                            <input asp-for="AverageCost" type="number" class="form-input" placeholder="0.00" required />
+                            <span asp-validation-for="AverageCost" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -147,28 +147,28 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="HospitalPhone">Hospital Phone</label>
-                            <input for="HospitalPhone" class="form-input" placeholder="Main phone number" required />
-                            @* <span asp-validation-for="HospitalPhone" class="text-danger"></span> *@
+                            <input asp-for="HospitalPhone" class="form-input" placeholder="Main phone number" required />
+                            <span asp-validation-for="HospitalPhone" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="EmergencyPhone">Emergency Phone</label>
-                            <input for="EmergencyPhone" class="form-input" placeholder="Emergency hotline" required />
-                            @* <span asp-validation-for="EmergencyPhone" class="text-danger"></span> *@
+                            <input asp-for="EmergencyPhone" class="form-input" placeholder="Emergency hotline" required />
+                            <span asp-validation-for="EmergencyPhone" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="section-title mt-4">Hospital Branding</div>
-                <div class="image-upload-container" onclick="document.getElementById('hospitalLogo').click()">
+                <div class="image-upload-container" onclick="document.getElementById('Image').click()">
                     <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
                     <p class="mb-2">Click to upload hospital logo</p>
                     <p class="text-muted small">PNG, JPG up to 5MB</p>
-                    <input for="Image" type="file" id="hospitalLogo" style="display: none;" accept="image/*" />
+                    <input asp-for="Image" type="file" id="Image" style="display: none;" accept="image/*" />
                     <img id="logoPreview" class="image-preview" />
                 </div>
-                @* <span asp-validation-for="Image" class="text-danger"></span> *@
+                <span asp-validation-for="Image" class="text-danger"></span>
 
                 <div class="nav-buttons">
                     <button type="button" class="btn-prev" disabled>Previous</button>
@@ -184,8 +184,6 @@
                     </button>
                 </div>
 
-
-
                 <div id="addressesContainer">
                     <hr class="section-divider">
                     <div class="address-item dynamic-item card mb-4 shadow-sm" data-index="0" style="border-radius: 12px; overflow: hidden;">
@@ -197,13 +195,13 @@
                         </div>
 
                         <div class="card-body" style="padding: 8px;">
-                            <input type="hidden" name="Addresses[0].IsPrimary" value="true" />
+                            <input type="hidden" name="Address[0].IsPrimary" value="true" />
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="form-label">Street Address</label>
-                                        <input name="Addresses[0].Street" class="form-input" required />
-                                        <span class="text-danger field-validation-valid" data-valmsg-for="Addresses[0].Street"></span>
+                                        <input name="Address[0].Street" class="form-input" required />
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[0].Street"></span>
                                     </div>
                                 </div>
                             </div>
@@ -211,13 +209,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">City</label>
-                                        <input name="Addresses[0].City" class="form-input" required />
+                                        <input name="Address[0].City" class="form-input" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">District</label>
-                                        <input name="Addresses[0].District" class="form-input" required />
+                                        <input name="Address[0].District" class="form-input" required />
                                     </div>
                                 </div>
                             </div>
@@ -225,13 +223,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Country</label>
-                                        <input name="Addresses[0].Country" class="form-input" required />
+                                        <input name="Address[0].Country" class="form-input" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Zip Code</label>
-                                        <input name="Addresses[0].ZipCode" class="form-input" required />
+                                        <input name="Address[0].ZipCode" class="form-input" required />
                                     </div>
                                 </div>
                             </div>
@@ -239,13 +237,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Latitude</label>
-                                        <input name="Addresses[0].Latitude" type="number" step="any" class="form-input" required />
+                                        <input name="Address[0].Latitude" type="number" step="any" class="form-input" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Longitude</label>
-                                        <input name="Addresses[0].Longitude" type="number" step="any" class="form-input" required />
+                                        <input name="Address[0].Longitude" type="number" step="any" class="form-input" required />
                                     </div>
                                 </div>
                             </div>
@@ -280,13 +278,13 @@
                         <div class="card-body" style="padding: 8px;">
                             <div class="form-group">
                                 <label class="form-label">Department Name</label>
-                                <input name="Departments[0].Name" class="form-input" placeholder="e.g. Cardiology" required />
-                                <span class="text-danger field-validation-valid" data-valmsg-for="Departments[0].Name"></span>
+                                <input name="Department[0].Name" class="form-input" placeholder="e.g. Cardiology" required />
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Department[0].Name"></span>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Description (Optional)</label>
-                                <textarea name="Departments[0].Description" class="form-input" rows="2"></textarea>
+                                <textarea name="Department[0].Description" class="form-input" rows="2"></textarea>
                             </div>
                         </div>
                     </div>
@@ -304,8 +302,7 @@
 </div>
 
 <template id="addressTemplate">
-
-    <div class="address-item dynamic-item card shadow-sm" data-index="{index}" style="border-radius: 12px; overflow: hidden; margin-top: 10px; ">
+    <div class="address-item dynamic-item card shadow-sm" data-index="{index}" style="border-radius: 12px; overflow: hidden; margin-top: 10px;">
         <div class="card-header" style="display:flex; align-items: center; justify-content: center; padding: 4px;">
             <h3 class="m-0 fw-bold" style="flex: 2; font-size: 1.25rem;">Branch #{displayIndex}</h3>
             <button type="button" class="btn btn-danger btn-sm btn-remove-item" style="background-color: #ffc3c3;" onclick="removeItem(this)">
@@ -313,13 +310,13 @@
             </button>
         </div>
 
-        <div class="card-body" style="padding:  8px;">
-            <input type="hidden" name="Addresses[{index}].IsPrimary" value="false" />
+        <div class="card-body" style="padding: 8px;">
+            <input type="hidden" name="Address[{index}].IsPrimary" value="false" />
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-label">Street Address</label>
-                        <input name="Addresses[{index}].Street" class="form-input" required />
+                        <input name="Address[{index}].Street" class="form-input" required />
                     </div>
                 </div>
             </div>
@@ -327,13 +324,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">City</label>
-                        <input name="Addresses[{index}].City" class="form-input" required />
+                        <input name="Address[{index}].City" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">District</label>
-                        <input name="Addresses[{index}].District" class="form-input" required />
+                        <input name="Address[{index}].District" class="form-input" required />
                     </div>
                 </div>
             </div>
@@ -341,13 +338,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Country</label>
-                        <input name="Addresses[{index}].Country" class="form-input" required />
+                        <input name="Address[{index}].Country" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Zip Code</label>
-                        <input name="Addresses[{index}].ZipCode" class="form-input" required />
+                        <input name="Address[{index}].ZipCode" class="form-input" required />
                     </div>
                 </div>
             </div>
@@ -355,13 +352,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Latitude</label>
-                        <input name="Addresses[{index}].Latitude" type="number" step="any" class="form-input" required />
+                        <input name="Address[{index}].Latitude" type="number" step="any" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Longitude</label>
-                        <input name="Addresses[{index}].Longitude" type="number" step="any" class="form-input" required />
+                        <input name="Address[{index}].Longitude" type="number" step="any" class="form-input" required />
                     </div>
                 </div>
             </div>
@@ -370,7 +367,7 @@
 </template>
 
 <template id="departmentTemplate">
-    <div class="department-item dynamic-item card mb-4 shadow-sm" data-index="{index}" style="border-radius: 12px; overflow: hidden; margin-top: 10px; ">
+    <div class="department-item dynamic-item card mb-4 shadow-sm" data-index="{index}" style="border-radius: 12px; overflow: hidden; margin-top: 10px;">
         <div class="card-header" style="display:flex; align-items: center; justify-content: center; padding: 4px;">
             <h3 class="m-0 fw-bold" style="flex: 2; font-size: 1.25rem;">Department #{displayIndex}</h3>
             <button type="button" class="btn btn-danger btn-sm btn-remove-item" style="background-color: #ffc3c3;" onclick="removeItem(this)">
@@ -381,12 +378,12 @@
         <div class="card-body" style="padding: 8px;">
             <div class="form-group">
                 <label class="form-label">Department Name</label>
-                <input name="Departments[{index}].Name" class="form-input" required />
+                <input name="Department[{index}].Name" class="form-input" required />
             </div>
 
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
-                <textarea name="Departments[{index}].Description" class="form-input" rows="2"></textarea>
+                <textarea name="Department[{index}].Description" class="form-input" rows="2"></textarea>
             </div>
         </div>
     </div>
@@ -399,7 +396,7 @@
             initDynamicForms();
 
             // Image preview
-            const logoInput = document.getElementById('hospitalLogo');
+            const logoInput = document.getElementById('Image');
             const logoPreview = document.getElementById('logoPreview');
 
             if (logoInput && logoPreview) {

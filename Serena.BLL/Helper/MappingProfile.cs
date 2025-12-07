@@ -2,6 +2,7 @@
 
 using Serena.BLL.Models.Appointements;
 using Serena.BLL.Models.DoctorHospitalReviews;
+using Serena.BLL.Models.Doctors;
 using Serena.BLL.Models.DoctorService;
 using Serena.BLL.Models.PatientDoctorReviews;
 using Serena.BLL.Models.PatientHospitalReviews;
@@ -14,7 +15,8 @@ namespace Serena.BLL.Helper
         public MappingProfile()
         {
             CreateMap<Patient, PatientDtoGet>().ReverseMap();
-            CreateMap<PatientDetailsDTO, Patient>();
+            CreateMap<Patient, PatientDetailsDTO>();
+
             CreateMap<CreateAndUpdatePatientDTO, Patient>().ReverseMap();
 
 
@@ -57,6 +59,7 @@ namespace Serena.BLL.Helper
                     opt => opt.MapFrom(src => src.Hospital != null ? src.Hospital.Name : null));
 
             CreateMap<DoctorHospitalReviewCreateUpdateDTO, DoctorHospitalReview>();
+            CreateMap<DoctorDetailsDTO, Doctor>().ReverseMap();
         }
     }
 

@@ -16,5 +16,9 @@ namespace Serena.BLL.Models.Schedules
 
         [Required]
         public int DoctorId { get; set; }
+
+        public bool IsAvailable { get; set; } = true;
+
+        public string DoctorUserId { get; set; }
     }
 }

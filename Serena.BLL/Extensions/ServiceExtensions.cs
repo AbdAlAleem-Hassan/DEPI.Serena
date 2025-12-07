@@ -51,6 +51,7 @@ namespace Serena.BLL.Extensions
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
 
+
             // Newly Added Services
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IScheduleService, ScheduleService>();

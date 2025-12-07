@@ -1,0 +1,58 @@
+@model IEnumerable<Serena.BLL.Models.DoctorHospitalReviews.DoctorHospitalReviewDTO>
+
+@{
+    ViewData["Title"] = "Doctor Hospital Reviews";
+}
+
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="h3 mb-0 text-gray-800">Doctor Hospital Reviews</h1>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New
+        </a>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Hospital</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.DoctorName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HospitalName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-doctorId="@item.DoctorId" asp-route-hospitalId="@item.HospitalId" class="btn btn-sm btn-info" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-doctorId="@item.DoctorId" asp-route-hospitalId="@item.HospitalId" class="btn btn-sm btn-secondary" title="Details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-doctorId="@item.DoctorId" asp-route-hospitalId="@item.HospitalId" class="btn btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

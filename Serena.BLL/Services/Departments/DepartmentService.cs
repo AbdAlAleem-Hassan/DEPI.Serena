@@ -16,6 +16,7 @@ namespace Serena.BLL.Services.Departments
 			var departmentsDto = await _unitOfWork.DepartmentRepository.GetIQueryable()
 				.Select(d => new DepartmentDTO
 				{
+					Id = d.Id,
 					Name = d.Name,
 					HospitalName = d.Hospital.Name,
 					DoctorsNumber = d.Doctors.ToList().Count
@@ -30,6 +31,7 @@ namespace Serena.BLL.Services.Departments
 				return null;
 			var departmentDetailsDto = new DepartmentDTO
 			{
+				Id = department.Id,
 				Name = department.Name,
 				HospitalName = department.Hospital.Name,
 				DoctorsNumber = department.Doctors.ToList().Count

@@ -8,6 +8,8 @@ namespace Serena.DAL.Entities
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
+        public bool IsAvailable { get; set; } = true;
+
         [ForeignKey(nameof(Doctor))]
 		public int DoctorId { get; set; }
 		public virtual Doctor? Doctor { get; set; }

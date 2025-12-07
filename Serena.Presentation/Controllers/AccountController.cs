@@ -3,12 +3,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serena.BLL.Models.Account;
+using Serena.BLL.Models.Addresses;
+using Serena.BLL.Models.Departments;
 using Serena.BLL.Models.Doctors;
+using Serena.BLL.Models.Hospitals;
 using Serena.BLL.Models.Patients;
 using Serena.BLL.Services.Doctors;
+using Serena.BLL.Services.Hospitals;
 using Serena.BLL.Services.Patients;
 using Serena.DAL.Common.Enums;
 using Serena.DAL.Entities;
+using System.Threading.Tasks;
 
 namespace Serena.Presentation.Controllers
 {
@@ -19,6 +24,7 @@ namespace Serena.Presentation.Controllers
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IPatientService _patientService;
         private readonly IDoctorService _doctorService;
+        private readonly IHospitalService _hospitalService;
         private readonly ILogger<AccountController> _logger;
 
         public AccountController(
@@ -27,7 +33,8 @@ namespace Serena.Presentation.Controllers
             RoleManager<ApplicationRole> roleManager,
             ILogger<AccountController> logger,
             IPatientService patientService,
-            IDoctorService doctorService)
+            IDoctorService doctorService,
+            IHospitalService hospitalService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,6 +42,7 @@ namespace Serena.Presentation.Controllers
             _logger = logger;
             _patientService = patientService;
             _doctorService = doctorService;
+            _hospitalService = hospitalService;
         }
 
         [HttpGet]
@@ -351,11 +359,67 @@ namespace Serena.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            var userId = _userManager.GetUserId(User); 
+            var doctor = await _doctorService.GetDoctorByUserIdAsync(userId);
+
+            if (doctor == null)
+            {
+                TempData["Error"] = "Doctor not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(doctor);
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(DoctorDetailsDTO doctorDetailsDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Please correct the errors in the form.";
+                return View(doctorDetailsDTO);
+            }
+            try
+            {
+                await _doctorService.UpdateDoctorAsync(doctorDetailsDTO.Id, new CreateAndUpdateDoctorDTO
+                {
+                    FirstName = doctorDetailsDTO.FirstName,
+                    MiddleName = doctorDetailsDTO.MiddleName,
+                    LastName = doctorDetailsDTO.LastName,
+                    Email = doctorDetailsDTO.Email,
+                    PhoneNumber = doctorDetailsDTO.PhoneNumber,
+                    Gender = doctorDetailsDTO.Gender,
+                    DateOfBirth = doctorDetailsDTO.DateOfBirth,
+                    MaritalStatus = doctorDetailsDTO.MaritalStatus,
+                    Specialization = doctorDetailsDTO.Specialization,
+                    SubSpecialization = doctorDetailsDTO.SubSpecialization,
+                    Rank = doctorDetailsDTO.Rank,
+                    LicenseNumber = doctorDetailsDTO.LicenseNumber,
+                    YearsOfExperience = doctorDetailsDTO.YearsOfExperience,
+                    NationalID = doctorDetailsDTO.NationalID,
+                    Street = doctorDetailsDTO.Street,
+                    City = doctorDetailsDTO.City,
+                    Country = doctorDetailsDTO.Country,
+                    ZipCode = doctorDetailsDTO.ZipCode,
+                    DepartmentId = doctorDetailsDTO.DepartmentId,
+                    HospitalId = doctorDetailsDTO.HospitalId,
+                    HospitalAddressId = doctorDetailsDTO.HospitalAddressId,
+                    UserId = doctorDetailsDTO.UserId,
+                    Image = doctorDetailsDTO.photo
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating doctor profile");
+                TempData["Error"] = "An error occurred while updating the profile.";
+                return View(doctorDetailsDTO);
+            }
+            return RedirectToAction("index", "Home");
+        }
+
+
         public IActionResult Admin()
         {
             return View();
@@ -365,6 +429,148 @@ namespace Serena.Presentation.Controllers
         {
             return View();
         }
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterHospital(CreateAndUpdateHospitalDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                TempData["Error"] = "Please correct the following errors:<br>" +
+                                    string.Join("<br>• ", errors);
+
+                return View(model);
+            }
+
+            try
+            {
+                // Validate at least one address
+                if (model.Address is null || !model.Address.Any())
+                {
+                    TempData["Error"] = "At least one address is required";
+                    return View(model);
+                }
+
+                // Validate at least one department
+                if (model.Department is null || !model.Department.Any())
+                {
+                    TempData["Error"] = "At least one department is required";
+                    return View(model);
+                }
+
+                // Validate image if required
+                if (model.Image == null)
+                {
+                    TempData["Error"] = "Hospital image is required";
+                    return View(model);
+                }
+
+                // Convert Addresses → DTO
+                var addressesDto = model.Address
+                    .Select(a => new AddressDTO
+                    {
+                        Street = a.Street,
+                        City = a.City,
+                        District = a.District,
+                        Country = a.Country,
+                        ZipCode = a.ZipCode,
+                        Latitude = a.Latitude,
+                        Longitude = a.Longitude
+                    }).ToList();
+
+                // Convert Departments → DTO
+                var departmentsDto = model.Department
+                    .Select(d => new CreateAndUpdateDepartmentDTO
+                    {
+                        Name = d.Name
+                    }).ToList();
+
+                // Create DTO for service
+                var hospitalDto = new CreateAndUpdateHospitalDTO
+                {
+                    Name = model.Name,
+                    Rank = model.Rank,
+                    AverageCost = model.AverageCost,
+                    HospitalPhone = model.HospitalPhone,
+                    EmergencyPhone = model.EmergencyPhone,
+                    Image = model.Image,
+                    Address = addressesDto,
+                    Department = departmentsDto
+                };
+
+                // Call service (it handles image upload)
+                await _hospitalService.CreateHospitalAsync(hospitalDto);
+
+                TempData["Success"] = $"🏥 Hospital '{model.Name}' has been added successfully!";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while adding hospital");
+
+                TempData["Error"] = $"❌ An error occurred: {ex.Message}";
+                return View(model);
+            }
+      
+        }
+        [HttpGet]
+        public async Task<IActionResult> ProfilePatient()
+        {
+            var userId = _userManager.GetUserId(User);
+            var patient = await _patientService.GetPatientByUserIdAsync(userId);
+
+            if (patient == null)
+            {
+                TempData["Error"] = "patient not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(patient);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProfilePatient(PatientDetailsDTO patientDetailsDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Please correct the errors in the form.";
+                return View(patientDetailsDTO);
+            }
+            try
+            {
+                await _patientService.UpdatePatientAsync(patientDetailsDTO.Id, new CreateAndUpdatePatientDTO
+                {
+                    UserId=patientDetailsDTO.UserId,
+                    FirstName = patientDetailsDTO.FirstName,
+                    MiddleName = patientDetailsDTO.MiddleName,
+                    LastName = patientDetailsDTO.LastName,
+                    Email = patientDetailsDTO.Email,
+                    PhoneNumber = patientDetailsDTO.PhoneNumber,
+                    Gender = patientDetailsDTO.Gender,
+                    DateOfBirth = patientDetailsDTO.DateOfBirth,
+                    MaritalStatus = patientDetailsDTO.MaritalStatus,
+                    NationalID = patientDetailsDTO.NationalID,
+                    Street = patientDetailsDTO.Street,
+                    City = patientDetailsDTO.City,
+                    Country = patientDetailsDTO.Country,
+                    ZipCode = patientDetailsDTO.ZipCode,
+                    JobStatus = patientDetailsDTO.JobStatus,
+                    InsuranceCompany = patientDetailsDTO.InsuranceCompany
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating doctor profile");
+                TempData["Error"] = "An error occurred while updating the profile.";
+                return View(patientDetailsDTO);
+            }
+            return RedirectToAction("index", "Home");
+        }
+
+
     }
 }

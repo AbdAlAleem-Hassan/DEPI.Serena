@@ -1,0 +1,16 @@
+/* theme-loader.css */
+/* Helps with browser UI theming (scrollbars, form controls) */
+
+:root[data-user-theme="dark"] {
+    color-scheme: dark;
+}
+
+:root[data-user-theme="light"] {
+    color-scheme: light;
+}
+
+/* Optional: Add a class to hide body if needed, though script in head handles this */
+body.preload {
+    visibility: hidden;
+    opacity: 0;
+}

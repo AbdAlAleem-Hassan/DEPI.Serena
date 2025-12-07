@@ -1,140 +1,65 @@
-﻿@{
+﻿@using Serena.BLL.Models.Doctors
+@using Serena.DAL.Common.Enums
+@model DoctorDetailsDTO
+
+@{
     ViewData["Title"] = "My Profile";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
 @section Styles {
     <style>
-        /* Make page background darker so cards stand out */
-        body {
-            background-color: var(--light-gray);
-        }
+        body { background-color: var(--light-gray); }
 
-        /* Profile Specific Styles */
-        .profile-header {
-            margin-bottom: 2rem;
-        }
+        .profile-header { margin-bottom: 2rem; }
+        .profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: start; }
 
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
-            align-items: start; /* Ensures grid items don't stretch, helpful for sticky */
-        }
-
-        /* SIDEBAR CARD: Sticky & Fit Content */
         .profile-sidebar-card {
             background: var(--primary-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 2rem;
             text-align: center;
-            /* Sticky Positioning */
             position: sticky;
-            top: 100px; /* Distance from top of viewport */
-            height: fit-content; /* CRITICAL: prevents stretching so sticky works */
-            /* Visual Definition */
+            top: 100px;
+            height: fit-content;
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .profile-avatar-upload {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--accent-blue);
-        }
-
+        .profile-avatar-upload { position: relative; width: 120px; height: 120px; margin: 0 auto 1.5rem; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-blue); }
         .upload-icon {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: var(--accent-green);
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid var(--primary-white);
+            position: absolute; bottom: 0; right: 0; background: var(--accent-green); color: white;
+            width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border: 2px solid var(--primary-white);
         }
 
-        /* FORM CARD */
         .profile-form-card {
             background: var(--primary-white);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 2rem;
-            /* Visual Definition */
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .form-section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-blue);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
+        .form-section-title { font-size: 1.1rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--light-gray); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-actions { margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray); }
+        
+        /* Add validation styles */
+        .text-danger { color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem; }
+        .validation-summary { background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; padding: 1rem; margin-bottom: 1.5rem; }
+        .validation-summary ul { margin: 0; padding-left: 1rem; }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        /* BUTTONS: Flex & Center */
-        .form-actions {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            gap: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        /* Dark mode overrides */
-        .dark-mode body {
-            background-color: #0f172a;
-        }
-        /* Deep Navy background */
-        .dark-mode .profile-sidebar-card,
-        .dark-mode .profile-form-card {
-            background-color: var(--charcoal);
-            border: 1px solid #334155;
-        }
-
-        .dark-mode .form-section-title {
-            border-bottom-color: #334155;
-        }
-
-        .dark-mode .form-actions {
-            border-top-color: #334155;
-        }
+        .dark-mode body { background-color: #0f172a; }
+        .dark-mode .profile-sidebar-card, .dark-mode .profile-form-card { background-color: var(--charcoal); border: 1px solid #334155; }
+        .dark-mode .form-section-title { border-bottom-color: #334155; }
+        .dark-mode .form-actions { border-top-color: #334155; }
 
         @@media (max-width: 900px) {
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-sidebar-card {
-                position: static;
-                width: 100%;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .profile-grid { grid-template-columns: 1fr; }
+            .profile-sidebar-card { position: static; width: 100%; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 }
@@ -145,17 +70,32 @@
         <p class="section-subtitle" style="text-align: left; margin: 0;">Manage your personal information and preferences.</p>
     </div>
 
+    <!-- Display validation errors summary -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="validation-summary">
+            <strong>Please correct the following errors:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
     <div class="profile-grid">
+        <!-- SIDEBAR -->
         <div class="profile-sidebar-card">
             <div class="profile-avatar-upload">
-                <img src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile" class="profile-img" id="profilePreview">
+                <img src="~/files/Imgs/@Model.Image" alt="Profile" class="profile-img" id="profilePreview">
                 <label for="avatarUpload" class="upload-icon">
                     <i class="fas fa-camera"></i>
                 </label>
-                <input type="file" id="avatarUpload" hidden accept="image/*">
+                <input type="file" id="avatarUpload" asp-for="photo" style="display:none;" accept="image/*">
             </div>
-            <h3 style="margin-bottom: 0.5rem;">Dr. Sarah Wilson</h3>
-            <p style="color: var(--accent-blue); margin-bottom: 1rem;">Cardiology Specialist</p>
+            <h3 style="margin-bottom: 0.5rem;">@($"{Model.FirstName} {Model.LastName}")</h3>
+            <p style="color: var(--accent-blue); margin-bottom: 1rem;">@Model.Specialization</p>
             <span class="role-badge">Doctor</span>
 
             <div style="margin-top: 2rem; text-align: left;">
@@ -168,90 +108,149 @@
             </div>
         </div>
 
+        <!-- FORM -->
         <div class="profile-form-card">
-            <form id="profileForm">
+            <form id="profileForm" action="@Url.Action("Profile", "Account")" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                
                 <div class="form-section-title"><i class="fas fa-user-circle"></i> Personal Information</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-input" value="Sarah Wilson">
+                        <label class="form-label" asp-for="FirstName"></label>
+                        <input type="text" class="form-input" asp-for="FirstName">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" value="sarah.wilson@serena.com" readonly style="opacity: 0.7; cursor: not-allowed;">
+                        <label class="form-label" asp-for="LastName"></label>
+                        <input type="text" class="form-input" asp-for="LastName">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="date" class="form-input">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input type="email" class="form-input" asp-for="Email" readonly style="opacity:0.7; cursor:not-allowed;">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <select class="form-input">
+                        <label class="form-label" asp-for="PhoneNumber"></label>
+                        <input type="tel" class="form-input" asp-for="PhoneNumber">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="DateOfBirth"></label>
+                        <input type="date" class="form-input" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")">
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Gender"></label>
+                        <select class="form-input" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" disabled>
                             <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
                         </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">National ID</label>
-                        <input type="text" class="form-input" placeholder="Enter National ID">
+                        <label class="form-label" asp-for="MiddleName"></label>
+                        <input type="text" class="form-input" asp-for="MiddleName">
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" class="form-input" id="phone" placeholder="+1 234 567 890">
+                        <label class="form-label" asp-for="MaritalStatus"></label>
+                        <input type="text" class="form-input" asp-for="MaritalStatus">
+                      
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-title"><i class="fas fa-stethoscope"></i> Professional Information</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Specialization"></label>
+                        <input type="text" class="form-input" asp-for="Specialization">
+                        <span asp-validation-for="Specialization" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="SubSpecialization"></label>
+                        <input type="text" class="form-input" asp-for="SubSpecialization"><span asp-validation-for="SubSpecialization" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Marital Status</label>
-                        <select class="form-input">
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-                        </select>
+                        <label class="form-label" asp-for="Rank"></label>
+                        <input type="text" class="form-input" asp-for="Rank">
+                        <span asp-validation-for="Rank" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Job Status</label>
-                        <input type="text" class="form-input" placeholder="Current Job Title">
+                        <label class="form-label" asp-for="LicenseNumber"></label>
+                        <input type="text" class="form-input" asp-for="LicenseNumber">
+                        <span asp-validation-for="LicenseNumber" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="form-section-title" style="margin-top: 1rem;"><i class="fas fa-map-marker-alt"></i> Address Details</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Country</label>
-                        <select class="form-input" id="countrySelect">
-                            <option value="US">United States</option>
-                            <option value="EG">Egypt</option>
-                            <option value="UK">United Kingdom</option>
-                        </select>
+                        <label class="form-label" asp-for="NationalID"></label>
+                        <input type="text" class="form-input" asp-for="NationalID">
+                        <span asp-validation-for="NationalID" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">City</label>
-                        <input type="text" class="form-input" placeholder="City">
+                        <label class="form-label" asp-for="YearsOfExperience"></label>
+                        <input type="number" class="form-input" asp-for="YearsOfExperience" min="0" max="50">
+                        <span asp-validation-for="YearsOfExperience" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-title"><i class="fas fa-map-marker-alt"></i> Address Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Country"></label>
+                        <input type="text" class="form-input" asp-for="Country">
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="City"></label>
+                        <input type="text" class="form-input" asp-for="City">
+                        <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">Street Address</label>
-                        <input type="text" class="form-input" placeholder="Street Name & No.">
+                        <label class="form-label" asp-for="Street"></label>
+                        <input type="text" class="form-input" asp-for="Street">
+                        <span asp-validation-for="Street" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Zip Code</label>
-                        <input type="text" class="form-input" placeholder="Zip Code">
+                        <label class="form-label" asp-for="ZipCode"></label>
+                        <input type="text" class="form-input" asp-for="ZipCode">
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
                     </div>
+
+
+                    <div class="form-group">
+                      
+                        <input type="text" class="form-input" asp-for="Id" hidden>
+                        <span asp-validation-for="Id" class="text-danger" hidden></span>
+                    </div>
+                    <div class="form-group">
+                      
+                        <input type="text" class="form-input" asp-for="UserId" hidden>
+                        <span asp-validation-for="UserId" class="text-danger" hidden></span>
+                    </div>
+            
                 </div>
+                @* <input type="hidden" asp-for="DepartmentId" />
+                <input type="hidden" asp-for="HospitalId" />
+                <input type="hidden" asp-for="HospitalAddressId" /> *@
 
                 <div class="form-actions">
-                    <button type="button" class="hero-btn hero-btn-secondary">Cancel</button>
+                    <button type="button" class="hero-btn hero-btn-secondary" onclick="window.location.reload()">Cancel</button>
                     <button type="submit" class="hero-btn hero-btn-primary">Save Changes</button>
                 </div>
             </form>
@@ -262,39 +261,30 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Image Preview Handler
             const avatarUpload = document.getElementById('avatarUpload');
             const profilePreview = document.getElementById('profilePreview');
 
+            // Preview image when selected
             avatarUpload.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files[0]) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        profilePreview.src = e.target.result;
+                    reader.onload = function(e) { 
+                        profilePreview.src = e.target.result; 
                     }
                     reader.readAsDataURL(e.target.files[0]);
                 }
             });
 
-            // Form Submit Animation
+            // Handle form submission
             const form = document.getElementById('profileForm');
             form.addEventListener('submit', function(e) {
-                e.preventDefault();
                 const btn = form.querySelector('.hero-btn-primary');
                 const originalText = btn.innerText;
 
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-                btn.style.opacity = '0.8';
-
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.opacity = '1';
-                    if(window.toastManager) {
-                        window.toastManager.success("Profile updated successfully!");
-                    } else {
-                        alert("Saved!");
-                    }
-                }, 1500);
+                btn.disabled = true;
+                
+                // Form will submit normally to the POST action
             });
         });
     </script>

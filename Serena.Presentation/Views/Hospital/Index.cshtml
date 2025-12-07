@@ -1,0 +1,571 @@
+﻿@model IEnumerable<Serena.BLL.Models.Hospitals.HospitalDetailsDTO>
+
+@{
+    ViewData["Title"] = "Hospitals - Serena";
+}
+
+@section Styles {
+    <style>
+        /* Hospital Index Page Styles */
+        .hospitals-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 300px 100px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+            .page-header h1 {
+                font-size: 36px;
+                font-weight: 700;
+                color: #1e293b;
+                margin: 0;
+            }
+
+        /* Filters Section */
+        .filters-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+            .filters-section h3 {
+                color: #1e293b;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .filter-group label {
+                font-weight: 600;
+                color: #475569;
+                font-size: 14px;
+            }
+
+            .filter-group input,
+            .filter-group select {
+                padding: 10px 15px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 14px;
+                transition: border-color 0.3s ease;
+            }
+
+                .filter-group input:focus,
+                .filter-group select:focus {
+                    outline: none;
+                    border-color: #667eea;
+                }
+
+        .filter-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
+        }
+
+            .filter-btn.apply {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+
+                .filter-btn.apply:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+                }
+
+            .filter-btn.reset {
+                background: #f1f5f9;
+                color: #64748b;
+            }
+
+                .filter-btn.reset:hover {
+                    background: #e2e8f0;
+                }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .results-count {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .sort-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .sort-group label {
+                font-weight: 600;
+                color: #475569;
+            }
+
+        /* Hospitals Grid */
+        .hospitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .hospital-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+            .hospital-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            }
+
+        .hospital-card-header {
+            padding: 25px 25px 0;
+        }
+
+        .hospital-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .hospital-rank {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .hospital-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .hospital-card-body {
+            padding: 0 25px;
+        }
+
+        .hospital-departments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .department-tag {
+            background: #f8fafc;
+            color: #475569;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .hospital-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+            .stat-item .value {
+                font-size: 20px;
+                font-weight: 700;
+                color: #1e293b;
+                display: block;
+            }
+
+            .stat-item .label {
+                font-size: 12px;
+                color: #64748b;
+                margin-top: 5px;
+            }
+
+        .hospital-card-footer {
+            padding: 20px 25px;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hospital-cost {
+            font-size: 18px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .hospital-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+
+            .btn-view:hover {
+                background: #5a67d8;
+                color: white;
+                text-decoration: none;
+            }
+
+        .btn-book {
+            background: #10b981;
+            color: white;
+        }
+
+            .btn-book:hover {
+                background: #0da271;
+                color: white;
+                text-decoration: none;
+            }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+            .no-results i {
+                font-size: 60px;
+                margin-bottom: 20px;
+                color: #cbd5e1;
+            }
+
+            .no-results h3 {
+                font-size: 24px;
+                margin-bottom: 10px;
+                color: #64748b;
+            }
+
+            .no-results p {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .hospitals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+}
+
+<div class="hospitals-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Find the Best Hospitals</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Hospital
+        </a>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <h3><i class="fas fa-filter"></i> Filter Hospitals</h3>
+
+        <form method="get" asp-action="Index" id="filterForm">
+            <div class="filters-grid">
+                <!-- Name Filter -->
+                <div class="filter-group">
+                    <label for="name">Hospital Name</label>
+                    <input type="text" id="name" name="name" value="@ViewBag.Name"
+                           placeholder="Search by name...">
+                </div>
+
+                <!-- City Filter -->
+                <div class="filter-group">
+                    <label for="city">City</label>
+                    <select id="city" name="city">
+                        <option value="">All Cities</option>
+                        @if (ViewBag.Cities != null)
+                        {
+                            foreach (var city in ViewBag.Cities)
+                            {
+                                <option value="@city" selected="@(ViewBag.City == city)">@city</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Department Filter -->
+                <div class="filter-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department">
+                        <option value="">All Departments</option>
+                        @if (ViewBag.Departments != null)
+                        {
+                            foreach (var dept in ViewBag.Departments)
+                            {
+                                <option value="@dept" selected="@(ViewBag.Department == dept)">@dept</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Country Filter -->
+                <div class="filter-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country">
+                        <option value="">All Countries</option>
+                        @if (ViewBag.Countries != null)
+                        {
+                            foreach (var country in ViewBag.Countries)
+                            {
+                                <option value="@country" selected="@(ViewBag.Country == country)">@country</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Rank Filter -->
+                <div class="filter-group">
+                    <label for="rank">Rank</label>
+                    <select id="rank" name="rank">
+                        <option value="">Any Rank</option>
+                        @if (ViewBag.Ranks != null)
+                        {
+                            foreach (var rank in ViewBag.Ranks)
+                            {
+                                <option value="@rank" selected="@(ViewBag.Rank == rank)">#@rank</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Max Cost Filter -->
+                <div class="filter-group">
+                    <label for="maxAverageCost">Max Average Cost ($)</label>
+                    <input type="number" id="maxAverageCost" name="maxAverageCost"
+                           value="@ViewBag.MaxAverageCost" min="0" step="100"
+                           placeholder="Maximum cost...">
+                </div>
+
+                <!-- Sort By -->
+                <div class="filter-group">
+                    <label for="sortBy">Sort By</label>
+                    <select id="sortBy" name="sortBy">
+                        <option value="name" selected="@(ViewBag.SortBy == "name")">Name (A-Z)</option>
+                        <option value="name_desc" selected="@(ViewBag.SortBy == "name_desc")">Name (Z-A)</option>
+                        <option value="rank" selected="@(ViewBag.SortBy == "rank")">Rank (Low to High)</option>
+                        <option value="rank_desc" selected="@(ViewBag.SortBy == "rank_desc")">Rank (High to Low)</option>
+                        <option value="cost" selected="@(ViewBag.SortBy == "cost")">Cost (Low to High)</option>
+                        <option value="cost_desc" selected="@(ViewBag.SortBy == "cost_desc")">Cost (High to Low)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="button" class="filter-btn reset" onclick="resetFilters()">
+                    <i class="fas fa-redo"></i> Reset Filters
+                </button>
+                <button type="submit" class="filter-btn apply">
+                    <i class="fas fa-search"></i> Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Header -->
+    <div class="results-header">
+        <div class="results-count">
+            <strong>@ViewBag.TotalCount</strong> hospitals found
+        </div>
+    </div>
+
+    <!-- Hospitals Grid -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="hospitals-grid">
+            @foreach (var hospital in Model)
+            {
+                var primaryAddress = hospital.Addresses?.FirstOrDefault();
+                var reviewCount = (hospital.PatientHospitalReviews?.Count ?? 0) +
+                (hospital.DoctorHospitalReviews?.Count ?? 0);
+                var averageRating = 0.0;
+
+                if (reviewCount > 0)
+                {
+                    var patientRatings = hospital.PatientHospitalReviews?.Select(r => r.Rating).ToList() ?? new List<int>();
+                    var doctorRatings = hospital.DoctorHospitalReviews?.Select(r => r.Rating).ToList() ?? new List<int>();
+                    var allRatings = patientRatings.Concat(doctorRatings).ToList();
+                    averageRating = allRatings.Any() ? allRatings.Average() : 0;
+                }
+
+                <div class="hospital-card">
+                    <div class="hospital-card-header">
+                        @if (!string.IsNullOrEmpty(hospital.Rank))
+                        {
+                            <div class="hospital-rank">
+                                <i class="fas fa-trophy"></i> Rank #@hospital.Rank
+                            </div>
+                        }
+
+                        <h3 class="hospital-name">@hospital.Name</h3>
+
+                        @if (primaryAddress != null)
+                        {
+                            <div class="hospital-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>@primaryAddress.City, @primaryAddress.Country</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="hospital-card-body">
+                        @if (hospital.Departments != null && hospital.Departments.Any())
+                        {
+                            <div class="hospital-departments">
+                                @foreach (var dept in hospital.Departments.Take(3))
+                                {
+                                    <span class="department-tag">@dept.Name</span>
+                                }
+                                @if (hospital.Departments.Count > 3)
+                                {
+                                    <span class="department-tag">+@(hospital.Departments.Count - 3) more</span>
+                                }
+                            </div>
+                        }
+
+                        <div class="hospital-stats">
+                            <div class="stat-item">
+                                <span class="value">@reviewCount</span>
+                                <span class="label">Reviews</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="value">@averageRating.ToString("0.1")</span>
+                                <span class="label">Rating</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="value">@hospital.Departments?.Count</span>
+                                <span class="label">Departments</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hospital-card-footer">
+                        <div class="hospital-cost">
+                            $@hospital.AverageCost.ToString("N2")
+                        </div>
+                        <div class="hospital-actions">
+                            <a asp-action="Details" asp-route-id="@hospital.Id" class="action-btn btn-view">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            <a asp-controller="Appointment" asp-action="Create" asp-route-hospitalId="@hospital.Id"
+                               class="action-btn btn-book">
+                                <i class="fas fa-calendar-alt"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="no-results">
+            <i class="fas fa-hospital"></i>
+            <h3>No hospitals found</h3>
+            <p>Try adjusting your filters or search criteria.</p>
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="fas fa-redo"></i> Clear Filters
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function resetFilters() {
+            document.getElementById('filterForm').reset();
+            document.getElementById('filterForm').submit();
+        }
+    </script>
+}

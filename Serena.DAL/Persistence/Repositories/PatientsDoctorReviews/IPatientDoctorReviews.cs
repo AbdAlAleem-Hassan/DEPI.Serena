@@ -8,5 +8,6 @@ public interface IPatientDoctorReviews
     public Task UpdateAsync(PatientDoctorReview patientDoctorReview);
     public Task DeleteAsync(int PatientId,int DoctorId);
     public Task<double?> GetAverageRatingForDoctorAsync(int doctorId);
+    public Task<PatientDoctorReview?> GetAsync(int patientId, int doctorId);
 
 }

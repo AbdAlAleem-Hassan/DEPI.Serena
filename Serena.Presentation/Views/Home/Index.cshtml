@@ -5,6 +5,372 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/index.css">
+    <style>
+        /* Hospital Cards Styling */
+        .hospitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .hospital-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .hospital-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .hospital-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            }
+
+        .hospital-card-header {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .hospital-card-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,50 Q25,40 50,50 T100,50 L100,100 L0,100 Z" fill="white"/></svg>');
+                background-size: cover;
+            }
+
+        .hospital-icon {
+            font-size: 3.5rem;
+            color: white;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hospital-card-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hospital-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .hospital-rank {
+            display: inline-block;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            color: #0369a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid #bae6fd;
+        }
+
+        .hospital-info {
+            margin-bottom: 20px;
+        }
+
+        .hospital-cost {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .hospital-cost span {
+                font-size: 0.875rem;
+                color: #6b7280;
+                font-weight: 400;
+            }
+
+        .hospital-phone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4b5563;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+            .hospital-phone i {
+                color: #3b82f6;
+                font-size: 1rem;
+            }
+
+        .hospital-addresses {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .address-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            font-size: 0.875rem;
+            background: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+            .address-count i {
+                color: #8b5cf6;
+            }
+
+        /* Doctor Cards Styling */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .doctor-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .doctor-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            }
+
+        .doctor-card-header {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .doctor-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+
+            .doctor-placeholder i {
+                font-size: 4rem;
+                color: white;
+                opacity: 0.8;
+            }
+
+        .doctor-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .doctor-card-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doctor-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .doctor-specialization {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .doctor-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .doctor-experience,
+        .doctor-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
+            .doctor-experience i,
+            .doctor-rating i {
+                color: #f59e0b;
+                font-size: 1rem;
+            }
+
+            .doctor-rating i {
+                color: #fbbf24;
+            }
+
+        .doctor-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .view-profile-btn,
+        .book-appointment-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .view-profile-btn {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+            .view-profile-btn:hover {
+                background: #e5e7eb;
+                color: #1f2937;
+            }
+
+        .book-appointment-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+        }
+
+            .book-appointment-btn:hover {
+                background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                color: white;
+                transform: translateY(-2px);
+            }
+
+        /* View All Button */
+        .view-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+            .view-all-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+                color: white;
+                text-decoration: none;
+            }
+
+            .view-all-btn i {
+                transition: transform 0.3s ease;
+            }
+
+            .view-all-btn:hover i {
+                transform: translateX(4px);
+            }
+
+        /* No Data State */
+        .no-data {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: #f9fafb;
+            border-radius: 16px;
+            border: 2px dashed #d1d5db;
+        }
+
+            .no-data i {
+                color: #9ca3af;
+                margin-bottom: 16px;
+            }
+
+            .no-data p {
+                color: #6b7280;
+                font-size: 1.125rem;
+            }
+
+        /* Responsive Design */
+    </style>
 }
 
 <section class="hero">
@@ -196,6 +562,9 @@
 <section class="hospitals">
     <div class="container">
         <div class="text-center mb-12">
+            <div class="features-badge">
+                🏥 Our Network
+            </div>
             <h2 class="section-title">Top Hospitals</h2>
             <p class="section-subtitle">Discover the best hospitals in our network</p>
         </div>
@@ -205,38 +574,45 @@
             {
                 foreach (var hospital in Model.TopHospitals)
                 {
-                    <div class="hospital-card">
-                        <div class="hospital-card-header">
-                            <i class="fas fa-hospital hospital-icon"></i>
-                        </div>
-                        <div class="hospital-card-body">
-                            <h3 class="hospital-name">@hospital.Name</h3>
-                            <div class="hospital-rank">@hospital.Rank</div>
-                            <div class="hospital-info">
-                                <div class="hospital-cost">
-                                    Average Cost: $@hospital.AverageCost.ToString("N2")
-                                    <span>per visit</span>
-                                </div>
-                                <div class="hospital-phone">
-                                    <i class="fas fa-phone"></i> @hospital.HospitalPhone
-                                </div>
-                                @if (!string.IsNullOrEmpty(hospital.EmergencyPhone))
-                                {
-                                    <div class="hospital-phone">
-                                        <i class="fas fa-ambulance"></i> @hospital.EmergencyPhone
-                                    </div>
-                                }
+                    <a asp-controller="Hospital" asp-action="Details" asp-route-id="@hospital.Id" class="hospital-card-link">
+                        <div class="hospital-card">
+                            <div class="hospital-card-header">
+                                @if (!string.IsNullOrEmpty(hospital.ImageUrl))
+                                    {
+                                        <img src="~/files/hospitals/@hospital.ImageUrl"  class="hospital-image">
+                                    }
+                                    else {
+                                    <i class="fas fa-hospital hospital-icon"></i>
+                                    }
+                                    
                             </div>
-                            @if (hospital.Addresses != null && hospital.Addresses.Any())
-                            {
-                                <div class="hospital-addresses">
-                                    <span class="address-count">
-                                        @hospital.Addresses.Count location@(hospital.Addresses.Count != 1 ? "s" : "")
-                                    </span>
+                            <div class="hospital-card-body">
+                                <h3 class="hospital-name">@hospital.Name</h3>
+                                <div class="hospital-rank">@hospital.Rank</div>
+
+                                <div class="hospital-info">
+                                    <div class="hospital-cost">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <span>@hospital.AverageCost.ToString("N2")</span>
+                                        <span>per visit</span>
+                                    </div>
+
+                                    <div class="hospital-phone">
+                                        <i class="fas fa-phone"></i>
+                                        <span>@hospital.HospitalPhone</span>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(hospital.EmergencyPhone))
+                                    {
+                                        <div class="hospital-phone">
+                                            <i class="fas fa-ambulance"></i>
+                                            <span>@hospital.EmergencyPhone</span>
+                                        </div>
+                                    }
                                 </div>
-                            }
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 }
             }
             else
@@ -260,6 +636,9 @@
 <section class="doctors">
     <div class="container">
         <div class="text-center mb-12">
+            <div class="features-badge">
+                👨‍⚕️ Our Specialists
+            </div>
             <h2 class="section-title">Top Doctors</h2>
             <p class="section-subtitle">Meet our highly qualified medical professionals</p>
         </div>
@@ -269,54 +648,50 @@
             {
                 foreach (var doctor in Model.TopDoctors)
                 {
-                    <div class="doctor-card-new"> @* تم تغيير الكلاس هنا لتطبيق الستايل الجديد *@
-                        <div class="doctor-card-header-new">
-                            @* في التصميم المطلوب، يتم وضع الصورة أو الرسوم التوضيحية المميزة هنا *@
+                    <div class="doctor-card">
+                        <div class="doctor-card-header">
                             @if (!string.IsNullOrEmpty(doctor.Image))
                             {
-                                <img src="~/files/Imgs/@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image-new">
+                                <img src="~/files/Imgs/@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image">
                             }
                             else
                             {
-                                @* Placeholder images for design aesthetic (Image of X) *@
-                                @if (doctor.Id % 3 == 1) 
-                                {
-                                    
-                                }
-                                else if (doctor.Id % 3 == 2)
-                                {
-    
-
-                                }
-                                else
-                                {
-                                    <div class="doctor-placeholder-icon">
-                                        <i class="fas fa-user-md fa-4x"></i>
-                                    </div>
-                                }
+                                <div class="doctor-placeholder">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
                             }
+                            <div class="doctor-status">
+                                <span class="status-dot"></span>
+                                <span>Available</span>
+                            </div>
                         </div>
 
-                        <div class="doctor-card-body-new">
-                            <div class="available-status">
-                                <i class="fas fa-circle available-dot"></i> Available
-                            </div>
+                        <div class="doctor-card-body">
                             <h3 class="doctor-name">Dr. @doctor.FirstName @doctor.LastName</h3>
                             <p class="doctor-specialization">@doctor.Specialization</p>
 
-                            <div class="doctor-meta-new">
+                            <div class="doctor-meta">
                                 <div class="doctor-experience">
                                     <i class="fas fa-briefcase"></i>
                                     <span>@doctor.YearsOfExperience years experience</span>
                                 </div>
+
+                           
+                            <div class="doctor-rating">
+                                <i class="fas fa-star"></i>
+                                <span>Rank: @doctor.Rank/5</span>
+                            </div>
+                           
                             </div>
 
-                            <div class="doctor-actions-new">
-                                <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="view-profile-link-new">
-                                    <i class="fas fa-info-circle"></i> View Profile
+                            <div class="doctor-actions">
+                                <a asp-controller="Account" asp-action="Profile" asp-route-id="@doctor.UserId" class="view-profile-btn">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>Profile</span>
                                 </a>
-                                <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-now-link-new">
-                                    <i class="fas fa-calendar-alt"></i> Book Now
+                                <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-appointment-btn">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Book Now</span>
                                 </a>
                             </div>
                         </div>
@@ -340,156 +715,3 @@
         </div>
     </div>
 </section>
-
-@* --- CSS Styles for the New Doctor Card Design (Should ideally be in index.css) --- *@
-<style>
-    /* New Doctor Card Container */
-    .doctor-card-new {
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.3s ease-in-out;
-        border: 1px solid #eee; /* Added border for definition */
-    }
-
-    .doctor-card-new:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Doctor Card Header - For the Image/Placeholder */
-    .doctor-card-header-new {
-        height: 150px; /* Fixed height for image area */
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f7f7f7;
-        position: relative;
-    }
-
-    /* Styling for the image placeholder if doctor.Image is null, matching the image in the request */
-    .doctor-placeholder-icon {
-        color: #007bff; /* Primary color */
-    }
-    
-    .doctor-image-new {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    /* Doctor Card Body */
-    .doctor-card-body-new {
-        padding: 20px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .available-status {
-        font-size: 14px;
-        font-weight: 600;
-        color: #28a745; /* Green color for available */
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-    }
-
-    .available-dot {
-        font-size: 10px;
-        color: #28a745;
-        margin-right: 5px;
-    }
-
-    .doctor-name {
-        font-size: 18px;
-        color: #333;
-        margin: 0 0 4px 0;
-    }
-
-    .doctor-specialization {
-        color: #6c757d;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    /* Doctor Meta (Rank & Experience) */
-    .doctor-meta-new {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 20px;
-        border-top: 1px solid #eee;
-        padding-top: 15px;
-    }
-
-    .doctor-rank,
-    .doctor-experience {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        color: #555;
-    }
-
-    .rank-star,
-    .fa-briefcase {
-        color: #ffc107; /* Star color */
-        margin-right: 8px;
-    }
-
-    /* Doctor Actions (View & Book) */
-    .doctor-actions-new {
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto; /* Push to the bottom */
-    }
-
-    .view-profile-link-new,
-    .book-now-link-new {
-        text-decoration: none;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        transition: background-color 0.3s, color 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        flex-grow: 1;
-        justify-content: center;
-    }
-
-    .view-profile-link-new {
-        color: #007bff;
-        border: 1px solid #007bff;
-        background-color: #fff;
-        margin-right: 5px;
-    }
-
-    .view-profile-link-new:hover {
-        background-color: #f2f7ff;
-    }
-
-    .book-now-link-new {
-        background-color: #007bff;
-        color: white;
-        border: 1px solid #007bff;
-        margin-left: 5px;
-    }
-
-    .book-now-link-new:hover {
-        background-color: #0056b3;
-    }
-
-    /* Ensure doctors grid is correct */
-    .doctors-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 30px;
-        margin-bottom: 40px;
-    }
-</style>

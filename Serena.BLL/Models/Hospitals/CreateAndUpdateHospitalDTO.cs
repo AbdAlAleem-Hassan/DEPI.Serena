@@ -1,4 +1,6 @@
-﻿using Serena.BLL.Models.Addresses;
+﻿using Microsoft.AspNetCore.Http;
+using Serena.BLL.Models.Addresses;
+using Serena.BLL.Models.Departments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +16,9 @@ namespace Serena.BLL.Models.Hospitals
 		public decimal AverageCost { get; set; }
 		public string HospitalPhone { get; set; }
 		public string EmergencyPhone { get; set; }
-		public AddressDTO Address { get; set; }
-	}
+
+		public IFormFile Image { get; set; }
+        public List<AddressDTO> Address { get; set; }
+		public List<CreateAndUpdateDepartmentDTO> Department { get; set; }
+    }
 }
