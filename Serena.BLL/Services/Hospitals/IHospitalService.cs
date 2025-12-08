@@ -12,5 +12,7 @@ namespace Serena.BLL.Services.Hospitals
 		Task<int> CreateHospitalAsync(CreateAndUpdateHospitalDTO HospitalDto);
 		Task<int> UpdateHospitalAsync(int id, CreateAndUpdateHospitalDTO HospitalDto);
 		Task<int> DeleteHospitalAsync(int id);
-	}
+		Task<List<HospitalDetailsDTO?>> FilterHospital(QueryParamsForHospital queryParams);
+
+    }
 }

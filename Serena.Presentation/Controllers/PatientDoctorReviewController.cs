@@ -32,8 +32,17 @@ namespace Serena.Presentation.Controllers
 
         public async Task<IActionResult> Edit(int patientId, int doctorId)
         {
-            // هنا ممكن تجيب الـ review اذا محتاج تعرضه في Edit
-            return View();
+            var review = await _reviewService.GetAsync(patientId, doctorId);
+            if (review == null) return NotFound();
+            
+            var dto = new PatientDoctorReviewCreateUpdateDTO
+            {
+                PatientId = review.PatientId,
+                DoctorId = review.DoctorId,
+                Rating = review.Rating,
+                Comment = review.Comment
+            };
+            return View(dto);
         }
 
         [HttpPost]
@@ -46,6 +55,15 @@ namespace Serena.Presentation.Controllers
         }
 
         public async Task<IActionResult> Delete(int patientId, int doctorId)
+        {
+            var review = await _reviewService.GetAsync(patientId, doctorId);
+            if (review == null) return NotFound();
+            return View(review);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int patientId, int doctorId)
         {
             await _reviewService.DeleteAsync(patientId, doctorId);
             return RedirectToAction(nameof(Index));

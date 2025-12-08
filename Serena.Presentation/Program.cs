@@ -72,7 +72,9 @@ else
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
 app.UseRouting();
 
 // Authentication & Authorization MUST be in this order

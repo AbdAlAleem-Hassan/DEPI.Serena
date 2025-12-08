@@ -43,4 +43,10 @@ public class PatientDoctorReviewService : IPatientDoctorReviewService
     {
         return await _reviewRepo.GetAverageRatingForDoctorAsync(doctorId);
     }
+
+    public async Task<PatientDoctorReviewGetDTO?> GetAsync(int patientId, int doctorId)
+    {
+        var review = await _reviewRepo.GetAsync(patientId, doctorId);
+        return _mapper.Map<PatientDoctorReviewGetDTO>(review);
+    }
 }

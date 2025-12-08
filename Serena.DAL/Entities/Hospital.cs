@@ -11,6 +11,8 @@ namespace Serena.DAL.Entities
         public string HospitalPhone { get; set; }
         public string EmergencyPhone { get; set; }
 
+        public string ImageUrl { get; set; }
+
         //navigation properties
         public virtual ICollection<Department>? Departments { get; set; } = new HashSet<Department>();
 		public virtual ICollection<Doctor>? Doctors { get; set; } = new HashSet<Doctor>();

@@ -1,5 +1,4 @@
-﻿
-namespace Serena.BLL.Services.Patients;
+﻿namespace Serena.BLL.Services.Patients;
 
 public interface IPatientService
 {
@@ -8,4 +7,5 @@ public interface IPatientService
     Task CreatePatientAsync(CreateAndUpdatePatientDTO patientDto);
     Task UpdatePatientAsync(int id, CreateAndUpdatePatientDTO patientDto);
     Task DeletePatientAsync(int id);
+    Task<PatientDetailsDTO?> GetPatientByUserIdAsync(string userId);
 }

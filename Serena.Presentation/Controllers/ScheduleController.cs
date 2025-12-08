@@ -7,10 +7,14 @@ namespace Serena.Presentation.Controllers
     public class ScheduleController : Controller
     {
         private readonly IScheduleService _service;
+        private readonly Serena.BLL.Services.Doctors.IDoctorService _doctorService;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<Serena.DAL.Entities.ApplicationUser> _userManager;
 
-        public ScheduleController(IScheduleService service)
+        public ScheduleController(IScheduleService service, Serena.BLL.Services.Doctors.IDoctorService doctorService, Microsoft.AspNetCore.Identity.UserManager<Serena.DAL.Entities.ApplicationUser> userManager)
         {
             _service = service;
+            _doctorService = doctorService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -27,15 +31,31 @@ namespace Serena.Presentation.Controllers
             return View(schedule);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var doctors = await _doctorService.GetAllDoctorsAsync();
+            ViewBag.DoctorsList = doctors.Select(d => new { Id = d.Id, Name = d.FirstName + " " + d.LastName });
+            ViewBag.Doctors = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(ViewBag.DoctorsList, "Id", "Name");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAndUpdateScheduleDTO dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+            if (!ModelState.IsValid) 
+            {
+               var doctors = await _doctorService.GetAllDoctorsAsync();
+               ViewBag.DoctorsList = doctors.Select(d => new { Id = d.Id, Name = d.FirstName + " " + d.LastName });
+               ViewBag.Doctors = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(ViewBag.DoctorsList, "Id", "Name", dto.DoctorId);
+               return View(dto);
+            }
+
+
+            var selectedDoctor = await _doctorService.GetDoctorByIdAsync(dto.DoctorId);
+            if (selectedDoctor != null)
+            {
+                dto.DoctorUserId = selectedDoctor.UserId;
+            }
 
             await _service.CreateScheduleAsync(dto);
             return RedirectToAction(nameof(Index));
@@ -53,13 +73,22 @@ namespace Serena.Presentation.Controllers
                 Price = schedule.Price
             };
 
+            var doctors = await _doctorService.GetAllDoctorsAsync();
+            ViewBag.DoctorsList = doctors.Select(d => new { Id = d.Id, Name = d.FirstName + " " + d.LastName });
+            ViewBag.Doctors = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(ViewBag.DoctorsList, "Id", "Name", dto.DoctorId);
             return View(dto);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, CreateAndUpdateScheduleDTO dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+            if (!ModelState.IsValid)
+            {
+               var doctors = await _doctorService.GetAllDoctorsAsync();
+               ViewBag.DoctorsList = doctors.Select(d => new { Id = d.Id, Name = d.FirstName + " " + d.LastName });
+               ViewBag.Doctors = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(ViewBag.DoctorsList, "Id", "Name", dto.DoctorId);
+               return View(dto);
+            }
 
             await _service.UpdateScheduleAsync(id, dto);
             return RedirectToAction(nameof(Index));

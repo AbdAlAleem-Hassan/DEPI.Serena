@@ -154,7 +154,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a asp-controller="Account" asp-action="Profile" class="dropdown-link">
+                            <a asp-controller="Account" asp-action="Profile" asp-route-Id="@user?.Id" class="dropdown-link">
                                 <i class="fas fa-user"></i> My Profile
                             </a>
                             <a asp-controller="Account" asp-action="Settings" class="dropdown-link">
@@ -287,7 +287,7 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a asp-controller="Account" asp-action="Profile" class="mobile-user-action">
+                    <a asp-controller="Account" asp-action="Profile" asp-route-Id="@user?.Id" class="mobile-user-action">
                         <i class="fas fa-user"></i> <span data-en="My Profile" data-ar="ملفي الشخصي">My Profile</span>
                     </a>
                     <a asp-controller="Account" asp-action="Settings" class="mobile-user-action">

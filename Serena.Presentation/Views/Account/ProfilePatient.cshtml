@@ -1,0 +1,432 @@
+﻿@using Serena.BLL.Models.Patients
+@using Serena.DAL.Common.Enums
+@model PatientDetailsDTO
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: var(--light-gray);
+        }
+
+        .profile-header {
+            margin-bottom: 2rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .profile-sidebar-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .profile-avatar-upload {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-blue);
+        }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent-green);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--primary-white);
+        }
+
+        .profile-form-card {
+            background: var(--primary-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Add validation styles */
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .validation-summary {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+            .validation-summary ul {
+                margin: 0;
+                padding-left: 1rem;
+            }
+
+        /* Medical info section */
+        .medical-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .medical-info-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .medical-info-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+
+        .medical-info-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .dark-mode body {
+            background-color: #0f172a;
+        }
+
+        .dark-mode .profile-sidebar-card,
+        .dark-mode .profile-form-card {
+            background-color: var(--charcoal);
+            border: 1px solid #334155;
+        }
+
+        .dark-mode .form-section-title {
+            border-bottom-color: #334155;
+        }
+
+        .dark-mode .form-actions {
+            border-top-color: #334155;
+        }
+
+        .dark-mode .medical-info-item {
+            background: #1e293b;
+            border-left-color: #3b82f6;
+        }
+
+        .dark-mode .medical-info-value {
+            color: #e2e8f0;
+        }
+
+        @@media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar-card {
+                position: static;
+                width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}
+
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+    <div class="profile-header">
+        <h1 class="section-title" style="text-align: left;">Patient Profile</h1>
+        <p class="section-subtitle" style="text-align: left; margin: 0;">Manage your personal and medical information.</p>
+    </div>
+
+    <!-- Display validation errors summary -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="validation-summary">
+            <strong>Please correct the following errors:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="profile-grid">
+        <!-- SIDEBAR -->
+        <div class="profile-sidebar-card">
+            <div class="profile-avatar-upload">
+                <label for="avatarUpload" class="upload-icon">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="avatarUpload" name="photo" style="display:none;" accept="image/*">
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">@($"{Model.FirstName} {Model.LastName}")</h3>
+            <p style="color: var(--accent-blue); margin-bottom: 1rem;">Patient</p>
+            <span class="role-badge">Patient</span>
+
+            <div style="margin-top: 2rem; text-align: left;">
+                <div style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dark); opacity: 0.7;">
+                    <i class="fas fa-check-circle" style="color: var(--accent-green); width: 20px;"></i> Active Account
+                </div>
+                <div style="margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-dark); opacity: 0.7;">
+                    <i class="fas fa-calendar-alt" style="color: var(--accent-blue); width: 20px;"></i>
+                    @{
+                        var age = DateTime.Now.Year - Model.DateOfBirth.Year;
+                        if (Model.DateOfBirth.Date > DateTime.Now.AddYears(-age)) age--;
+                    }
+                    @age years old
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="profile-form-card">
+            <form id="profileForm" action="@Url.Action("ProfilePatient", "Account")" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <!-- Hidden fields -->
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="UserId" />
+
+                <div class="form-section-title">
+                    <i class="fas fa-user-circle"></i> Personal Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="FirstName"></label>
+                        <input type="text" class="form-input" asp-for="FirstName">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="LastName"></label>
+                        <input type="text" class="form-input" asp-for="LastName">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Email"></label>
+                        <input type="email" class="form-input" asp-for="Email" readonly style="opacity:0.7; cursor:not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="PhoneNumber"></label>
+                        <input type="tel" class="form-input" asp-for="PhoneNumber">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="DateOfBirth"></label>
+                        <input type="date" class="form-input" asp-for="DateOfBirth"
+                               value="@Model.DateOfBirth.ToString("yyyy-MM-dd")"
+                               max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Gender"></label>
+                        <select class="form-input" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
+                            <option value="">Select Gender</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="MiddleName"></label>
+                        <input type="text" class="form-input" asp-for="MiddleName">
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="JobStatus"></label>
+                        <input type="text" class="form-input" asp-for="JobStatus">
+                        <span asp-validation-for="JobStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="InsuranceCompany"></label>
+                        <input type="text" class="form-input" asp-for="InsuranceCompany">
+                        <span asp-validation-for="InsuranceCompany" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="MaritalStatus"></label>
+                        <select class="form-input" asp-for="MaritalStatus">
+                            <option value="">Select Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="NationalID"></label>
+                        <input type="text" class="form-input" asp-for="NationalID">
+                        <span asp-validation-for="NationalID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-title">
+                    <i class="fas fa-map-marker-alt"></i> Address Details
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Country"></label>
+                        <input type="text" class="form-input" asp-for="Country">
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="City"></label>
+                        <input type="text" class="form-input" asp-for="City">
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Street"></label>
+                        <input type="text" class="form-input" asp-for="Street">
+                        <span asp-validation-for="Street" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="ZipCode"></label>
+                        <input type="text" class="form-input" asp-for="ZipCode">
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="hero-btn hero-btn-secondary" onclick="window.location.goBack()">Cancel</button>
+                    <button type="submit" class="hero-btn hero-btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const avatarUpload = document.getElementById('avatarUpload');
+            const profilePreview = document.getElementById('profilePreview');
+
+            // Preview image when selected
+            avatarUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // Handle form submission
+            const form = document.getElementById('profileForm');
+            form.addEventListener('submit', function(e) {
+                const btn = form.querySelector('.hero-btn-primary');
+                const originalText = btn.innerText;
+
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                btn.disabled = true;
+
+                // Form will submit normally to the POST action
+            });
+
+            // Calculate and display age
+            const dobInput = document.getElementById('DateOfBirth');
+            const updateAgeDisplay = () => {
+                const dob = new Date(dobInput.value);
+                const today = new Date();
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+
+                // Update age display in sidebar if element exists
+                const ageElement = document.querySelector('.fa-calendar-alt').closest('div');
+                if (ageElement && !isNaN(age) && age > 0) {
+                    const ageText = ageElement.textContent.split('years old')[0].trim();
+                    ageElement.innerHTML = `<i class="fas fa-calendar-alt" style="color: var(--accent-blue); width: 20px;"></i> ${age} years old`;
+                }
+            };
+
+            if (dobInput) {
+                dobInput.addEventListener('change', updateAgeDisplay);
+            }
+        });
+    </script>
+}

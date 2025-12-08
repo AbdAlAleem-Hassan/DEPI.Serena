@@ -49,7 +49,7 @@ namespace Serena.Presentation.Controllers
                 // Get top hospitals (by rating or average cost)
                 var topHospitals = hospitals
                     .OrderByDescending(h => h.AverageCost)
-                    .Take(6)
+                    .Take(3)
                     .ToList();
 
                 // Get top doctors (by experience)

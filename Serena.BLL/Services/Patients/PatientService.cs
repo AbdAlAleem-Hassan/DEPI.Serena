@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Serena.BLL.Models.Patients;
 
 namespace Serena.BLL.Services.Patients;
 
@@ -61,5 +62,12 @@ public class PatientService : IPatientService
 
         return _mapper.Map<IEnumerable<PatientDtoGet>>(patients);
 
+    }
+    public async Task<PatientDetailsDTO?> GetPatientByUserIdAsync(string userId)
+    {
+        var patient = await _unitOfWork.PatientRepository
+                                .GetIQueryable()
+                                .FirstOrDefaultAsync(p => p.UserId == userId);
+        return _mapper.Map<PatientDetailsDTO>(patient);
     }
 }

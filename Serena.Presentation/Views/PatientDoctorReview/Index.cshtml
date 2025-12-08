@@ -1,0 +1,57 @@
+@model IEnumerable<Serena.BLL.Models.PatientDoctorReviews.PatientDoctorReviewGetDTO>
+
+@{
+    ViewData["Title"] = "Patient Doctor Reviews";
+}
+
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="h3 mb-0 text-gray-800">Patient Doctor Reviews</h1>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New
+        </a>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Doctor ID</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.PatientId</td>
+                            <td>@item.DoctorId</td>
+                            <td>@item.Rating</td>
+                            <td>@item.Comment</td>
+                            <td>@item.ReviewingDate?.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-patientId="@item.PatientId" asp-route-doctorId="@item.DoctorId" class="btn btn-sm btn-info" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-patientId="@item.PatientId" asp-route-doctorId="@item.DoctorId" class="btn btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

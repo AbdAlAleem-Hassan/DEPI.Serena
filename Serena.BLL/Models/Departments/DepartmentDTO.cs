@@ -7,8 +7,8 @@ namespace Serena.BLL.Models.Departments
 {
 	public class DepartmentDTO
 	{
+		public int Id { get; set; }
 		public string Name { get; set; }
-
 		public string HospitalName { get; set; }
 		public int DoctorsNumber { get; set; }
 	}

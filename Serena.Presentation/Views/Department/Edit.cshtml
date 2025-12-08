@@ -1,0 +1,44 @@
+@model Serena.BLL.Models.Departments.DepartmentDTO
+
+@{
+    ViewData["Title"] = "Edit Department";
+    // Note: The controller expects CreateAndUpdateDepartmentDTO for POST, but passes DepartmentDTO for GET (Index/Details).
+    // Actually, DepartmentController.Edit(int id) returns View(dept) where dept is DepartmentDTO.
+    // However, the POST action accepts CreateAndUpdateDepartmentDTO.
+    // So we should model the view for CreateAndUpdateDepartmentDTO usually, OR map it manually.
+    // But since we are receiving DepartmentDTO, we should probably display that, but the FORM must submit what the POST expects.
+    // Let's use DepartmentDTO for the model, but we need to ensure the form fields match the POST DTO properties.
+    // Both have 'Name'.
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Edit Department</h6>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @* Assuming we need to pass ID back if url requires it or as route value. 
+                       The Edit POST takes (int id, DTO). So route id is sufficient. *@
+                    
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-4 text-center">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -8,4 +8,5 @@ public interface IPatientDoctorReviewService
     Task DeleteAsync(int patientId, int doctorId);
     Task<List<PatientDoctorReviewGetDTO>> GetAllAsync();
     Task<double?> GetAverageRatingForDoctorAsync(int doctorId);
+    Task<PatientDoctorReviewGetDTO?> GetAsync(int patientId, int doctorId);
 }

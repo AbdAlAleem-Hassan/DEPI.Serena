@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="~/css/toaster.css">
     <link rel="stylesheet" href="~/css/responsive.css">
     <link rel="stylesheet" href="~/css/userProfile.css">
+    
+    <!-- Theme Loader - Must be in HEAD -->
+    <script src="~/js/theme-loader.js"></script>
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -104,6 +107,22 @@
                         <a asp-controller="Hospital" asp-action="Index" class="nav-link">Find Hospital</a>
                         <a asp-controller="Doctor" asp-action="Index" class="nav-link">Find Doctors</a>
                     }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <div class="dropdown">
+                            <button class="nav-link dropdown-toggle">
+                                <span>Admin Panel</span> <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a asp-controller="Department" asp-action="Index" class="dropdown-link">Departments</a>
+                                <a asp-controller="Service" asp-action="Index" class="dropdown-link">Services</a>
+                                <a asp-controller="Schedule" asp-action="Index" class="dropdown-link">Schedules</a>
+                                <a asp-controller="DoctorHospitalReview" asp-action="Index" class="dropdown-link">Doctor Reviews</a>
+                                <a asp-controller="PatientDoctorReview" asp-action="Index" class="dropdown-link">Patient-Doctor Reviews</a>
+                                <a asp-controller="PatientHospitalReview" asp-action="Index" class="dropdown-link">Patient-Hospital Reviews</a>
+                            </div>
+                        </div>
+                    }
 
                     
                 </div>
@@ -150,9 +169,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <a asp-controller="Account" asp-action="Profile" class="dropdown-link">
-                                <i class="fas fa-user"></i> My Profile
-                            </a>
+                            @if (User.IsInRole("Doctor"))
+                            {
+                                <a asp-controller="Account" asp-action="Profile"
+                                   asp-route-Id="@user?.Id"
+                                   class="dropdown-link">
+                                    <i class="fas fa-user"></i> My Profile
+                                </a>
+                            }
+                            else if (User.IsInRole("Patient"))
+                            {
+                                <a asp-controller="Account" asp-action="ProfilePatient"
+                                   asp-route-Id="@user?.Id"
+                                   class="dropdown-link">
+                                    <i class="fas fa-user"></i> My Profile
+                                </a>
+                            }
                             <a asp-controller="Account" asp-action="Settings" class="dropdown-link">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
@@ -277,6 +309,23 @@
                         <a asp-controller="Doctor" asp-action="Index" class="mobile-user-action">
                             <i class="fas fa-user-md"></i> <span data-en="Find Doctors" data-ar="البحث عن أطباء">Find Doctors</span>
                         </a>
+                    }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <div class="mobile-dropdown">
+                            <button class="mobile-dropdown-toggle">
+                                <span data-en="Admin Panel" data-ar="لوحة المشرف">Admin Panel</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="mobile-dropdown-content">
+                                <a asp-controller="Department" asp-action="Index" class="mobile-dropdown-link">Departments</a>
+                                <a asp-controller="Service" asp-action="Index" class="mobile-dropdown-link">Services</a>
+                                <a asp-controller="Schedule" asp-action="Index" class="mobile-dropdown-link">Schedules</a>
+                                <a asp-controller="DoctorHospitalReview" asp-action="Index" class="mobile-dropdown-link">Doctor Reviews</a>
+                                <a asp-controller="PatientDoctorReview" asp-action="Index" class="mobile-dropdown-link">Patient-Doctor Reviews</a>
+                                <a asp-controller="PatientHospitalReview" asp-action="Index" class="mobile-dropdown-link">Patient-Hospital Reviews</a>
+                            </div>
+                        </div>
                     }
 
                     

@@ -9,5 +9,6 @@ namespace Serena.BLL.Services.Schedules
         Task<int> CreateScheduleAsync(CreateAndUpdateScheduleDTO dto);
         Task<int> UpdateScheduleAsync(int id, CreateAndUpdateScheduleDTO dto);
         Task<int> DeleteScheduleAsync(int id);
+        Task<IEnumerable<ScheduleDTO>> GetDoctorSchedulesAsync(string doctorUserId);
     }
 }

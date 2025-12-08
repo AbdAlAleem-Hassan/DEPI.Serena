@@ -43,4 +43,10 @@ public class PatientDoctorReviewRepository : IPatientDoctorReviews
         _dbContext.PatientDoctorReviews.Update(patientDoctorReview);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<PatientDoctorReview?> GetAsync(int patientId, int doctorId)
+    {
+        return await _dbContext.PatientDoctorReviews
+            .FirstOrDefaultAsync(r => r.PatientId == patientId && r.DoctorId == doctorId);
+    }
 }
