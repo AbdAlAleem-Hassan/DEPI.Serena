@@ -15,6 +15,9 @@ namespace Serena.BLL.Models.Home
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = string.Empty;
 
+        [Phone(ErrorMessage = "Invalid phone number")]
+        public string? Phone { get; set; }
+
         [Required(ErrorMessage = "Subject is required")]
         [StringLength(200, ErrorMessage = "Subject cannot be longer than 200 characters")]
         public string Subject { get; set; } = string.Empty;

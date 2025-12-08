@@ -3,200 +3,237 @@
     ViewData["Title"] = "Contact Us - Serena Healthcare";
 }
 
-<div class="contact-page">
-    <div class="contact-hero">
-        <div class="container">
-            <h1>Contact Us</h1>
-            <p>Get in touch with our team for any inquiries or support</p>
+<!-- Page Header with Shapes -->
+<section class="page-header">
+    <div class="page-header-background">
+        <div class="page-header-orbs">
+            <div class="page-header-orb"></div>
+            <div class="page-header-orb"></div>
+            <div class="page-header-orb"></div>
         </div>
     </div>
-
-    <div class="container contact-content">
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h2>Get in Touch</h2>
-                <div class="contact-method">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h3>Address</h3>
-                        <p>123 Healthcare Street<br>Medical City, HC 12345</p>
-                    </div>
-                </div>
-                <div class="contact-method">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h3>Phone</h3>
-                        <p>+1 (234) 567-8900</p>
-                    </div>
-                </div>
-                <div class="contact-method">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h3>Email</h3>
-                        <p>info@serenahealthcare.com</p>
-                    </div>
-                </div>
-                <div class="contact-method">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <h3>Business Hours</h3>
-                        <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    </div>
-                </div>
-            </div>
-
+    <div class="container">
+        <h1 class="page-title" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h1>
+        <p class="page-subtitle" data-en="Get in touch with us for any inquiries or support"
+            data-ar="تواصل معنا لأي استفسارات أو دعم">
+            Get in touch with us for any inquiries or support
+        </p>
+    </div>
+</section>
+<!-- Contact Section -->
+<section class="contact">
+    <div class="container">
+        <div class="contact-container">
             <div class="contact-form">
-                <h2>Send us a Message</h2>
+                <h2 data-en="Send Us a Message" data-ar="أرسل لنا رسالة">Send Us a Message</h2>
                 <form asp-action="Contact" method="post">
                     @Html.AntiForgeryToken()
-
                     <div class="form-group">
-                        <label asp-for="Name">Name *</label>
-                        <input asp-for="Name" class="form-control" placeholder="Your name">
+                        <label class="form-label" asp-for="Name" data-en="Full Name" data-ar="الاسم الكامل">Full
+                            Name</label>
+                        <input type="text" asp-for="Name" class="form-input" placeholder="Enter your name"
+                            data-en="Enter your name" data-ar="أدخل اسمك" required>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Email">Email *</label>
-                        <input asp-for="Email" class="form-control" placeholder="your@email.com">
+                        <label class="form-label" asp-for="Email" data-en="Email Address"
+                            data-ar="عنوان البريد الإلكتروني">Email Address</label>
+                        <input type="email" asp-for="Email" class="form-input" placeholder="Enter your email"
+                            data-en="Enter your email" data-ar="أدخل بريدك الإلكتروني" required>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Subject">Subject *</label>
-                        <input asp-for="Subject" class="form-control" placeholder="Subject of your message">
+                        <label class="form-label" asp-for="Phone" data-en="Phone Number" data-ar="رقم الهاتف">Phone
+                            Number</label>
+                        <input type="tel" asp-for="Phone" class="form-input" placeholder="Enter your phone number"
+                            data-en="Enter your phone number" data-ar="أدخل رقم هاتفك">
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="Subject" data-en="Subject" data-ar="الموضوع">Subject</label>
+                        <select asp-for="Subject" class="form-input" required>
+                            <option value="" data-en="Select a subject" data-ar="اختر موضوع">Select a subject</option>
+                            <option value="general" data-en="General Inquiry" data-ar="استفسار عام">General Inquiry
+                            </option>
+                            <option value="support" data-en="Technical Support" data-ar="دعم فني">Technical Support
+                            </option>
+                            <option value="partnership" data-en="Partnership" data-ar="شراكة">Partnership</option>
+                            <option value="feedback" data-en="Feedback" data-ar="ملاحظات">Feedback</option>
+                            <option value="other" data-en="Other" data-ar="أخرى">Other</option>
+                        </select>
                         <span asp-validation-for="Subject" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Message">Message *</label>
-                        <textarea asp-for="Message" class="form-control" rows="5" placeholder="Your message..."></textarea>
+                        <label class="form-label" asp-for="Message" data-en="Message" data-ar="الرسالة">Message</label>
+                        <textarea asp-for="Message" class="form-textarea" placeholder="Enter your message"
+                            data-en="Enter your message" data-ar="أدخل رسالتك" required></textarea>
                         <span asp-validation-for="Message" class="text-danger"></span>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <button type="submit" class="btn btn-primary" data-en="Send Message" data-ar="إرسال الرسالة">Send
+                        Message</button>
                 </form>
+            </div>
+            <div class="contact-info">
+                <h2 data-en="Get In Touch" data-ar="ابق على اتصال">Get In Touch</h2>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Our Address" data-ar="عنواننا">Our Address</h3>
+                            <p data-en="123 Healthcare St, Medical City, HC 12345"
+                                data-ar="123 شارع الرعاية الصحية، المدينة الطبية، HC 12345">
+                                123 Healthcare St, Medical City, HC 12345
+                            </p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Phone Number" data-ar="رقم الهاتف">Phone Number</h3>
+                            <p>+1 234 567 8900</p>
+                            <p>+1 234 567 8901</p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Email Address" data-ar="عنوان البريد الإلكتروني">Email Address</h3>
+                            <p>info@serena.com</p>
+                            <p>support@serena.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Working Hours" data-ar="ساعات العمل">Working Hours</h3>
+                            <p data-en="Mon-Fri: 9AM-6PM" data-ar="الإثنين-الجمعة: 9 صباحًا - 6 مساءً">Mon-Fri: 9AM-6PM
+                            </p>
+                            <p data-en="Sat: 10AM-4PM" data-ar="السبت: 10 صباحًا - 4 مساءً">Sat: 10AM-4PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="emergency-contact">
+                    <h3 data-en="Emergency Contact" data-ar="الاتصال في حالات الطوارئ">Emergency Contact</h3>
+                    <p data-en="For medical emergencies, please call our 24/7 helpline:"
+                        data-ar="لحالات الطوارئ الطبية، يرجى الاتصال بخط المساعدة على مدار 24 ساعة:">
+                        For medical emergencies, please call our 24/7 helpline:
+                    </p>
+                    <div class="emergency-number">
+                        <i class="fas fa-phone"></i>
+                        <span>1-800-SERENA1</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<style>
-    .contact-page {
-        min-height: 100vh;
-        background: var(--primary-white);
-        color: var(--text-dark);
-    }
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container">
+        <h2 class="section-title" data-en="Find Us" data-ar="ابحث عنا">Find Us</h2>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+</section>
 
-    .contact-hero {
-        background: linear-gradient(135deg, #11998e, #38ef7d);
-        color: white;
-        padding: 4rem 0;
-        text-align: center;
-    }
+<!-- FAQ Section -->
+<section class="faq">
+    <div class="container">
+        <h2 class="section-title" data-en="Frequently Asked Questions" data-ar="الأسئلة الشائعة">Frequently Asked
+            Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span data-en="How do I book an appointment through Serena?"
+                        data-ar="كيف أحجز موعدًا من خلال سيرينا؟">How do I book an appointment through Serena?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p data-en="You can book appointments through our website or mobile app by selecting your preferred doctor, choosing an available time slot, and confirming your booking. You'll receive a confirmation email with all the details."
+                        data-ar="يمكنك حجز المواعيد من خلال موقعنا على الويب أو تطبيق الهاتف المحمول عن طريق اختيار الطبيب المفضل لديك، واختيار فترة زمنية متاحة، وتأكيد الحجز الخاص بك. سوف تتلقى رسالة تأكيد بالبريد الإلكتروني مع جميع التفاصيل.">
+                        You can book appointments through our website or mobile app by selecting your preferred doctor,
+                        choosing an available time slot, and confirming your booking. You'll receive a confirmation
+                        email with all the details.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span data-en="Is my medical information secure with Serena?"
+                        data-ar="هل معلوماتي الطبية آمنة مع سيرينا؟">Is my medical information secure with
+                        Serena?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p data-en="Yes, we use end-to-end encryption and follow strict data protection protocols to ensure your medical information remains private and secure. We comply with all relevant healthcare data protection regulations."
+                        data-ar="نعم، نستخدم التشفير من طرف إلى طرف ونتبع بروتوكولات حماية البيانات الصارمة لضمان بقاء معلوماتك الطبية خاصة وآمنة. نحن نلتزم بجميع لوائح حماية بيانات الرعاية الصحية ذات الصلة.">
+                        Yes, we use end-to-end encryption and follow strict data protection protocols to ensure your
+                        medical information remains private and secure. We comply with all relevant healthcare data
+                        protection regulations.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span data-en="How can hospitals partner with Serena?"
+                        data-ar="كيف يمكن للمستشفيات الشراكة مع سيرينا؟">How can hospitals partner with Serena?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p data-en="Hospitals interested in partnering with Serena can contact our partnership team through the form on this page or email partnerships@serena.com. Our team will guide you through the onboarding process."
+                        data-ar="يمكن للمستشفيات المهتمة بالشراكة مع سيرينا الاتصال بفريق الشراكة لدينا من خلال النموذج الموجود في هذه الصفحة أو البريد الإلكتروني partnerships@serena.com. سيرشدك فريقنا خلال عملية الانضمام.">
+                        Hospitals interested in partnering with Serena can contact our partnership team through the form
+                        on this page or email partnerships@serena.com. Our team will guide you through the onboarding
+                        process.
+                    </p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span data-en="What should I do in case of technical issues?"
+                        data-ar="ماذا يجب أن أفعل في حالة وجود مشاكل فنية؟">What should I do in case of technical
+                        issues?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p data-en="If you encounter any technical issues, please contact our support team at support@serena.com or call our technical support line at +1 234 567 8901. Our team is available to assist you during business hours."
+                        data-ar="إذا واجهت أي مشاكل فنية، يرجى الاتصال بفريق الدعم لدينا على support@serena.com أو الاتصال بخط الدعم الفني على +1 234 567 8901. فريقنا متاح لمساعدتك خلال ساعات العمل.">
+                        If you encounter any technical issues, please contact our support team at support@serena.com or
+                        call our technical support line at +1 234 567 8901. Our team is available to assist you during
+                        business hours.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        .contact-hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+@section Scripts {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="~/js/map.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initializeContactMap === 'function') {
+                initializeContactMap();
+            }
+        });
+    </script>
+}
 
-    .contact-content {
-        padding: 4rem 0;
-    }
-
-    .contact-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-    }
-
-    .contact-info h2,
-    .contact-form h2 {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-        color: var(--text-dark);
-    }
-
-    .contact-method {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-        .contact-method i {
-            font-size: 1.5rem;
-            color: #667eea;
-            margin-top: 0.25rem;
-        }
-
-        .contact-method h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-            color: var(--text-dark);
-        }
-
-        .contact-method p {
-            color: var(--charcoal-light);
-        }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid var(--soft-gray);
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-    }
-
-    .dark-mode .form-control {
-        background: var(--charcoal);
-        border-color: var(--charcoal-light);
-        color: var(--soft-white);
-    }
-
-    .form-control:focus {
-        border-color: #667eea;
-        outline: none;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
-        }
-
-    .text-danger {
-        color: #ef4444;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-        display: block;
-    }
-
-    @@media (max-width: 768px) {
-        .contact-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/contact.css" />
+}

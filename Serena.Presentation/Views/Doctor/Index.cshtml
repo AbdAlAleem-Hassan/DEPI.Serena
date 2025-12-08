@@ -80,15 +80,15 @@
             overflow: hidden;
         }
 
-            .filters-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            }
+        .filters-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
 
         .filters-header {
             display: flex;
@@ -109,10 +109,10 @@
             margin: 0;
         }
 
-            .filters-title i {
-                color: #667eea;
-                font-size: 24px;
-            }
+        .filters-title i {
+            color: #667eea;
+            font-size: 24px;
+        }
 
         .filters-actions {
             display: flex;
@@ -141,28 +141,29 @@
             gap: 6px;
         }
 
-            .filter-label i {
-                color: #667eea;
-                font-size: 14px;
-            }
+        .filter-label i {
+            color: #667eea;
+            font-size: 14px;
+        }
 
         .filter-select-wrapper {
             position: relative;
         }
 
-            .filter-select-wrapper::after {
-                content: '\f078';
-                font-family: 'Font Awesome 5 Free';
-                font-weight: 900;
-                position: absolute;
-                right: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #718096;
-                pointer-events: none;
-            }
+        .filter-select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            pointer-events: none;
+        }
 
-        .filter-select, .form-input {
+        .filter-select,
+        .form-input {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
@@ -175,19 +176,20 @@
             cursor: pointer;
         }
 
-            .filter-select:focus, .form-input:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            }
+        .filter-select:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
 
         .form-input {
             background-image: none;
         }
 
-            .form-input::placeholder {
-                color: #a0aec0;
-            }
+        .form-input::placeholder {
+            color: #a0aec0;
+        }
 
         /* Buttons */
         .btn {
@@ -208,10 +210,10 @@
             color: white;
         }
 
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
 
         .btn-clear {
             background: #f8fafc;
@@ -219,11 +221,11 @@
             border: 2px solid #e2e8f0;
         }
 
-            .btn-clear:hover {
-                background: #f1f5f9;
-                border-color: #cbd5e0;
-                color: #4a5568;
-            }
+        .btn-clear:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e0;
+            color: #4a5568;
+        }
 
         /* Active Filters */
         .active-filters-container {
@@ -252,20 +254,20 @@
             box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
         }
 
-            .active-filter a {
-                color: white;
-                text-decoration: none;
-                font-size: 18px;
-                line-height: 1;
-                padding: 0 2px;
-                border-radius: 50%;
-                transition: all 0.2s;
-            }
+        .active-filter a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 1;
+            padding: 0 2px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
 
-                .active-filter a:hover {
-                    background: rgba(255, 255, 255, 0.2);
-                    transform: scale(1.1);
-                }
+        .active-filter a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
 
         /* Search Bar Enhancement */
         .search-main-row {
@@ -281,16 +283,16 @@
             margin-bottom: 25px;
         }
 
-            .search-card-header h3 {
-                color: white;
-                font-size: 28px;
-                font-weight: 700;
-                margin-bottom: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
-            }
+        .search-card-header h3 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
 
         .search-subtitle {
             color: rgba(255, 255, 255, 0.9);
@@ -311,14 +313,14 @@
             position: relative;
         }
 
-            .search-input-container i {
-                position: absolute;
-                left: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #667eea;
-                font-size: 18px;
-            }
+        .search-input-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 18px;
+        }
 
         .search-input {
             width: 100%;
@@ -331,11 +333,11 @@
             transition: all 0.3s ease;
         }
 
-            .search-input:focus {
-                outline: none;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                transform: translateY(-1px);
-            }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
 
         .search-btn {
             padding: 18px 35px;
@@ -349,241 +351,14 @@
             transition: all 0.3s ease;
         }
 
-            .search-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-                background: #f8fafc;
-            }
-
-        /* ====== ENHANCED DOCTOR CARD STYLES ====== */
-        .doctors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            background: #f8fafc;
         }
 
-        .doctor-card-new {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid #eef2f7;
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
+        /* Enhanced Doctor Card Styles removed - using main.css .doctor-card */
 
-            .doctor-card-new:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
-                border-color: #667eea;
-            }
-
-            .doctor-card-new::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .doctor-card-new:hover::before {
-                opacity: 1;
-            }
-
-        .doctor-card-header-new {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-
-        .doctor-image-new {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .doctor-card-new:hover .doctor-image-new {
-            transform: scale(1.05);
-        }
-
-        .doctor-placeholder-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #94a3b8;
-            font-size: 48px;
-        }
-
-        .doctor-card-body-new {
-            padding: 24px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .available-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: rgba(34, 197, 94, 0.1);
-            color: #16a34a;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            align-self: flex-start;
-        }
-
-        .available-dot {
-            font-size: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        @@keyframes pulse {
-            0% {
-                opacity: 0.6;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.6;
-            }
-        }
-
-        .doctor-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1e293b;
-            margin: 0 0 8px 0;
-            line-height: 1.3;
-        }
-
-        .doctor-specialization {
-            color: #667eea;
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0 0 6px 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-            .doctor-specialization::before {
-                content: '🎯';
-                font-size: 14px;
-            }
-
-        .doctor-subspecialization {
-            color: #64748b;
-            font-size: 14px;
-            margin: 0 0 20px 0;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        .doctor-meta-new {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding-top: 20px;
-            border-top: 1px solid #f1f5f9;
-        }
-
-        .doctor-experience,
-        .doctor-location {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #475569;
-            font-size: 14px;
-        }
-
-            .doctor-experience i,
-            .doctor-location i {
-                color: #667eea;
-                width: 20px;
-                font-size: 15px;
-            }
-
-        .doctor-actions-new {
-            display: flex;
-            gap: 12px;
-            margin-top: auto;
-        }
-
-        .view-profile-link-new,
-        .book-now-link-new {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .view-profile-link-new {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-            .view-profile-link-new:hover {
-                background: #f8fafc;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-            }
-
-        .book-now-link-new {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: 2px solid transparent;
-        }
-
-            .book-now-link-new:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
-            }
-
-        /* Doctor Rating */
-        .doctor-rating {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin: 8px 0 12px 0;
-        }
-
-        .rating-stars {
-            color: #fbbf24;
-            font-size: 14px;
-        }
-
-        .rating-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: #475569;
-        }
 
         /* No Results Styling */
         .no-results {
@@ -633,10 +408,10 @@
             color: #475569;
         }
 
-            .results-count strong {
-                color: #1e293b;
-                font-size: 18px;
-            }
+        .results-count strong {
+            color: #1e293b;
+            font-size: 18px;
+        }
 
         .filtered-count {
             color: #667eea;
@@ -674,15 +449,15 @@
             transition: all 0.3s ease;
         }
 
-            .view-btn.active {
-                background: white;
-                color: #667eea;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
+        .view-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-            .view-btn:hover:not(.active) {
-                color: #475569;
-            }
+        .view-btn:hover:not(.active) {
+            color: #475569;
+        }
 
         .results-per-page {
             display: flex;
@@ -690,10 +465,10 @@
             gap: 8px;
         }
 
-            .results-per-page label {
-                color: #475569;
-                font-size: 14px;
-            }
+        .results-per-page label {
+            color: #475569;
+            font-size: 14px;
+        }
 
         .sort-select {
             padding: 8px 16px;
@@ -729,17 +504,17 @@
             gap: 6px;
         }
 
-            .page-link:hover {
-                background: #f8fafc;
-                border-color: #cbd5e0;
-                color: #667eea;
-            }
+        .page-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e0;
+            color: #667eea;
+        }
 
-            .page-link.active {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                border-color: transparent;
-            }
+        .page-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
 
         .page-dots {
             padding: 10px;
@@ -850,7 +625,7 @@
 <!-- Search and Filters Section -->
 <section class="search-section">
     <div class="container">
-        
+
 
         <!-- Enhanced Filters Panel -->
         <div class="filters-container">
@@ -878,12 +653,8 @@
                         <label class="filter-label">
                             <i class="fas fa-user"></i> Doctor Name
                         </label>
-                        <input type="text"
-                               name="name"
-                               class="form-input"
-                               placeholder="Enter doctor name..."
-                               value="@name"
-                               onkeyup="debouncedFilter()">
+                        <input type="text" name="name" class="form-input" placeholder="Enter doctor name..."
+                            value="@name" onkeyup="debouncedFilter()">
                     </div>
 
                     <!-- Specialization Filter -->
@@ -943,8 +714,10 @@
                             <select name="sortBy" class="filter-select" onchange="debouncedFilter()">
                                 <option value="name_asc" selected="@(sortBy == "name_asc")">Name (A-Z)</option>
                                 <option value="name_desc" selected="@(sortBy == "name_desc")">Name (Z-A)</option>
-                                <option value="experience_asc" selected="@(sortBy == "experience_asc")">Experience (Low to High)</option>
-                                <option value="experience_desc" selected="@(sortBy == "experience_desc")">Experience (High to Low)</option>
+                                <option value="experience_asc" selected="@(sortBy == "experience_asc")">Experience (Low
+                                    to High)</option>
+                                <option value="experience_desc" selected="@(sortBy == "experience_desc")">Experience
+                                    (High to Low)</option>
                                 <option value="rating_desc" selected="@(sortBy == "rating_desc")">Highest Rated</option>
                             </select>
                         </div>
@@ -1009,7 +782,8 @@
             <div class="results-count">
                 <span id="doctorsResultsCount">
                     <strong>@totalCount</strong> doctors found
-                    @if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(specialization) || !string.IsNullOrEmpty(city) || yearsOfExperience > 0)
+                    @if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(specialization) ||
+                                        !string.IsNullOrEmpty(city) || yearsOfExperience > 0)
                     {
                         <span class="filtered-count">(filtered)</span>
                     }
@@ -1064,65 +838,65 @@
                     {
                         @foreach (var doctor in Model)
                         {
-                            <div class="doctor-card-new">
-                                <div class="doctor-card-header-new">
+                            <div class="doctor-card"
+                                onclick="window.location.href='@Url.Action("Details", "Doctor", new { id = doctor.Id })'">
+                                <div class="doctor-image">
                                     @if (!string.IsNullOrEmpty(doctor.Image))
                                     {
-                                        <img src="~/files/Imgs/@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image-new">
+                                        <img src="~/files/Imgs/@doctor.Image" alt="@doctor.FirstName @doctor.LastName">
                                     }
                                     else
                                     {
-                                        <div class="doctor-placeholder-icon">
-                                            <i class="fas fa-user-md fa-4x"></i>
-                                        </div>
+                                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600"
+                                            alt="Doctor">
                                     }
+                                    <div class="card-overlay-badge" style="background-color: rgba(16, 185, 129, 0.9);">
+                                        <i class="fas fa-circle" style="font-size: 8px;"></i> Available
+                                    </div>
                                 </div>
 
-                                <div class="doctor-card-body-new">
-                                    <div class="available-status">
-                                        <i class="fas fa-circle available-dot"></i> Available Today
-                                    </div>
+                                <div class="doctor-content">
                                     <h3 class="doctor-name">Dr. @doctor.FirstName @doctor.LastName</h3>
-                                    <p class="doctor-specialization">@doctor.Specialization</p>
-
+                                    <div class="card-meta-row">
+                                        <i class="fas fa-stethoscope"></i> <span>@doctor.Specialization</span>
+                                    </div>
                                     @if (!string.IsNullOrEmpty(doctor.SubSpecialization))
                                     {
-                                        <p class="doctor-subspecialization">@doctor.SubSpecialization</p>
+                                        <div class="card-meta-row" style="font-size: 0.85rem; color: #64748b;">
+                                            <i class="fas fa-notes-medical"></i> <span>@doctor.SubSpecialization</span>
+                                        </div>
                                     }
 
-                                    <!-- You can add rating here if available -->
-                                    @* <div class="doctor-rating">
-                                        <div class="rating-stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                        </div>
-                                        <span class="rating-value">4.5</span>
+                                    @* <div>
+                                        <span class="card-tag">RANK #@doctor.Rank</span>
                                     </div> *@
 
-                                    <div class="doctor-meta-new">
-                                        <div class="doctor-experience">
-                                            <i class="fas fa-briefcase"></i>
-                                            <span>@doctor.YearsOfExperience years experience</span>
+                                    <div class="card-stats">
+                                        <div class="card-stat">
+                                            <div class="card-stat-value">@doctor.YearsOfExperience</div>
+                                            <div class="card-stat-label">Years Exp.</div>
                                         </div>
                                         @if (!string.IsNullOrEmpty(doctor.City))
                                         {
-                                            <div class="doctor-location">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                <span>@doctor.City</span>
+                                            <div class="card-stat">
+                                                <div class="card-stat-value" style="font-size: 0.9rem;">@doctor.City</div>
+                                                <div class="card-stat-label">Location</div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="card-stat">
+                                                <div class="card-stat-value">5.0</div>
+                                                <div class="card-stat-label">Rating</div>
                                             </div>
                                         }
                                     </div>
 
-                                    <div class="doctor-actions-new">
-                                        <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="view-profile-link-new">
-                                            <i class="fas fa-info-circle"></i> View Profile
-                                        </a>
-                                        <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-now-link-new">
-                                            <i class="fas fa-calendar-alt"></i> Book Now
-                                        </a>
+                                    <div class="card-actions">
+                                        <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id"
+                                            class="card-btn card-btn-outline">Profile</a>
+                                        <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id"
+                                            class="card-btn">Book</a>
                                     </div>
                                 </div>
                             </div>
@@ -1271,38 +1045,38 @@
 
             if (filters.name) {
                 html += `<span class="active-filter">
-                    <i class="fas fa-user"></i> Name: "${filters.name}"
-                    <a href="#" onclick="removeFilter('name')" title="Remove">&times;</a>
-                </span>`;
+                                    <i class="fas fa-user"></i> Name: "${filters.name}"
+                                    <a href="#" onclick="removeFilter('name')" title="Remove">&times;</a>
+                                </span>`;
             }
 
             if (filters.specialization) {
                 html += `<span class="active-filter">
-                    <i class="fas fa-stethoscope"></i> Specialization: ${filters.specialization}
-                    <a href="#" onclick="removeFilter('specialization')" title="Remove">&times;</a>
-                </span>`;
+                                    <i class="fas fa-stethoscope"></i> Specialization: ${filters.specialization}
+                                    <a href="#" onclick="removeFilter('specialization')" title="Remove">&times;</a>
+                                </span>`;
             }
 
             if (filters.city) {
                 html += `<span class="active-filter">
-                    <i class="fas fa-map-marker-alt"></i> City: ${filters.city}
-                    <a href="#" onclick="removeFilter('city')" title="Remove">&times;</a>
-                </span>`;
+                                    <i class="fas fa-map-marker-alt"></i> City: ${filters.city}
+                                    <a href="#" onclick="removeFilter('city')" title="Remove">&times;</a>
+                                </span>`;
             }
 
             if (filters.yearsOfExperience > 0) {
                 html += `<span class="active-filter">
-                    <i class="fas fa-briefcase"></i> Experience: ${filters.yearsOfExperience}+ years
-                    <a href="#" onclick="removeFilter('yearsOfExperience')" title="Remove">&times;</a>
-                </span>`;
+                                    <i class="fas fa-briefcase"></i> Experience: ${filters.yearsOfExperience}+ years
+                                    <a href="#" onclick="removeFilter('yearsOfExperience')" title="Remove">&times;</a>
+                                </span>`;
             }
 
             if (filters.sortBy !== 'name_asc') {
                 const sortText = filters.sortBy.replace('_', ' ').toUpperCase();
                 html += `<span class="active-filter">
-                    <i class="fas fa-sort-amount-down"></i> Sort: ${sortText}
-                    <a href="#" onclick="removeFilter('sortBy')" title="Remove">&times;</a>
-                </span>`;
+                                    <i class="fas fa-sort-amount-down"></i> Sort: ${sortText}
+                                    <a href="#" onclick="removeFilter('sortBy')" title="Remove">&times;</a>
+                                </span>`;
             }
 
             activeFiltersContainer.innerHTML = html;
@@ -1334,64 +1108,67 @@
             // Update doctors grid
             if (data.doctors.length === 0) {
                 doctorsGrid.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon">
-                            <i class="fas fa-user-md fa-4x"></i>
-                        </div>
-                        <h3>No doctors found</h3>
-                        <p>Try adjusting your search or filters to find what you're looking for.</p>
-                        <a href="@Url.Action("Index")" class="btn btn-primary">
-                            <i class="fas fa-redo"></i> Reset Filters
-                        </a>
-                    </div>
-                `;
+                                    <div class="no-results">
+                                        <div class="no-results-icon">
+                                            <i class="fas fa-user-md fa-4x"></i>
+                                        </div>
+                                        <h3>No doctors found</h3>
+                                        <p>Try adjusting your search or filters to find what you're looking for.</p>
+                                        <a href="@Url.Action("Index")" class="btn btn-primary">
+                                            <i class="fas fa-redo"></i> Reset Filters
+                                        </a>
+                                    </div>
+                                `;
             } else {
                 let html = '';
                 data.doctors.forEach(doctor => {
                     html += `
-                        <div class="doctor-card-new">
-                            <div class="doctor-card-header-new">
-                                ${doctor.image ?
-                                    `<img src="/files/Imgs/${doctor.image}" alt="${doctor.firstName} ${doctor.lastName}" class="doctor-image-new">` :
-                                    `<div class="doctor-placeholder-icon"><i class="fas fa-user-md fa-4x"></i></div>`
-                                }
-                            </div>
+                                    <div class="doctor-card" onclick="window.location.href='/Doctor/Details/${doctor.id}'">
+                                            <div class="doctor-image">
+                                                ${doctor.image ?
+                            `<img src="/files/Imgs/${doctor.image}" alt="${doctor.firstName} ${doctor.lastName}">` :
+                            `<img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600" alt="Doctor">`
+                        }
+                                                <div class="card-overlay-badge" style="background-color: rgba(16, 185, 129, 0.9);">
+                                                    <i class="fas fa-circle" style="font-size: 8px;"></i> Available
+                                                </div>
+                                            </div>
 
-                            <div class="doctor-card-body-new">
-                                <div class="available-status">
-                                    <i class="fas fa-circle available-dot"></i> Available Today
-                                </div>
-                                <h3 class="doctor-name">Dr. ${doctor.firstName} ${doctor.lastName}</h3>
-                                <p class="doctor-specialization">${doctor.specialization}</p>
+                                            <div class="doctor-content">
+                                                <h3 class="doctor-name">Dr. ${doctor.firstName} ${doctor.lastName}</h3>
+                                                <div class="card-meta-row">
+                                                    <i class="fas fa-stethoscope"></i> <span>${doctor.specialization}</span>
+                                                </div>
+                                                ${doctor.subSpecialization ?
+                            `<div class="card-meta-row" style="font-size: 0.85rem; color: #64748b;">
+                                                        <i class="fas fa-notes-medical"></i> <span>${doctor.subSpecialization}</span>
+                                                    </div>` : ''
+                        }
 
-                                ${doctor.subSpecialization ?
-                                    `<p class="doctor-subspecialization">${doctor.subSpecialization}</p>` : ''
-                                }
+                                                <div class="card-stats">
+                                                    <div class="card-stat">
+                                                        <div class="card-stat-value">${doctor.yearsOfExperience}</div>
+                                                        <div class="card-stat-label">Years Exp.</div>
+                                                    </div>
+                                                    ${doctor.city ?
+                            `<div class="card-stat">
+                                                            <div class="card-stat-value" style="font-size: 0.9rem;">${doctor.city}</div>
+                                                            <div class="card-stat-label">Location</div>
+                                                        </div>` :
+                            `<div class="card-stat">
+                                                            <div class="card-stat-value">5.0</div>
+                                                            <div class="card-stat-label">Rating</div>
+                                                        </div>`
+                        }
+                                                </div>
 
-                                <div class="doctor-meta-new">
-                                    <div class="doctor-experience">
-                                        <i class="fas fa-briefcase"></i>
-                                        <span>${doctor.yearsOfExperience} years experience</span>
-                                    </div>
-                                    ${doctor.city ?
-                                        `<div class="doctor-location">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <span>${doctor.city}</span>
-                                        </div>` : ''
-                                    }
-                                </div>
-
-                                <div class="doctor-actions-new">
-                                    <a href="/Doctor/Details/${doctor.id}" class="view-profile-link-new">
-                                        <i class="fas fa-info-circle"></i> View Profile
-                                    </a>
-                                    <a href="/Appointment/Create?doctorId=${doctor.id}" class="book-now-link-new">
-                                        <i class="fas fa-calendar-alt"></i> Book Now
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                                                <div class="card-actions">
+                                                    <a href="/Doctor/Details/${doctor.id}" class="card-btn card-btn-outline">Profile</a>
+                                                    <a href="/Appointment/Create?doctorId=${doctor.id}" class="card-btn">Book</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
                 });
                 doctorsGrid.innerHTML = html;
             }
@@ -1402,8 +1179,8 @@
 
                 if (data.pageNumber > 1) {
                     paginationHtml += `<a href="#" onclick="goToPage(${data.pageNumber - 1})" class="page-link">
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </a>`;
+                                        <i class="fas fa-chevron-left"></i> Previous
+                                    </a>`;
                 }
 
                 for (let i = 1; i <= data.totalPages; i++) {
@@ -1418,8 +1195,8 @@
 
                 if (data.pageNumber < data.totalPages) {
                     paginationHtml += `<a href="#" onclick="goToPage(${data.pageNumber + 1})" class="page-link">
-                        Next <i class="fas fa-chevron-right"></i>
-                    </a>`;
+                                        Next <i class="fas fa-chevron-right"></i>
+                                    </a>`;
                 }
 
                 pagination.innerHTML = paginationHtml;
@@ -1451,12 +1228,12 @@
         }
 
         // Initialize view toggles
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const viewBtns = document.querySelectorAll('.view-btn');
             const resultsGrid = document.getElementById('doctorsGridView');
 
             viewBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     const viewType = this.getAttribute('data-view');
 
                     // Update active button
@@ -1485,7 +1262,7 @@
         });
 
         // Clear all filters function
-        document.getElementById('clearDoctorFilters')?.addEventListener('click', function(e) {
+        document.getElementById('clearDoctorFilters')?.addEventListener('click', function (e) {
             e.preventDefault();
 
             // Reset all form inputs

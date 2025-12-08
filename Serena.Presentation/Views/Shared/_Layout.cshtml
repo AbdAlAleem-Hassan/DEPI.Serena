@@ -8,10 +8,21 @@
     var firstName = user?.FirstName ?? user?.Email?.Split('@')[0];
     var lastName = user?.LastName ?? "";
     // var userInitials = $"{firstName?[0]}{lastName?[0]}";
+
+    string IsActive(string controller, string action)
+    {
+        var routeData = ViewContext.RouteData.Values;
+        var currentController = routeData["controller"] as string;
+        var currentAction = routeData["action"] as string;
+
+        return string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
 }
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +30,8 @@
     <title>@ViewData["Title"] - Serena</title>
 
     <!-- CSS Files -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -33,12 +45,13 @@
     <link rel="stylesheet" href="~/css/toaster.css">
     <link rel="stylesheet" href="~/css/responsive.css">
     <link rel="stylesheet" href="~/css/userProfile.css">
-    
+
     <!-- Theme Loader - Must be in HEAD -->
     <script src="~/js/theme-loader.js"></script>
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
+
 <body>
     <!-- Toaster Container -->
     <div id="toasterContainer" class="toaster-container"></div>
@@ -73,22 +86,30 @@
             {
                 <!-- Navbar when user is logged in -->
                 <div class="nav-links">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link active">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")">Home</a>
 
                     <!-- Role-based navigation -->
                     @if (User.IsInRole("Doctor"))
                     {
                         <div class="dropdown">
-                            <button class="nav-link dropdown-toggle">
+                            <button class="nav-link dropdown-toggle @IsActive("Doctor", "Index")">
                                 <span>Doctor Dashboard</span> <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
                                 @* <a asp-controller="Doctor" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
-                                <a asp-controller="Doctor" asp-action="Appointments" class="dropdown-link">My Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients" class="dropdown-link">My Patients</a>
-                                <a asp-controller="Doctor" asp-action="Schedule" class="dropdown-link">My Schedule</a>
+                                        <a asp-controller="Doctor" asp-action="Appointments"
+                                    class="dropdown-link @IsActive("Doctor", "Appointments")">My Appointments</a>
+                                <a asp-controller="Doctor" asp-action="Patients"
+                                    class="dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
+                                <a asp-controller="Doctor" asp-action="Schedule"
+                                    class="dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
+                                <a href="#" class="dropdown-link">Blogs</a>
+                                <a href="#" class="dropdown-link">Reviews</a>
                             </div>
                         </div>
+                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
+                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
+                            Us</a>
                     }
                     else if (User.IsInRole("Patient"))
                     {
@@ -98,14 +119,22 @@
                             </button>
                             <div class="dropdown-content">
                                 @* <a asp-controller="Patient" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
-                                <a asp-controller="Patient" asp-action="Appointments" class="dropdown-link">My Appointments</a>
-                                <a asp-controller="Patient" asp-action="Doctors" class="dropdown-link">My Doctors</a>
-                                <a href="#" class="dropdown-link">Blogs</a>
-                                <a href="#" class="dropdown-link">Reviews</a>
+                                        <a asp-controller="Patient" asp-action="Appointments"
+                                    class="dropdown-link @IsActive("Patient", "Appointments")">My Appointments</a>
+                                <a asp-controller="Patient" asp-action="Doctors"
+                                    class="dropdown-link @IsActive("Patient", "Doctors")">My Doctors</a>
+                                <a asp-controller="Hospital" asp-action="Index"
+                                    class="nav-link @IsActive("Hospital", "Index")">Find
+                                    Hospital</a>
+                                <a asp-controller="Doctor" asp-action="Index" class="nav-link @IsActive("Doctor", "Index")">Find
+                                    Doctors</a>
+                                <a href="#" class="dropdown-link @IsActive("Home", "Blogs")">Blogs</a>
+                                <a href="#" class="dropdown-link @IsActive("Home", "Reviews")">Reviews</a>
                             </div>
                         </div>
-                        <a asp-controller="Hospital" asp-action="Index" class="nav-link">Find Hospital</a>
-                        <a asp-controller="Doctor" asp-action="Index" class="nav-link">Find Doctors</a>
+                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
+                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
+                            Us</a>
                     }
                     else if (User.IsInRole("Admin"))
                     {
@@ -114,17 +143,24 @@
                                 <span>Admin Panel</span> <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
-                                <a asp-controller="Department" asp-action="Index" class="dropdown-link">Departments</a>
-                                <a asp-controller="Service" asp-action="Index" class="dropdown-link">Services</a>
-                                <a asp-controller="Schedule" asp-action="Index" class="dropdown-link">Schedules</a>
-                                <a asp-controller="DoctorHospitalReview" asp-action="Index" class="dropdown-link">Doctor Reviews</a>
-                                <a asp-controller="PatientDoctorReview" asp-action="Index" class="dropdown-link">Patient-Doctor Reviews</a>
-                                <a asp-controller="PatientHospitalReview" asp-action="Index" class="dropdown-link">Patient-Hospital Reviews</a>
+                                <a asp-controller="Department" asp-action="Index"
+                                    class="dropdown-link @IsActive("Department", "Index")">Departments</a>
+                                <a asp-controller="Service" asp-action="Index"
+                                    class="dropdown-link @IsActive("Service", "Index")">Services</a>
+                                <a asp-controller="Schedule" asp-action="Index"
+                                    class="dropdown-link @IsActive("Schedule", "Index")">Schedules</a>
+                                <a asp-controller="DoctorHospitalReview" asp-action="Index"
+                                    class="dropdown-link @IsActive("DoctorHospitalReview", "Index")">Doctor
+                                    Reviews</a>
+                                <a asp-controller="PatientDoctorReview" asp-action="Index"
+                                    class="dropdown-link @IsActive("PatientDoctorReview", "Index")">Patient-Doctor
+                                    Reviews</a>
+                                <a asp-controller="PatientHospitalReview" asp-action="Index"
+                                    class="dropdown-link @IsActive("PatientHospitalReview", "Index")">Patient-Hospital
+                                    Reviews</a>
                             </div>
                         </div>
                     }
-
-                    
                 </div>
 
                 <div class="nav-actions">
@@ -138,9 +174,10 @@
                     <!-- User Profile Dropdown - Desktop Only -->
                     <div class="dropdown">
                         <button class="nav-link dropdown-toggle user-profile-btn">
-                            
+
                             <div class="user-avatar">
                                 @* @userInitials *@
+                                <i class="fas fa-user"></i>
                             </div>
                             <span class="user-name">@firstName</span>
                             <i class="fas fa-chevron-down"></i>
@@ -149,6 +186,7 @@
                             <div class="user-info">
                                 <div class="user-avatar-large">
                                     @* @userInitials *@
+                                        <i class="fas fa-user"></i>
                                 </div>
                                 <div class="user-details">
                                     <div class="user-fullname">@firstName @lastName</div>
@@ -171,21 +209,20 @@
                             </div>
                             @if (User.IsInRole("Doctor"))
                             {
-                                <a asp-controller="Account" asp-action="Profile"
-                                   asp-route-Id="@user?.Id"
-                                   class="dropdown-link">
+                                <a asp-controller="Account" asp-action="Profile" asp-route-Id="@user?.Id"
+                                    class="dropdown-link @IsActive("Account", "Profile")">
                                     <i class="fas fa-user"></i> My Profile
                                 </a>
                             }
                             else if (User.IsInRole("Patient"))
                             {
-                                <a asp-controller="Account" asp-action="ProfilePatient"
-                                   asp-route-Id="@user?.Id"
-                                   class="dropdown-link">
+                                <a asp-controller="Account" asp-action="ProfilePatient" asp-route-Id="@user?.Id"
+                                    class="dropdown-link @IsActive("Account", "ProfilePatient")">
                                     <i class="fas fa-user"></i> My Profile
                                 </a>
                             }
-                            <a asp-controller="Account" asp-action="Settings" class="dropdown-link">
+                            <a asp-controller="Account" asp-action="Settings"
+                                class="dropdown-link @IsActive("Account", "Settings")">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
@@ -206,20 +243,23 @@
             {
                 <!-- Navbar when user is NOT logged in (Original) -->
                 <div class="nav-links">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link active">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")">Home</a>
                     <div class="dropdown">
                         <button class="nav-link dropdown-toggle">
                             <span>Services</span> <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            <a asp-controller="Hospital" asp-action="Index" class="dropdown-link">Find Hospital</a>
-                            <a asp-controller="Doctor" asp-action="Index" class="dropdown-link">Find Doctors</a>
-                            <a href="#" class="dropdown-link">Blogs</a>
-                            <a href="#" class="dropdown-link">Reviews</a>
+                            <a asp-controller="Hospital" asp-action="Index"
+                                class="dropdown-link @IsActive("Hospital", "Index")">Find Hospital</a>
+                            <a asp-controller="Doctor" asp-action="Index"
+                                class="dropdown-link @IsActive("Doctor", "Index")">Find Doctors</a>
+                            <a href="#" class="dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
+                            <a href="#" class="dropdown-link @IsActive("Reviews", "Index")">Reviews</a>
                         </div>
                     </div>
-                    <a asp-controller="Home" asp-action="About" class="nav-link">About Us</a>
-                    <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact Us</a>
+                    <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
+                    <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
+                        Us</a>
                 </div>
 
                 <div class="nav-actions">
@@ -246,6 +286,8 @@
                 <div class="mobile-user-info">
                     <div class="mobile-user-avatar">
                         @* @userInitials *@
+                            @* Icon *@
+                            <i class="fas fa-user"></i>
                     </div>
                     <div class="mobile-user-details">
                         <div class="mobile-user-fullname">@firstName @lastName</div>
@@ -268,7 +310,7 @@
                 </div>
 
                 <div class="mobile-user-actions">
-                    <a asp-controller="Home" asp-action="Index" class="mobile-user-action">
+                    <a asp-controller="Home" asp-action="Index" class="mobile-user-action @IsActive("Home", "Index")">
                         <i class="fas fa-home"></i> <span data-en="Home" data-ar="الرئيسية">Home</span>
                     </a>
 
@@ -282,9 +324,15 @@
                             </button>
                             <div class="mobile-dropdown-content">
                                 @* <a asp-controller="Doctor" asp-action="Dashboard" class="mobile-dropdown-link">My Dashboard</a> *@
-                                <a asp-controller="Doctor" asp-action="Appointments" class="mobile-dropdown-link">My Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients" class="mobile-dropdown-link">My Patients</a>
-                                <a asp-controller="Doctor" asp-action="Schedule" class="mobile-dropdown-link">My Schedule</a>
+                                        <a asp-controller="Doctor" asp-action="Appointments"
+                                    class="mobile-dropdown-link @IsActive("Doctor", "Appointments")">My
+                                    Appointments</a>
+                                <a asp-controller="Doctor" asp-action="Patients"
+                                    class="mobile-dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
+                                <a asp-controller="Doctor" asp-action="Schedule"
+                                    class="mobile-dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
+                                <a href="#" class="mobile-dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
+                                <a href="#" class="mobile-dropdown-link @IsActive("Reviews", "Index")">Reviews</a>
                             </div>
                         </div>
                     }
@@ -297,18 +345,32 @@
                             </button>
                             <div class="mobile-dropdown-content">
                                 @* <a asp-controller="Patient" asp-action="Dashboard" class="mobile-dropdown-link">My Dashboard</a> *@
-                                <a asp-controller="Patient" asp-action="Appointments" class="mobile-dropdown-link">My Appointments</a>
-                                <a asp-controller="Patient" asp-action="Doctors" class="mobile-dropdown-link">My Doctors</a>
-                                <a href="#" class="mobile-dropdown-link">Blogs</a>
-                                <a href="#" class="mobile-dropdown-link">Reviews</a>
+                                        <a asp-controller="Patient" asp-action="Appointments"
+                                    class="mobile-dropdown-link @IsActive("Patient", "Appointments")">My
+                                    Appointments</a>
+                                <a asp-controller="Patient" asp-action="Doctors"
+                                    class="mobile-dropdown-link @IsActive("Patient", "Doctors")">My Doctors</a>
+                                <a asp-controller="Hospital" asp-action="Index"
+                                    class="mobile-user-action @IsActive("Hospital", "Index")">
+                                    <i class="fas fa-hospital"></i> <span data-en="Find Hospital" data-ar="البحث عن مستشفى">Find
+                                        Hospital</span>
+                                </a>
+                                <a asp-controller="Doctor" asp-action="Index"
+                                    class="mobile-user-action @IsActive("Doctor", "Index")">
+                                    <i class="fas fa-user-md"></i> <span data-en="Find Doctors" data-ar="البحث عن أطباء">Find
+                                        Doctors</span>
+                                </a>
+                                <a href="#" class="mobile-dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
+                                <a href="#" class="mobile-dropdown-link @IsActive("Reviews", "Index")">Reviews</a>
                             </div>
                         </div>
-                        <a asp-controller="Hospital" asp-action="Index" class="mobile-user-action">
-                            <i class="fas fa-hospital"></i> <span data-en="Find Hospital" data-ar="البحث عن مستشفى">Find Hospital</span>
+                        <a asp-controller="Home" asp-action="About" class="mobile-nav-link @IsActive("Home", "About")">
+                            <span data-en="About Us" data-ar="من نحن">About Us</span>
                         </a>
-                        <a asp-controller="Doctor" asp-action="Index" class="mobile-user-action">
-                            <i class="fas fa-user-md"></i> <span data-en="Find Doctors" data-ar="البحث عن أطباء">Find Doctors</span>
+                        <a asp-controller="Home" asp-action="Contact" class="mobile-nav-link @IsActive("Home", "Contact")">
+                            <span data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span>
                         </a>
+
                     }
                     else if (User.IsInRole("Admin"))
                     {
@@ -318,24 +380,41 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="mobile-dropdown-content">
-                                <a asp-controller="Department" asp-action="Index" class="mobile-dropdown-link">Departments</a>
-                                <a asp-controller="Service" asp-action="Index" class="mobile-dropdown-link">Services</a>
-                                <a asp-controller="Schedule" asp-action="Index" class="mobile-dropdown-link">Schedules</a>
-                                <a asp-controller="DoctorHospitalReview" asp-action="Index" class="mobile-dropdown-link">Doctor Reviews</a>
-                                <a asp-controller="PatientDoctorReview" asp-action="Index" class="mobile-dropdown-link">Patient-Doctor Reviews</a>
-                                <a asp-controller="PatientHospitalReview" asp-action="Index" class="mobile-dropdown-link">Patient-Hospital Reviews</a>
+                                <a asp-controller="Department" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("Department", "Index")">Departments</a>
+                                <a asp-controller="Service" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("Service", "Index")">Services</a>
+                                <a asp-controller="Schedule" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("Schedule", "Index")">Schedules</a>
+                                <a asp-controller="DoctorHospitalReview" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("DoctorHospitalReview", "Index")">Doctor
+                                    Reviews</a>
+                                <a asp-controller="PatientDoctorReview" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("PatientDoctorReview", "Index")">Patient-Doctor
+                                    Reviews</a>
+                                <a asp-controller="PatientHospitalReview" asp-action="Index"
+                                    class="mobile-dropdown-link @IsActive("PatientHospitalReview", "Index")">Patient-Hospital
+                                    Reviews</a>
                             </div>
                         </div>
+                        <a asp-controller="Home" asp-action="About" class="mobile-nav-link @IsActive("Home", "About")">
+                            <span data-en="About Us" data-ar="من نحن">About Us</span>
+                        </a>
+                        <a asp-controller="Home" asp-action="Contact" class="mobile-nav-link @IsActive("Home", "Contact")">
+                            <span data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span>
+                        </a>
                     }
 
-                    
+
 
                     <div class="dropdown-divider"></div>
 
-                    <a asp-controller="Account" asp-action="Profile" class="mobile-user-action">
+                    <a asp-controller="Account" asp-action="Profile"
+                        class="mobile-user-action @IsActive("Account", "Profile")">
                         <i class="fas fa-user"></i> <span data-en="My Profile" data-ar="ملفي الشخصي">My Profile</span>
                     </a>
-                    <a asp-controller="Account" asp-action="Settings" class="mobile-user-action">
+                    <a asp-controller="Account" asp-action="Settings"
+                        class="mobile-user-action @IsActive("Account", "Settings")">
                         <i class="fas fa-cog"></i> <span data-en="Settings" data-ar="الإعدادات">Settings</span>
                     </a>
 
@@ -351,7 +430,7 @@
             else
             {
                 <!-- Mobile menu when NOT logged in -->
-                <a asp-controller="Home" asp-action="Index" class="mobile-nav-link active">
+                <a asp-controller="Home" asp-action="Index" class="mobile-nav-link @IsActive("Home", "Index")">
                     <span data-en="Home" data-ar="الرئيسية">Home</span>
                 </a>
 
@@ -361,17 +440,19 @@
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="mobile-dropdown-content">
-                        <a asp-controller="Hospital" asp-action="Index" class="mobile-dropdown-link">Find Hospital</a>
-                        <a asp-controller="Doctor" asp-action="Index" class="mobile-dropdown-link">Find Doctors</a>
-                        <a href="#" class="mobile-dropdown-link">Blogs</a>
-                        <a href="#" class="mobile-dropdown-link">Reviews</a>
+                        <a asp-controller="Hospital" asp-action="Index"
+                            class="mobile-dropdown-link @IsActive("Hospital", "Index")">Find Hospital</a>
+                        <a asp-controller="Doctor" asp-action="Index"
+                            class="mobile-dropdown-link @IsActive("Doctor", "Index")">Find Doctors</a>
+                        <a href="#" class="mobile-dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
+                        <a href="#" class="mobile-dropdown-link @IsActive("Reviews", "Index")">Reviews</a>
                     </div>
                 </div>
 
-                <a asp-controller="Home" asp-action="About" class="mobile-nav-link">
+                <a asp-controller="Home" asp-action="About" class="mobile-nav-link @IsActive("Home", "About")">
                     <span data-en="About Us" data-ar="من نحن">About Us</span>
                 </a>
-                <a asp-controller="Home" asp-action="Contact" class="mobile-nav-link">
+                <a asp-controller="Home" asp-action="Contact" class="mobile-nav-link @IsActive("Home", "Contact")">
                     <span data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span>
                 </a>
             }
@@ -450,10 +531,12 @@
                 <div class="footer-col">
                     <h3 class="footer-heading">Contact Info</h3>
                     <ul class="footer-links">
-                        <li class="footer-link"><a href="#"><i class="fas fa-map-marker-alt"></i> <span>123 Healthcare St, Medical City</span></a></li>
+                        <li class="footer-link"><a href="#"><i class="fas fa-map-marker-alt"></i> <span>123 Healthcare
+                                    St, Medical City</span></a></li>
                         <li class="footer-link"><a href="#"><i class="fas fa-phone"></i> +1 234 567 8900</a></li>
                         <li class="footer-link"><a href="#"><i class="fas fa-envelope"></i> info@serena.com</a></li>
-                        <li class="footer-link"><a href="#"><i class="fas fa-clock"></i> <span>Mon-Fri: 9AM-6PM</span></a></li>
+                        <li class="footer-link"><a href="#"><i class="fas fa-clock"></i> <span>Mon-Fri:
+                                    9AM-6PM</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -467,7 +550,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/main.js"></script>
     <script src="~/js/map.js"></script>
     <script src="~/js/theme-loader.js"></script>
@@ -477,636 +561,80 @@
 
 
     <script>
-        // Initialize toast messages from TempData
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check for hidden divs with temp data
-            const errorDiv = document.querySelector('[data-error]');
-            const warningDiv = document.querySelector('[data-warning]');
-            const successDiv = document.querySelector('[data-success]');
-            const infoDiv = document.querySelector('[data-info]');
+        // Mobile Menu Toggle - REMOVED (Handled in main.js)
+        // Nav links active state - REMOVED (Handled in IsActive Razor helper)
 
-            if (errorDiv && errorDiv.dataset.error && window.toastManager) {
-                window.toastManager.error(errorDiv.dataset.error);
-            }
-            if (warningDiv && warningDiv.dataset.warning && window.toastManager) {
-                window.toastManager.warning(warningDiv.dataset.warning);
-            }
-            if (successDiv && successDiv.dataset.success && window.toastManager) {
-                window.toastManager.success(successDiv.dataset.success);
-            }
-            if (infoDiv && infoDiv.dataset.info && window.toastManager) {
-                window.toastManager.info(infoDiv.dataset.info);
-            }
+        // Initialize common functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme is already initialized by theme-loader.js, just update dynamic elements
+            initializeTheme();
+            initializeLanguage();
 
-            // Nav links active state and dropdowns using toggle class
-            const navLinks = document.querySelectorAll('.nav-link');
-            const dropdowns = document.querySelectorAll('.dropdown-link');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-            const mobileDropdownLinks = document.querySelectorAll('.mobile-dropdown-link');
-            const mobileUserActions = document.querySelectorAll('.mobile-user-action');
+            // Track form interaction
+            trackFormInteraction();
 
-            // Global form interaction tracker
-            window.formHasInteracted = false;
-
-            // Function to get link identifier (text content without icons)
-            function getLinkIdentifier(link) {
-                let text = link.textContent.trim();
-                // Remove icon text if exists
-                text = text.replace(/[\u25B2\u25BC▶◀→←]/g, '').trim();
-                return text;
+            // Theme toggle events
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+            if (mobileThemeBtn) {
+                mobileThemeBtn.addEventListener('click', toggleTheme);
             }
 
-            // Function to set active link and sync between mobile and desktop
-            function setActiveLink(clickedLink) {
-                const linkIdentifier = getLinkIdentifier(clickedLink);
-
-                // Remove active class from all links
-                navLinks.forEach(link => link.classList.remove('active'));
-                dropdowns.forEach(link => link.classList.remove('active'));
-                mobileNavLinks.forEach(link => link.classList.remove('active'));
-                mobileDropdownLinks.forEach(link => link.classList.remove('active'));
-                mobileUserActions.forEach(link => link.classList.remove('active'));
-
-                // Add active class to clicked link
-                clickedLink.classList.add('active');
-
-                // Find and activate corresponding links in other menus
-                const allLinks = [...navLinks, ...dropdowns, ...mobileNavLinks, ...mobileDropdownLinks, ...mobileUserActions];
-
-                allLinks.forEach(link => {
-                    if (link !== clickedLink && getLinkIdentifier(link) === linkIdentifier) {
-                        link.classList.add('active');
-                    }
-                });
-
-                // Close mobile menu after clicking (for mobile only)
-                if (window.innerWidth <= 1000) {
-                    const mobileMenu = document.getElementById('mobileMenu');
-                    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                    const icon = mobileMenuBtn?.querySelector('i');
-
-                    if (mobileMenu && mobileMenuBtn && icon) {
-                        mobileMenu.classList.remove('active');
-                        icon.classList.add('fa-bars');
-                        icon.classList.remove('fa-times');
-                    }
-                }
+            // Language toggle events
+            if (langToggle) {
+                langToggle.addEventListener('click', toggleLanguage);
+            }
+            if (mobileLangBtn) {
+                mobileLangBtn.addEventListener('click', toggleLanguage);
             }
 
-            // Desktop nav links
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (!link.classList.contains('dropdown-toggle')) {
-                        setActiveLink(link);
-                    }
-                });
-            });
-
-            // Desktop dropdown links
-            dropdowns.forEach(link => {
-                link.addEventListener('click', () => {
-                    setActiveLink(link);
-                });
-            });
-
-            // Mobile nav links
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (!link.classList.contains('mobile-dropdown-toggle')) {
-                        setActiveLink(link);
-                    }
-                });
-            });
-
-            // Mobile dropdown links
-            mobileDropdownLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    setActiveLink(link);
-                });
-            });
-
-            // Mobile user action links
-            mobileUserActions.forEach(link => {
-                link.addEventListener('click', () => {
-                    setActiveLink(link);
-                });
-            });
-
-            // ---------------------------------------------------------
-            // DROPDOWN TOGGLE FOR BOTH DESKTOP AND MOBILE
-            // ---------------------------------------------------------
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-            const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
-
-            // Desktop dropdowns - hover on desktop, click on mobile
-            dropdownToggles.forEach(toggle => {
-                const dropdown = toggle.closest('.dropdown');
-                if (!dropdown) return;
-
-                const dropdownContent = dropdown.querySelector('.dropdown-content');
-                const icon = toggle.querySelector('i');
-
-                // Hover functionality for desktop
-                if (dropdownContent) {
-                    dropdown.addEventListener('mouseenter', () => {
-                        if (window.innerWidth > 1000) {
-                            dropdownContent.classList.add('active');
-                            if (icon) {
-                                icon.classList.add('fa-chevron-up');
-                                icon.classList.remove('fa-chevron-down');
-                            }
-                        }
-                    });
-
-                    dropdown.addEventListener('mouseleave', () => {
-                        if (window.innerWidth > 1000) {
-                            dropdownContent.classList.remove('active');
-                            if (icon) {
-                                icon.classList.remove('fa-chevron-up');
-                                icon.classList.add('fa-chevron-down');
-                            }
-                        }
-                    });
-                }
-            });
-
-            // Mobile dropdowns - click to toggle
-            mobileDropdownToggles.forEach(toggle => {
-                const mobiledropdown = toggle.closest('.mobile-dropdown');
-                if (!mobiledropdown) return;
-
-                const mobiledropdownContent = mobiledropdown.querySelector('.mobile-dropdown-content');
-                const icon = toggle.querySelector('i');
-
-                // click functionality for mobile
-                if (dropdownContent) {
-                    mobiledropdown.addEventListener('mouseenter', () => {
-                        mobiledropdownContent.classList.add('active');
-                        if (icon) {
-                            icon.classList.add('fa-chevron-up');
-                            icon.classList.remove('fa-chevron-down');
-                        }
-                    });
-                }
-            });
-
-
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', (e) => {
-                if (window.innerWidth <= 1000) {
-                    // Close all mobile dropdowns when clicking outside
-                    if (!e.target.closest('.mobile-dropdown')) {
-                        document.querySelectorAll('.mobile-dropdown').forEach(dropdown => {
-                            dropdown.classList.remove('active');
-                            const icon = dropdown.querySelector('.mobile-dropdown-toggle i');
-                            if (icon) {
-                                icon.classList.remove('fa-chevron-up');
-                                icon.classList.add('fa-chevron-down');
-                            }
-                        });
-                    }
-                } else {
-                    // For desktop, close dropdowns when clicking outside (except hover)
-                    if (!e.target.closest('.dropdown')) {
-                        document.querySelectorAll('.dropdown-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        document.querySelectorAll('.dropdown-toggle i').forEach(icon => {
-                            icon.classList.remove('fa-chevron-up');
-                            icon.classList.add('fa-chevron-down');
-                        });
-                    }
-                }
-            });
-            // ---------------------------------------------------------
-            // END DROPDOWN FIX
-            // ---------------------------------------------------------
-
-            // Theme Toggle
-            const themeToggle = document.getElementById('themeToggle');
-            const mobileThemeBtn = document.getElementById('mobileThemeBtn');
-            const body = document.body;
-
-            // Enhanced theme initialization without FOUC
-            function initializeTheme() {
-                // Theme is already set by theme-loader.js, just update dynamic elements
-                updateThemeIcons();
-                updateFloatingCards();
+            // Initialize other components if they exist
+            if (typeof initializePartnersCarousel === 'function') {
+                initializePartnersCarousel();
             }
-
-            function toggleTheme() {
-                const currentTheme = document.documentElement.getAttribute('data-user-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-                // Update data attribute and class simultaneously
-                document.documentElement.setAttribute('data-user-theme', newTheme);
-                document.documentElement.classList.toggle('dark-mode');
-
-                localStorage.setItem('theme', newTheme);
-                updateThemeIcons();
-                updateFloatingCards();
+            if (typeof initializeHospitals === 'function') {
+                initializeHospitals();
             }
-
-            function updateThemeIcons() {
-                // Update desktop theme icons
-                const desktopIcons = document.querySelectorAll('.theme-toggle i');
-                desktopIcons.forEach(icon => {
-                    if (document.documentElement.classList.contains('dark-mode')) {
-                        icon.classList.remove('fa-moon');
-                        icon.classList.add('fa-sun');
-                    } else {
-                        icon.classList.remove('fa-sun');
-                        icon.classList.add('fa-moon');
-                    }
-                });
-
-                // Update mobile theme icons
-                const mobileIcons = document.querySelectorAll('#mobileThemeBtn i');
-                mobileIcons.forEach(icon => {
-                    if (document.documentElement.classList.contains('dark-mode')) {
-                        icon.classList.remove('fa-moon');
-                        icon.classList.add('fa-sun');
-                    } else {
-                        icon.classList.remove('fa-sun');
-                        icon.classList.add('fa-moon');
-                    }
-                });
-
-                // Update mobile theme text
-                const mobileThemeTexts = document.querySelectorAll('#mobileThemeBtn span:last-child');
-                mobileThemeTexts.forEach(span => {
-                    if (document.documentElement.classList.contains('dark-mode')) {
-                        span.setAttribute('data-en', 'Light Mode');
-                        span.setAttribute('data-ar', 'الوضع الفاتح');
-                        if (body.classList.contains('rtl')) {
-                            span.textContent = span.getAttribute('data-ar');
-                        } else {
-                            span.textContent = span.getAttribute('data-en');
-                        }
-                    } else {
-                        span.setAttribute('data-en', 'Dark Mode');
-                        span.setAttribute('data-ar', 'الوضع الداكن');
-                        if (body.classList.contains('rtl')) {
-                            span.textContent = span.getAttribute('data-ar');
-                        } else {
-                            span.textContent = span.getAttribute('data-en');
-                        }
-                    }
-                });
+            if (typeof initializeDoctors === 'function') {
+                initializeDoctors();
             }
-
-            // Language Toggle
-            const langToggle = document.getElementById('langToggle');
-            const mobileLangBtn = document.getElementById('mobileLangBtn');
-
-            // Initialize language and prevent validation on initial load
-            function initializeLanguage() {
-                const savedLang = localStorage.getItem('lang') || 'en';
-
-                // Set initial language without triggering validation
-                if (savedLang === 'ar') {
-                    body.classList.add('rtl');
-                    document.documentElement.setAttribute('dir', 'rtl');
-                    document.documentElement.setAttribute('lang', 'ar');
-                } else {
-                    body.classList.remove('rtl');
-                    document.documentElement.setAttribute('dir', 'ltr');
-                    document.documentElement.setAttribute('lang', 'en');
-                }
-
-                updateLangButtons();
-                updateTextContent(savedLang);
-
-                // Reset form interaction state
-                window.formHasInteracted = false;
-
-                // Clear any existing validation messages on initial load
-                clearAllValidationMessages();
+            if (typeof initializeReviews === 'function') {
+                initializeReviews();
             }
-
-            function toggleLanguage() {
-                const currentLang = body.classList.contains('rtl') ? 'ar' : 'en';
-                const newLang = currentLang === 'ar' ? 'en' : 'ar';
-
-                body.classList.toggle('rtl');
-                document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
-                document.documentElement.setAttribute('lang', newLang);
-
-                localStorage.setItem('lang', newLang);
-                updateLangButtons();
-                updateTextContent(newLang);
-
-                // Only update validation messages for interacted fields
-                if (window.formHasInteracted) {
-                    updateValidationMessages();
-                } else {
-                    // Clear only non-interacted validation messages
-                    clearNonInteractedValidationMessages();
-                }
+            if (typeof initializeMap === 'function') {
+                initializeMap();
             }
-
-            function updateLangButtons() {
-                const isRTL = body.classList.contains('rtl');
-
-                // Update desktop language buttons
-                const desktopButtons = document.querySelectorAll('.lang-toggle');
-                desktopButtons.forEach(button => {
-                    button.textContent = isRTL ? 'EN' : 'AR';
-                });
-
-                // Update mobile language buttons
-                const mobileButtons = document.querySelectorAll('#mobileLangBtn span:first-child');
-                mobileButtons.forEach(button => {
-                    button.textContent = isRTL ? 'EN' : 'AR';
-                });
-
-                // Update mobile language text
-                const mobileLangTexts = document.querySelectorAll('#mobileLangBtn span:last-child');
-                mobileLangTexts.forEach(span => {
-                    if (isRTL) {
-                        span.setAttribute('data-en', 'English');
-                        span.setAttribute('data-ar', 'الإنجليزية');
-                        span.textContent = span.getAttribute('data-ar');
-                    } else {
-                        span.setAttribute('data-en', 'Arabic');
-                        span.setAttribute('data-ar', 'العربية');
-                        span.textContent = span.getAttribute('data-en');
-                    }
-                });
-            }
-
-            function updateTextContent(lang) {
-                // Update all elements with data attributes
-                const elements = document.querySelectorAll('[data-en], [data-ar]');
-                elements.forEach(element => {
-                    // Preserve HTML structure (like icons) when updating text
-                    if (element.children.length > 0) {
-                        const spans = element.querySelectorAll('span');
-                        spans.forEach(span => {
-                            if (lang === 'ar' && span.hasAttribute('data-ar')) {
-                                span.textContent = span.getAttribute('data-ar');
-                            } else if (lang === 'en' && span.hasAttribute('data-en')) {
-                                span.textContent = span.getAttribute('data-en');
-                            }
-                        });
-                    } else {
-                        if (lang === 'ar' && element.hasAttribute('data-ar')) {
-                            element.textContent = element.getAttribute('data-ar');
-                        } else if (lang === 'en' && element.hasAttribute('data-en')) {
-                            element.textContent = element.getAttribute('data-en');
-                        }
-                    }
-                });
-
-                // Update placeholders
-                const inputs = document.querySelectorAll('input, textarea');
-                inputs.forEach(input => {
-                    if (lang === 'ar' && input.hasAttribute('data-ar')) {
-                        input.placeholder = input.getAttribute('data-ar');
-                    } else if (lang === 'en' && input.hasAttribute('data-en')) {
-                        input.placeholder = input.getAttribute('data-en');
-                    }
-                });
-            }
-
-            // Track form interaction per field
-            function trackFormInteraction() {
-                const formInputs = document.querySelectorAll('input, textarea, select');
-
-                formInputs.forEach(input => {
-                    // Add interacted class when user interacts with the field
-                    const handleInteraction = () => {
-                        input.classList.add('interacted');
-                        window.formHasInteracted = true;
-                    };
-
-                    input.addEventListener('input', handleInteraction);
-                    input.addEventListener('change', handleInteraction);
-                    input.addEventListener('blur', handleInteraction);
-                });
-            }
-
-            // Update validation messages when language changes - only for interacted fields
-            function updateValidationMessages() {
-                // Only update interacted fields
-                const interactedFields = document.querySelectorAll('.interacted[data-validation]');
-
-                interactedFields.forEach(field => {
-                    if (typeof validateField === 'function') {
-                        validateField(field);
-                    }
-                });
-
-                // Update password strength texts for interacted fields
-                const registerPassword = document.getElementById('register-password');
-                if (registerPassword && registerPassword.classList.contains('interacted')) {
-                    const strengthBar = document.getElementById('register-password-strength');
-                    const strengthText = document.getElementById('register-password-strength-text');
-                    if (strengthBar && strengthText) {
-                        const { strength } = calculatePasswordStrength(registerPassword.value);
-                        strengthText.textContent = getPasswordStrengthText(strength);
-                    }
-                }
-
-                const loginPassword = document.getElementById('login-password');
-                if (loginPassword && loginPassword.classList.contains('interacted')) {
-                    const strengthBar = document.getElementById('login-password-strength');
-                    const strengthText = document.getElementById('login-password-strength-text');
-                    if (strengthBar && strengthText) {
-                        const { strength } = calculatePasswordStrength(loginPassword.value);
-                        strengthText.textContent = getPasswordStrengthText(strength);
-                    }
-                }
-            }
-
-            // Clear all validation messages
-            function clearAllValidationMessages() {
-                const validationMessages = document.querySelectorAll('.validation-message');
-                validationMessages.forEach(message => {
-                    message.innerHTML = '';
-                    message.className = 'validation-message';
-                });
-
-                const formInputs = document.querySelectorAll('.form-input');
-                formInputs.forEach(input => {
-                    input.classList.remove('error', 'success');
-                });
-
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(checkbox => {
-                    checkbox.classList.remove('error', 'success');
-                });
-
-                // Clear password strength indicators
-                const strengthBars = document.querySelectorAll('.strength-bar');
-                strengthBars.forEach(bar => {
-                    bar.className = 'strength-bar';
-                    bar.style.width = '0%';
-                });
-
-                const strengthTexts = document.querySelectorAll('.strength-text');
-                strengthTexts.forEach(text => {
-                    text.textContent = '';
-                });
-            }
-
-            // Clear only non-interacted validation messages
-            function clearNonInteractedValidationMessages() {
-                const nonInteractedFields = document.querySelectorAll('input[data-validation]:not(.interacted)');
-
-                nonInteractedFields.forEach(field => {
-                    const validationMessage = field.parentElement.querySelector('.validation-message');
-                    if (validationMessage) {
-                        validationMessage.innerHTML = '';
-                        validationMessage.className = 'validation-message';
-                    }
-                    field.classList.remove('error', 'success');
-                });
-
-                // Clear non-interacted password strength indicators
-                const nonInteractedPasswords = document.querySelectorAll('input[type="password"]:not(.interacted)');
-                nonInteractedPasswords.forEach(password => {
-                    const strengthBar = document.getElementById(`${password.id}-strength`);
-                    const strengthText = document.getElementById(`${password.id}-strength-text`);
-                    if (strengthBar && strengthText) {
-                        strengthBar.className = 'strength-bar';
-                        strengthBar.style.width = '0%';
-                        strengthText.textContent = '';
-                    }
-                });
-            }
-
-            // Update floating cards based on theme
-            function updateFloatingCards() {
-                const floatingCards = document.querySelectorAll('.hero-floating-card, .about-floating-stat');
-                floatingCards.forEach(card => {
-                    if (document.documentElement.classList.contains('dark-mode')) {
-                        card.style.backgroundColor = 'rgba(30, 41, 59, 0.95)';
-                        card.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                    } else {
-                        card.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                        card.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-                    }
-                });
-            }
-
-            // Mobile Menu Toggle
-            function initializeMobileMenu() {
-                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-                const mobileMenu = document.getElementById('mobileMenu');
-                const icon = mobileMenuBtn?.querySelector('i');
-
-                if (mobileMenuBtn && mobileMenu && icon) {
-                    mobileMenuBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        mobileMenu.classList.toggle('active');
-                        // Toggle menu icon
-                        icon.classList.toggle('fa-bars');
-                        icon.classList.toggle('fa-times');
-                    });
-
-                    // Close mobile menu when clicking outside
-                    document.addEventListener('click', (e) => {
-                        if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                            mobileMenu.classList.remove('active');
-                            icon.classList.add('fa-bars');
-                            icon.classList.remove('fa-times');
-
-                            // Close all mobile dropdowns
-                            document.querySelectorAll('.mobile-dropdown').forEach(dropdown => {
-                                dropdown.classList.remove('active');
-                                const dropdownIcon = dropdown.querySelector('.mobile-dropdown-toggle i');
-                                if (dropdownIcon) {
-                                    dropdownIcon.classList.remove('fa-chevron-up');
-                                    dropdownIcon.classList.add('fa-chevron-down');
-                                }
-                            });
-                        }
-                    });
-
-                    // Close mobile menu on window resize
-                    window.addEventListener('resize', () => {
-                        if (window.innerWidth > 1000) {
-                            mobileMenu.classList.remove('active');
-                            icon.classList.add('fa-bars');
-                            icon.classList.remove('fa-times');
-                        }
-                    });
-                }
-            }
-
-            // Initialize common functionality
-            document.addEventListener('DOMContentLoaded', () => {
-                // Theme is already initialized by theme-loader.js, just update dynamic elements
-                initializeTheme();
-                initializeLanguage();
-
-                // Track form interaction
-                trackFormInteraction();
-
-                // Theme toggle events
-                if (themeToggle) {
-                    themeToggle.addEventListener('click', toggleTheme);
-                }
-                if (mobileThemeBtn) {
-                    mobileThemeBtn.addEventListener('click', toggleTheme);
-                }
-
-                // Language toggle events
-                if (langToggle) {
-                    langToggle.addEventListener('click', toggleLanguage);
-                }
-                if (mobileLangBtn) {
-                    mobileLangBtn.addEventListener('click', toggleLanguage);
-                }
-
-                initializeMobileMenu();
-
-                // Initialize other components if they exist
-                if (typeof initializePartnersCarousel === 'function') {
-                    initializePartnersCarousel();
-                }
-                if (typeof initializeHospitals === 'function') {
-                    initializeHospitals();
-                }
-                if (typeof initializeDoctors === 'function') {
-                    initializeDoctors();
-                }
-                if (typeof initializeReviews === 'function') {
-                    initializeReviews();
-                }
-                if (typeof initializeMap === 'function') {
-                    initializeMap();
-                }
-            });
-
-            // Handle system theme changes
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                // Only update if user hasn't set a preference manually
-                if (!localStorage.getItem('theme')) {
-                    if (e.matches) {
-                        document.documentElement.setAttribute('data-user-theme', 'dark');
-                        document.documentElement.classList.add('dark-mode');
-                    } else {
-                        document.documentElement.setAttribute('data-user-theme', 'light');
-                        document.documentElement.classList.remove('dark-mode');
-                    }
-                    updateThemeIcons();
-                    updateFloatingCards();
-                }
-            });
-
-            // Export functions for global access
-            window.mainModule = {
-                clearAllValidationMessages,
-                updateTextContent,
-                getCurrentLanguage: () => body.classList.contains('rtl') ? 'ar' : 'en',
-                updateValidationMessages,
-                clearNonInteractedValidationMessages
-            };
         });
+
+        // Handle system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            // Only update if user hasn't set a preference manually
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.documentElement.setAttribute('data-user-theme', 'dark');
+                    document.documentElement.classList.add('dark-mode');
+                } else {
+                    document.documentElement.setAttribute('data-user-theme', 'light');
+                    document.documentElement.classList.remove('dark-mode');
+                }
+                updateThemeIcons();
+                updateFloatingCards();
+            }
+        });
+
+        // Export functions for global access
+        window.mainModule = {
+            clearAllValidationMessages,
+            updateTextContent,
+            getCurrentLanguage: () => body.classList.contains('rtl') ? 'ar' : 'en',
+            updateValidationMessages,
+            clearNonInteractedValidationMessages
+        };
+
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

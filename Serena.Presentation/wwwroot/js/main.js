@@ -89,67 +89,58 @@ mobileDropdownLinks.forEach(link => {
 // ---------------------------------------------------------
 // FIX: Dropdown chevron toggle for MULTIPLE dropdowns
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// FIX: Dropdown chevron toggle for MULTIPLE dropdowns
+// ---------------------------------------------------------
 const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
 
 dropdownToggles.forEach(toggle => {
-    // Find the parent .dropdown container for this specific toggle
     const dropdown = toggle.closest('.dropdown');
-
-    // If we can't find the parent, skip this iteration
     if (!dropdown) return;
 
-    // Find the specific content and icon within this dropdown
     const dropdownContent = dropdown.querySelector('.dropdown-content');
     const icon = toggle.querySelector('i');
 
-    // Click event (primarily for Mobile or Tablet)
-    toggle.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1000) {
-            e.preventDefault();
-            e.stopPropagation(); // Stop event from bubbling up
-
-            // Optional: Close other dropdowns if you want only one open at a time
-            /* document.querySelectorAll('.dropdown-content').forEach(c => {
-                if (c !== dropdownContent) c.classList.remove('active');
-            });
-            */
-
-            dropdownContent.classList.toggle('active');
-
+    // Desktop: Hover effect
+    dropdown.addEventListener('mouseenter', () => {
+        if (window.innerWidth > 1000 && dropdownContent) {
+            dropdownContent.classList.add('active');
             if (icon) {
-                if (dropdownContent.classList.contains('active')) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                } else {
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
             }
         }
     });
 
-    // Hover functionality for desktop (Attached to the container)
-    dropdown.addEventListener('mouseenter', () => {
-        if (window.innerWidth > 1000) {
-            const dropdown = document.querySelector('.dropdown');
-            dropdown.addEventListener('mouseenter', () => {
-                dropdownContent.classList.add('active');
-                if (icon) {
-                    icon.classList.add('fa-chevron-up');
-                    icon.classList.remove('fa-chevron-down');
-                }
-            }
-        });
-
     dropdown.addEventListener('mouseleave', () => {
-        if (window.innerWidth > 1000) {
+        if (window.innerWidth > 1000 && dropdownContent) {
             dropdownContent.classList.remove('active');
             if (icon) {
-                icon.classList.remove('fa-chevron-up');
                 icon.classList.add('fa-chevron-down');
-            });
-}
-}
+                icon.classList.remove('fa-chevron-up');
+            }
+        }
+    });
+
+    // Mobile: Click effect
+    toggle.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1000) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (dropdownContent) {
+                dropdownContent.classList.toggle('active');
+                if (icon) {
+                    if (dropdownContent.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.add('fa-chevron-down');
+                        icon.classList.remove('fa-chevron-up');
+                    }
+                }
+            }
+        }
     });
 });
 // ---------------------------------------------------------
@@ -584,3 +575,64 @@ window.mainModule = {
     updateValidationMessages,
     clearNonInteractedValidationMessages
 };
+
+// ==========================================
+// New Features Initialization
+// ==========================================
+
+function initializeFAQ() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            // Close other items
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            item.classList.toggle('active');
+        });
+    });
+}
+
+function initializeMap() {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+
+    // Check if Leaflet is loaded
+    if (typeof L !== 'undefined') {
+        // Default to a central location (e.g., Cairo for this project context or generic)
+        const lat = 30.0444;
+        const lng = 31.2357;
+
+        const map = L.map('map').setView([lat, lng], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('<b>Serena Healthcare</b><br>Main Headquarters')
+            .openPopup();
+
+        // Force map resize to handle container visibility changes
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    } else {
+        // Fallback or placeholder if Leaflet isn't loaded
+        console.log('Leaflet library not found. Map cannot be initialized.');
+        mapElement.style.display = 'flex';
+        mapElement.style.alignItems = 'center';
+        mapElement.style.justifyContent = 'center';
+        mapElement.style.backgroundColor = '#f0f0f0';
+        mapElement.innerHTML = '<div style="color:#666;text-align:center;"><i class="fas fa-map-marked-alt fa-3x mb-3"></i><p>Map View</p></div>';
+    }
+}
+
+// Initialize independent components
+document.addEventListener('DOMContentLoaded', () => {
+    initializeFAQ();
+    // initializeMap is called by the main loader if defined
+});
