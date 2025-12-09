@@ -11,10 +11,9 @@ namespace Serena.DAL.Entities
 		[ForeignKey(nameof(Patient))]
         public int? PatientId { get; set; }
         public virtual Patient? Patient { get; set; }
-
-        public DateTime Date { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal price { get; set; }
+        [ForeignKey(nameof(Schedule))]
+        public int ScheduleId { get; set; }
+        public virtual Schedule? Schedule { get; set; }
 
     }
 }

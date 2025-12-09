@@ -14,6 +14,8 @@ namespace Serena.BLL.Models.Appointements
         public int? PatientId { get; set; }
         public string? PatientName { get; set; }
 
+        public int? ScheduleId { get; set; }
+
         public DateTime Date { get; set; }
 
         public decimal Price { get; set; }

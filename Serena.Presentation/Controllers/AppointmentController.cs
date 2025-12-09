@@ -1,16 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Serena.BLL.Models.Appointements;
 using Serena.BLL.Services.Appointments;
+using Serena.BLL.Services.Patients;
+using Serena.DAL.Entities;
 
 namespace Serena.Presentation.Controllers
 {
     public class AppointmentController : Controller
     {
         private readonly IAppointmentService _appointmentService;
-
-        public AppointmentController(IAppointmentService appointmentService)
+        private readonly IPatientService _patientservice;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AppointmentController(IAppointmentService appointmentService, IPatientService patientservice, UserManager<ApplicationUser> userManager)
         {
             _appointmentService = appointmentService;
+            _patientservice = patientservice;
+            _userManager = userManager;
         }
 
         // GET: Appointment
@@ -36,23 +42,32 @@ namespace Serena.Presentation.Controllers
             return View();
         }
 
-        // POST: Appointment/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateAndUpdateAppointmentDTO dto)
+        public async Task<IActionResult> BookAppointment(int doctorId, int scheduleId)
         {
-            if (ModelState.IsValid)
+            var patient = await _patientservice.GetPatientByUserIdAsync(_userManager.GetUserId(User));
+            try
             {
-                await _appointmentService.CreateAppointmentAsync(dto);
-                return RedirectToAction(nameof(Index));
+                await _appointmentService.CreateAppointmentAsync(new CreateAndUpdateAppointmentDTO
+                {
+                    DoctorId = doctorId,
+                    PatientId = patient.Id,
+                    ScheduleId = scheduleId
+                });
+
+                return Json(new { Success = true, Message = "Appointment booked successfully!" });
             }
-            return View(dto);
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Message = ex.Message });
+            }
         }
 
         // GET: Appointment/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var appointment = await _appointmentService.GetAppointmentByIdAsync(id);
+            AppointmentDTO? appointment = await _appointmentService.GetAppointmentByIdAsync(id);
             if (appointment == null)
                 return NotFound();
 
@@ -60,8 +75,7 @@ namespace Serena.Presentation.Controllers
             {
                 DoctorId = appointment.DoctorId,
                 PatientId = appointment.PatientId,
-                Date = appointment.Date,
-                Price = appointment.Price
+                ScheduleId = appointment.ScheduleId
             };
 
             return View(dto);
@@ -90,13 +104,16 @@ namespace Serena.Presentation.Controllers
             return View(appointment);
         }
 
-        // POST: Appointment/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpDelete("api/appointments/{id}")]
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
+            var appointment = await _appointmentService.GetAppointmentByIdAsync(id);
+            if (appointment == null)
+                return NotFound(new { message = "Appointment not found" });
+
             await _appointmentService.DeleteAppointmentAsync(id);
-            return RedirectToAction(nameof(Index));
+            return Ok(new {success=true, message = "Appointment cancelled successfully" });
         }
+
     }
 }

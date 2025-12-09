@@ -9,5 +9,6 @@ namespace Serena.BLL.Services.Appointments
         Task<int> CreateAppointmentAsync(CreateAndUpdateAppointmentDTO dto);
         Task<int> UpdateAppointmentAsync(int id, CreateAndUpdateAppointmentDTO dto);
         Task<int> DeleteAppointmentAsync(int id);
+        Task<List<Appointment>> GetAppointmentsByPatientIdAsync(int patientId);
     }
 }

@@ -14,10 +14,6 @@ namespace Serena.BLL.Models.Appointements
         public int? PatientId { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
-
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than or equal to 0")]
-        public decimal Price { get; set; }
+        public int? ScheduleId { get; set; }
     }
 }

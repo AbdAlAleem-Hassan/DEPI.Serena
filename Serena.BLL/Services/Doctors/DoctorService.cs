@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Serena.BLL.Common.Services.Attachments;
 using Serena.BLL.Models.Doctors;
+using Serena.BLL.Models.Schedules;
 using Serena.DAL.Entities;
 using Serena.DAL.Persistence.UnitOfWork;
 
@@ -73,8 +74,19 @@ namespace Serena.BLL.Services.Doctors
                 ZipCode = doctor.ZipCode,
                 DepartmentId = doctor.DepartmentId,
                 HospitalId = doctor.HospitalId,
-                HospitalAddressId = doctor.HospitalAddressId
+                HospitalAddressId = doctor.HospitalAddressId,
+                Schedules = new List<ScheduleDTO>()
             };
+            foreach(Schedule schedule in doctor.Schedules)
+            {
+                doctorDTO.Schedules.Add(new ScheduleDTO
+                {
+                    Id = schedule.Id,
+                    Date = schedule.Date,
+                    Price = schedule.Price,
+                    IsAvailable = schedule.IsAvailable,
+                });
+            }
             return doctorDTO;
         }
 

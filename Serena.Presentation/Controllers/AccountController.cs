@@ -570,6 +570,19 @@ namespace Serena.Presentation.Controllers
             }
             return RedirectToAction("index", "Home");
         }
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var userId = _userManager.GetUserId(User);
+            var doctor = await _doctorService.GetDoctorByUserIdAsync(userId);
+
+            if (doctor == null)
+            {
+                TempData["Error"] = "Doctor not found.";
+                return RedirectToAction("Index", "Home");
+            }
+            return View(doctor);
+        }
 
 
     }

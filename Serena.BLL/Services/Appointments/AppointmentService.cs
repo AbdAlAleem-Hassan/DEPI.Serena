@@ -37,6 +37,9 @@ namespace Serena.BLL.Services.Appointments
 
         public async Task<int> CreateAppointmentAsync(CreateAndUpdateAppointmentDTO dto)
         {
+            var Schedule = await _unitOfWork.ScheduleRepository.GetAsync(dto.ScheduleId.Value);
+            Schedule.IsAvailable = false;
+            _unitOfWork.ScheduleRepository.Update(Schedule);
             var appointment = _mapper.Map<Appointment>(dto);
             _unitOfWork.AppointmentRepository.Add(appointment);
             return await _unitOfWork.CompleteAsync();
@@ -56,9 +59,19 @@ namespace Serena.BLL.Services.Appointments
         {
             var appointment = await _unitOfWork.AppointmentRepository.GetAsync(id);
             if (appointment == null) return 0;
-
+            var schedule =  await _unitOfWork.ScheduleRepository.GetAsync(appointment.ScheduleId);
+            schedule.IsAvailable = true;
+            _unitOfWork.ScheduleRepository.Update(schedule);
             _unitOfWork.AppointmentRepository.Delete(appointment);
             return await _unitOfWork.CompleteAsync();
+        }
+        public async Task<List<Appointment>> GetAppointmentsByPatientIdAsync(int patientId)
+        {
+            return await _unitOfWork.AppointmentRepository.GetIQueryable()
+                .Where(a => a.PatientId == patientId && a.IsDeleted==false)
+                .Include(a => a.Doctor)
+                .Include(a => a.Schedule)
+                .ToListAsync();
         }
     }
 }

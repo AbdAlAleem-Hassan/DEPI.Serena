@@ -1,8 +1,15 @@
-﻿@{
+﻿@using Serena.DAL.Entities
+@model IEnumerable<Serena.DAL.Entities.Appointment>
+@{
     ViewData["Title"] = "My Appointments";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
-    // Mock role check for demonstration
+
+    // Check if user is doctor or patient
     bool isDoctor = User.IsInRole("Doctor");
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+    // Get current date for status comparison
+    var now = DateTime.Now;
 }
 
 @section Styles {
@@ -75,6 +82,23 @@
             .appt-card:hover {
                 transform: translateY(-5px);
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Status-based border colors */
+            .appt-card.upcoming {
+                border-left-color: #3b82f6; /* Blue for upcoming */
+            }
+
+            .appt-card.completed {
+                border-left-color: #10b981; /* Green for completed */
+            }
+
+            .appt-card.cancelled {
+                border-left-color: #ef4444; /* Red for cancelled */
+            }
+
+            .appt-card.pending {
+                border-left-color: #f59e0b; /* Amber for pending */
             }
 
         .appt-time-box {
@@ -154,6 +178,11 @@
             color: #991b1b;
         }
 
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
         .appt-actions {
             display: flex;
             gap: 0.75rem;
@@ -186,6 +215,49 @@
                 color: white;
             }
 
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6b7280;
+        }
+
+            .empty-state i {
+                font-size: 4rem;
+                margin-bottom: 1rem;
+                opacity: 0.5;
+            }
+
+            .empty-state h3 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                color: var(--text-dark);
+            }
+
+            .empty-state p {
+                max-width: 500px;
+                margin: 0 auto 1.5rem;
+            }
+
+        /* Loading state */
+        .loading-skeleton {
+            display: none;
+        }
+
+        .appt-card.skeleton {
+            animation: pulse 1.5s infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         /* Dark Mode Specifics */
         .dark-mode .tabs-wrapper {
             background-color: rgba(255, 255, 255, 0.1);
@@ -198,7 +270,6 @@
 
         .dark-mode .appt-card {
             background-color: var(--charcoal);
-            /* border: 1px solid #334155; */
         }
 
         .dark-mode .appt-time-box {
@@ -208,6 +279,25 @@
         .dark-mode .status-upcoming {
             background: rgba(2, 132, 199, 0.2);
             color: #7dd3fc;
+        }
+
+        .dark-mode .status-completed {
+            background: rgba(22, 101, 52, 0.2);
+            color: #86efac;
+        }
+
+        .dark-mode .status-cancelled {
+            background: rgba(153, 27, 27, 0.2);
+            color: #fca5a5;
+        }
+
+        .dark-mode .status-pending {
+            background: rgba(217, 119, 6, 0.2);
+            color: #fcd34d;
+        }
+
+        .dark-mode .empty-state {
+            color: #9ca3af;
         }
 
         @@media (max-width: 768px) {
@@ -260,103 +350,353 @@
         </div>
     </div>
 
+    <!-- Upcoming Appointments Tab -->
     <div id="upcoming" class="tab-content">
-        <div class="appt-card">
-            <div class="appt-time-box">
-                <div class="appt-date">12 Dec</div>
-                <div class="appt-time">09:30 AM</div>
-            </div>
-            <div class="appt-info">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div class="appt-title">@(isDoctor ? "Patient: John Doe" : "Dr. Sarah Wilson")</div>
-                    <span class="status-badge status-upcoming">Confirmed</span>
-                </div>
-                <div class="appt-details">
-                    <div class="appt-meta">
-                        <i class="fas fa-stethoscope"></i> General Checkup
-                    </div>
-                    <div class="appt-meta">
-                        <i class="fas fa-map-marker-alt"></i> New York Central Hospital - Room 304
-                    </div>
-                </div>
-            </div>
-            <div class="appt-actions">
-                <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
-                <button class="btn-icon" title="Reschedule"><i class="fas fa-calendar-alt"></i></button>
-                <button class="btn-icon danger" title="Cancel"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
+        @{
+            var upcomingAppointments = Model?.Where(a => a.Schedule?.Date >= now).OrderBy(a => a.Schedule?.Date) ?? Enumerable.Empty<Appointment>();
+        }
 
-        <div class="appt-card">
-            <div class="appt-time-box">
-                <div class="appt-date">15 Dec</div>
-                <div class="appt-time">11:00 AM</div>
-            </div>
-            <div class="appt-info">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div class="appt-title">@(isDoctor ? "Patient: Mike Ross" : "Dr. James House")</div>
-                    <span class="status-badge status-upcoming" style="background-color: #fef3c7; color: #d97706;">Pending</span>
-                </div>
-                <div class="appt-details">
-                    <div class="appt-meta">
-                        <i class="fas fa-user-md"></i> Neurology Consultation
+        @if (upcomingAppointments.Any())
+        {
+            foreach (var appointment in upcomingAppointments)
+            {
+                var scheduleDate = appointment.Schedule?.Date ?? DateTime.Now;
+                var appointmentStatus = DetermineAppointmentStatus(appointment, scheduleDate);
+                var statusClass = GetStatusClass(appointmentStatus);
+                var statusText = GetStatusText(appointmentStatus);
+
+                <div class="appt-card @statusClass.ToLower()">
+                    <div class="appt-time-box">
+                        <div class="appt-date">@scheduleDate.ToString("dd MMM")</div>
+                        <div class="appt-time">@scheduleDate.ToString("hh:mm tt")</div>
                     </div>
-                    <div class="appt-meta">
-                        <i class="fas fa-map-marker-alt"></i> West Wing Clinic
+                    <div class="appt-info">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div class="appt-title">
+                                @if (isDoctor)
+                                {
+                                    @($"Patient: {appointment.Patient?.FirstName} {appointment.Patient?.LastName}")
+                                }
+                                else
+                                {
+                                    @($"Dr. {appointment.Doctor?.FirstName} {appointment.Doctor?.LastName}")
+                                }
+                            </div>
+                            <span class="status-badge status-@statusClass.ToLower()">@statusText</span>
+                        </div>
+                        <div class="appt-details">
+                            @if (!string.IsNullOrEmpty(appointment.Doctor?.Specialization))
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-stethoscope"></i> @appointment.Doctor.Specialization
+                                </div>
+                            }
+                            @if (appointment.Doctor?.Hospital != null)
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-map-marker-alt"></i> @appointment.Doctor.Hospital.Name
+                                </div>
+                            }
+                            @if (appointment.Schedule?.Price > 0)
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-money-bill"></i> Price: @appointment.Schedule.Price.ToString("N0") EGP
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="appt-actions">
+                        <button class="btn-icon" title="View Details" onclick="viewAppointmentDetails('@appointment.Id')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        @if (appointmentStatus == "upcoming" || appointmentStatus == "pending")
+                        {
+                            <button class="btn-icon" title="Reschedule" onclick="rescheduleAppointment('@appointment.Id')">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="btn-icon danger" title="Cancel" onclick="cancelAppointment('@appointment.Id')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        }
                     </div>
                 </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="far fa-calendar-times"></i>
+                <h3>No Upcoming Appointments</h3>
+                <p>You don't have any scheduled appointments at the moment.</p>
+                @if (!isDoctor)
+                {
+                    <a asp-controller="Doctor" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Find a Doctor
+                    </a>
+                }
             </div>
-            <div class="appt-actions">
-                <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
-                <button class="btn-icon" title="Reschedule"><i class="fas fa-calendar-alt"></i></button>
-                <button class="btn-icon danger" title="Cancel"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
+        }
     </div>
 
+    <!-- History Appointments Tab -->
     <div id="history" class="tab-content" style="display: none;">
-        <div class="appt-card" style="border-left-color: var(--accent-green); opacity: 0.9;">
+        @{
+            var historyAppointments = Model?.Where(a => a.Schedule?.Date < now).OrderByDescending(a => a.Schedule?.Date) ?? Enumerable.Empty<Appointment>();
+        }
+
+        @if (historyAppointments.Any())
+        {
+            foreach (var appointment in historyAppointments)
+            {
+                var scheduleDate = appointment.Schedule?.Date ?? DateTime.Now;
+                var appointmentStatus = DetermineAppointmentStatus(appointment, scheduleDate);
+                var statusClass = GetStatusClass(appointmentStatus);
+                var statusText = GetStatusText(appointmentStatus);
+
+                <div class="appt-card @statusClass.ToLower()" style="opacity: 0.9;">
+                    <div class="appt-time-box">
+                        <div class="appt-date">@scheduleDate.ToString("dd MMM")</div>
+                        <div class="appt-time">@scheduleDate.ToString("hh:mm tt")</div>
+                    </div>
+                    <div class="appt-info">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div class="appt-title">
+                                @if (isDoctor)
+                                {
+                                    @($"Patient: {appointment.Patient?.FirstName} {appointment.Patient?.LastName}")
+                                }
+                                else
+                                {
+                                    @($"Dr. {appointment.Doctor?.FirstName} {appointment.Doctor?.LastName}")
+                                }
+                            </div>
+                            <span class="status-badge status-@statusClass.ToLower()">@statusText</span>
+                        </div>
+                        <div class="appt-details">
+                            @if (!string.IsNullOrEmpty(appointment.Doctor?.Specialization))
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-stethoscope"></i> @appointment.Doctor.Specialization
+                                </div>
+                            }
+                            @if (appointment.Doctor?.Hospital != null)
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-map-marker-alt"></i> @appointment.Doctor.Hospital.Name
+                                </div>
+                            }
+                            @if (appointmentStatus == "completed")
+                            {
+                                <div class="appt-meta">
+                                    <i class="fas fa-check-circle text-success"></i> Appointment Completed
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="appt-actions">
+                        <button class="btn-icon" title="View Details" onclick="viewAppointmentDetails('@appointment.Id')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        @if (appointmentStatus == "completed")
+                        {
+                            <button class="btn-icon" title="View Medical Report" onclick="viewMedicalReport('@appointment.Id')">
+                                <i class="fas fa-file-medical"></i>
+                            </button>
+                            @if (!isDoctor)
+                            {
+                                <button class="btn-icon" title="Leave Review" onclick="leaveReview('@appointment.DoctorId', '@appointment.Id')">
+                                    <i class="fas fa-star"></i>
+                                </button>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-history"></i>
+                <h3>No Appointment History</h3>
+                <p>You don't have any past appointments yet.</p>
+            </div>
+        }
+    </div>
+
+    <!-- Loading Skeleton (hidden by default) -->
+    <div id="loadingSkeleton" class="loading-skeleton">
+        <div class="appt-card skeleton">
             <div class="appt-time-box">
-                <div class="appt-date">10 Nov</div>
-                <div class="appt-time">14:00 PM</div>
+                <div class="appt-date" style="background: #e5e7eb; height: 24px; width: 70px; border-radius: 4px;"></div>
+                <div class="appt-time" style="background: #e5e7eb; height: 18px; width: 60px; border-radius: 4px; margin-top: 8px;"></div>
             </div>
             <div class="appt-info">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div class="appt-title">@(isDoctor ? "Patient: Jane Smith" : "Dr. Emily Chen")</div>
-                    <span class="status-badge status-completed">Completed</span>
+                    <div class="appt-title" style="background: #e5e7eb; height: 28px; width: 200px; border-radius: 4px;"></div>
+                    <div style="background: #e5e7eb; height: 24px; width: 80px; border-radius: 12px;"></div>
                 </div>
-                <div class="appt-details">
-                    <div class="appt-meta">
-                        <i class="fas fa-heartbeat"></i> Cardiology Follow-up
-                    </div>
-                    <div class="appt-meta">
-                        <i class="fas fa-notes-medical"></i> Prescription Issued
-                    </div>
+                <div class="appt-details" style="margin-top: 12px;">
+                    <div style="background: #e5e7eb; height: 18px; width: 150px; border-radius: 4px; margin-bottom: 8px;"></div>
+                    <div style="background: #e5e7eb; height: 18px; width: 180px; border-radius: 4px;"></div>
                 </div>
             </div>
             <div class="appt-actions">
-                <button class="btn-icon" title="View Report"><i class="fas fa-file-medical"></i></button>
+                <div style="background: #e5e7eb; height: 40px; width: 40px; border-radius: 50%;"></div>
+                <div style="background: #e5e7eb; height: 40px; width: 40px; border-radius: 50%;"></div>
+                <div style="background: #e5e7eb; height: 40px; width: 40px; border-radius: 50%;"></div>
             </div>
         </div>
     </div>
 </div>
 
+@functions {
+    // Helper function to determine appointment status
+    string DetermineAppointmentStatus(Appointment appointment, DateTime scheduleDate)
+    {
+        // Note: You might need to add a Status property to your Appointment entity
+        // For now, we'll determine status based on date and time
+        if (scheduleDate < DateTime.Now)
+        {
+            return "completed"; // Past appointments are considered completed
+        }
+        else
+        {
+            // You could add logic here based on other properties like IsConfirmed, IsCancelled, etc.
+            return "upcoming";
+        }
+    }
+
+    // Helper function to get CSS class for status
+    string GetStatusClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "completed" => "completed",
+            "cancelled" => "cancelled",
+            "pending" => "pending",
+            _ => "upcoming"
+        };
+    }
+
+    // Helper function to get display text for status
+    string GetStatusText(string status)
+    {
+        return status.ToLower() switch
+        {
+            "completed" => "Completed",
+            "cancelled" => "Cancelled",
+            "pending" => "Pending",
+            _ => "Upcoming"
+        };
+    }
+}
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             window.switchTab = function(tabName, btnElement) {
+                // Show loading skeleton
+                document.getElementById('loadingSkeleton').style.display = 'block';
+
                 // Hide all contents
-                document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.tab-content').forEach(el => {
+                    el.style.display = 'none';
+                    el.style.opacity = '0';
+                });
 
                 // Remove active class from all buttons
                 document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-                // Show target content
-                document.getElementById(tabName).style.display = 'block';
-
                 // Activate clicked button
                 btnElement.classList.add('active');
+
+                // Simulate loading delay (remove in production)
+                setTimeout(() => {
+                    // Show target content
+                    const targetContent = document.getElementById(tabName);
+                    targetContent.style.display = 'block';
+                    setTimeout(() => {
+                        targetContent.style.opacity = '1';
+                    }, 50);
+
+                    // Hide loading skeleton
+                    document.getElementById('loadingSkeleton').style.display = 'none';
+                }, 300);
+            }
+
+            // Initialize active tab
+            const activeTabBtn = document.querySelector('.tab-btn.active');
+            if (activeTabBtn) {
+                const activeTabId = activeTabBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                document.getElementById(activeTabId).style.display = 'block';
+                document.getElementById(activeTabId).style.opacity = '1';
             }
         });
+
+        // Appointment action functions
+        function viewAppointmentDetails(appointmentId) {
+            // Implement view details logic
+            console.log('Viewing appointment:', appointmentId);
+            // You could open a modal or redirect to details page
+            // window.location.href = `/Appointment/Details/${appointmentId}`;
+        }
+
+        function rescheduleAppointment(appointmentId) {
+            if (confirm('Are you sure you want to reschedule this appointment?')) {
+                console.log('Rescheduling appointment:', appointmentId);
+                // Implement reschedule logic
+                // window.location.href = `/Appointment/Reschedule/${appointmentId}`;
+            }
+        }
+
+        function cancelAppointment(appointmentId) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                console.log('Cancelling appointment:', appointmentId);
+                // Implement cancel logic with AJAX
+                fetch(`/Appointment/Delete/${appointmentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Appointment cancelled successfully', 'success');
+                        // Refresh the appointments list
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast(data.message || 'Failed to cancel appointment', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('An error occurred', 'error');
+                });
+            }
+        }
+
+        function viewMedicalReport(appointmentId) {
+            console.log('Viewing medical report for:', appointmentId);
+            // Implement medical report viewing logic
+            // window.location.href = `/MedicalReport/View/${appointmentId}`;
+        }
+
+        function leaveReview(doctorId, appointmentId) {
+            console.log('Leaving review for doctor:', doctorId, 'appointment:', appointmentId);
+            // Implement review form
+            // window.location.href = `/Review/Create?doctorId=${doctorId}&appointmentId=${appointmentId}`;
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toaster = document.getElementById('toasterContainer');
+            if (toaster && window.toastManager) {
+                window.toastManager[type](message);
+            } else {
+                alert(message);
+            }
+        }
     </script>
 }

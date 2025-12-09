@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Serena.BLL.Models.Schedules;
 using Serena.DAL.Common.Enums;
 using Serena.DAL.Entities;
 using System;
@@ -40,6 +41,7 @@ namespace Serena.BLL.Models.Doctors
 
         public List<string>? Languages { get; set; }
         public List<string>? Services { get; set; }
+        public List<ScheduleDTO>? Schedules { get; set; }
 
     }
 }

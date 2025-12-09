@@ -63,6 +63,20 @@
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="NationalID"></label>
+                            <input asp-for="NationalID" class="form-input" placeholder="NationalID" required />
+                            <span asp-validation-for="NationalID" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="MaritalStatus"></label>
+                            <input asp-for="MaritalStatus" class="form-input" placeholder="MaritalStatus" required />
+                            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -122,6 +136,13 @@
                             <label class="form-label" asp-for="Specialization"></label>
                             <input asp-for="Specialization" class="form-input" placeholder="Specialization" required />
                             <span asp-validation-for="Specialization" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="SubSpecialization"></label>
+                            <input asp-for="SubSpecialization" class="form-input" placeholder="SubSpecialization" required />
+                            <span asp-validation-for="SubSpecialization" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">

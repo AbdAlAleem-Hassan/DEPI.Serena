@@ -154,7 +154,7 @@
                             <a asp-controller="Account" asp-action="Profile" asp-route-Id="@user?.Id" class="dropdown-link">
                                 <i class="fas fa-user"></i> My Profile
                             </a>
-                            <a asp-controller="Account" asp-action="Settings" class="dropdown-link">
+                            <a asp-controller="Account" asp-action="Settings" asp-route-Id="@user?.Id" class="dropdown-link">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>

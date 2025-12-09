@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serena.BLL.Common.Services.Attachments;
 using Serena.BLL.Helper;
+using Serena.BLL.Services.Appointments;
 using Serena.BLL.Services.Departments;
 using Serena.BLL.Services.Doctors;
 using Serena.BLL.Services.DoctorServices;
@@ -50,6 +51,7 @@ namespace Serena.BLL.Extensions
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
 
 
             // Newly Added Services

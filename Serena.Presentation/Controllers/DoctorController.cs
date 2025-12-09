@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serena.BLL.Models.Doctors;
 using Serena.BLL.Models.Schedules;
+using Serena.BLL.Services.Appointments;
 using Serena.BLL.Services.Doctors;
 using Serena.BLL.Services.Schedules;
 using Serena.DAL.Entities;
@@ -18,16 +19,18 @@ namespace Serena.Presentation.Controllers
     {
         private readonly IDoctorService _doctorService;
         private readonly IUnitOfWork _unitOfWork;
+       // private readonly IAppointmentService _appointmentService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IScheduleService _service;
 
-        public DoctorController(IDoctorService doctorService, IUnitOfWork unitOfWork, IScheduleService service, UserManager<ApplicationUser> userManager)
+        public DoctorController(IDoctorService doctorService, IUnitOfWork unitOfWork, IScheduleService service, UserManager<ApplicationUser> userManager, IAppointmentService appointmentService)
         {
             _doctorService = doctorService;
             _unitOfWork = unitOfWork;
             _service = service;
             _userManager = userManager;
+          //  _appointmentService = appointmentService;
         }
 
         [HttpGet]
@@ -288,7 +291,7 @@ namespace Serena.Presentation.Controllers
         {
             if (!ModelState.IsValid)
                 return View(await _service.GetAllSchedulesAsync());
-            var doctor=_userManager.GetUserId(User);
+            var doctor = _userManager.GetUserId(User);
             model.DoctorUserId = doctor;
 
             var result = await _service.CreateScheduleAsync(model);
@@ -336,5 +339,25 @@ namespace Serena.Presentation.Controllers
                 return Json(new List<string>());
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> DoctorProfile(int id)
+        {
+            try
+            {
+                var doctor = await _doctorService.GetDoctorByIdAsync(id);
+                if (doctor == null)
+                {
+                    return View(new { Success = false, Message = "Doctor not found." });
+                }
+                return View( doctor );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetDoctorDetails: {ex.Message}");
+                return View(new { Success = false, Message = ex.Message });
+            }
+        }
+       
+
     }
 }

@@ -1117,10 +1117,10 @@
                                     </div>
 
                                     <div class="doctor-actions-new">
-                                        <a asp-controller="Doctor" asp-action="Details" asp-route-id="@doctor.Id" class="view-profile-link-new">
+                                        <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="view-profile-link-new">
                                             <i class="fas fa-info-circle"></i> View Profile
                                         </a>
-                                        <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-now-link-new">
+                                        <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="book-now-link-new">
                                             <i class="fas fa-calendar-alt"></i> Book Now
                                         </a>
                                     </div>

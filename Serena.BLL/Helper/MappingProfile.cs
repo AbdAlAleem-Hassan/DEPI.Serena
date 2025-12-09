@@ -60,6 +60,8 @@ namespace Serena.BLL.Helper
 
             CreateMap<DoctorHospitalReviewCreateUpdateDTO, DoctorHospitalReview>();
             CreateMap<DoctorDetailsDTO, Doctor>().ReverseMap();
+            CreateMap<Appointment, AppointmentDTO>().ReverseMap();
+            CreateMap<CreateAndUpdateAppointmentDTO, Appointment>().ReverseMap();
         }
     }
 

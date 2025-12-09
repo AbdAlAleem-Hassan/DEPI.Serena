@@ -1,0 +1,495 @@
+﻿@using Serena.BLL.Models.Doctors
+@model DoctorDetailsDTO
+
+@{
+    ViewData["Title"] = "Doctor Profile";
+}
+<style>
+    /* Doctor Profile Styling */
+    .doctor-profile {
+        padding: 100px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Doctor Header */
+    .doctor-header {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 30px;
+        padding: 25px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Dark Mode Support */
+    [data-user-theme="dark"] .doctor-header {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .doctor-photo {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+        .doctor-photo:hover {
+            transform: scale(1.03);
+        }
+
+    .doctor-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .doctor-info h2 {
+            margin: 0 0 15px 0;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.2;
+        }
+
+    [data-user-theme="dark"] .doctor-info h2 {
+        color: #f7fafc;
+    }
+
+    .doctor-info p {
+        margin: 8px 0;
+        font-size: 16px;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    [data-user-theme="dark"] .doctor-info p {
+        color: #cbd5e0;
+    }
+
+    .doctor-info strong {
+        color: #2d3748;
+        font-weight: 600;
+        min-width: 140px;
+        display: inline-block;
+    }
+
+    [data-user-theme="dark"] .doctor-info strong {
+        color: #e2e8f0;
+    }
+
+    /* Divider */
+    hr {
+        margin: 30px 0;
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    }
+
+    [data-user-theme="dark"] hr {
+        background: linear-gradient(90deg, transparent, #4a5568, transparent);
+    }
+
+    /* Section Headings */
+    h3 {
+        margin: 0 0 20px 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #2d3748;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            border-radius: 2px;
+        }
+
+    [data-user-theme="dark"] h3 {
+        color: #f7fafc;
+    }
+
+    /* Schedules Table */
+    .table {
+        width: 100%;
+        margin-bottom: 30px;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+        .table thead {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+        }
+
+    [data-user-theme="dark"] .table thead {
+        background: linear-gradient(135deg, #2b6cb0, #1a4f8c);
+    }
+
+    .table th {
+        padding: 18px 20px;
+        text-align: left;
+        font-weight: 600;
+        color: white;
+        font-size: 16px;
+        border: none;
+    }
+
+    .table tbody tr {
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    [data-user-theme="dark"] .table tbody tr {
+        background: #2d3748;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    [data-user-theme="dark"] .table tbody tr:nth-child(even) {
+        background: #1a202c;
+    }
+
+    .table tbody tr:hover {
+        background: #edf2f7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-user-theme="dark"] .table tbody tr:hover {
+        background: #2d3748;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .table td {
+        padding: 20px;
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        color: #4a5568;
+        font-size: 15px;
+        vertical-align: middle;
+    }
+
+    [data-user-theme="dark"] .table td {
+        color: #cbd5e0;
+        border-top: 1px solid #4a5568;
+    }
+
+    .table td:first-child {
+        font-weight: 500;
+        color: #2d3748;
+    }
+
+    [data-user-theme="dark"] .table td:first-child {
+        color: #f7fafc;
+    }
+
+    .table td:nth-child(2) {
+        color: #3182ce;
+        font-weight: 600;
+    }
+
+    [data-user-theme="dark"] .table td:nth-child(2) {
+        color: #63b3ed;
+    }
+
+    /* Book Button */
+    .btn-primary {
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3182ce, #2b6cb0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(49, 130, 206, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+    /* No Appointments Message */
+    p:last-of-type {
+        text-align: center;
+        padding: 40px;
+        font-size: 18px;
+        color: #a0aec0;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #e2e8f0;
+    }
+
+    [data-user-theme="dark"] p:last-of-type {
+        color: #718096;
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .doctor-profile {
+            padding: 20px;
+        }
+
+        .doctor-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .doctor-photo {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+        }
+
+        .doctor-info h2 {
+            font-size: 28px;
+        }
+
+        .doctor-info p {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .doctor-info strong {
+            min-width: 120px;
+        }
+
+        .table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+            .table th,
+            .table td {
+                padding: 15px 12px;
+                font-size: 14px;
+            }
+
+        .btn-primary {
+            padding: 8px 20px;
+            font-size: 13px;
+        }
+
+        h3 {
+            font-size: 22px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .doctor-profile {
+            padding: 15px;
+        }
+
+        .doctor-info h2 {
+            font-size: 24px;
+        }
+
+        .doctor-info p {
+            font-size: 15px;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .doctor-info strong {
+            min-width: auto;
+            display: block;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 10px;
+            font-size: 13px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+    }
+
+    /* RTL Support */
+    .rtl .doctor-info p {
+        flex-direction: row-reverse;
+    }
+
+    .rtl .doctor-info strong {
+        text-align: right;
+    }
+
+    .rtl h3::after {
+        left: auto;
+        right: 0;
+    }
+
+    .rtl .table th {
+        text-align: right;
+    }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .doctor-header,
+    .table {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    /* Badge for Available Status */
+    .available-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: linear-gradient(135deg, #48bb78, #38a169);
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    .rtl .available-badge {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    /* Form Styling */
+    form {
+        margin: 0;
+        display: inline-block;
+    }
+</style>
+
+<div class="doctor-profile">
+
+    <div class="doctor-header">
+        <img src="~/files/Imgs/@Model.Image" alt="Doctor Photo" class="doctor-photo" />
+
+        <div class="doctor-info">
+            <h2>@Model.FirstName @Model.MiddleName @Model.LastName</h2>
+            <div class="doctor-meta">
+                <p><strong>Specialization:</strong> @Model.Specialization</p>
+                <p><strong>Sub-Specialization:</strong> @Model.SubSpecialization</p>
+                <p><strong>Experience:</strong> @Model.YearsOfExperience years</p>
+                <p>
+                    <strong>Status:</strong>
+                    @if (Model.Schedules?.Any(s => s.IsAvailable) == true)
+                    {
+                        <span class="available-badge">Available Now</span>
+                    }
+                    else
+                    {
+                        <span>Not Available</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="section-header">
+        <h3>Available Schedules</h3>
+        <p class="section-subtitle">Book your appointment with the doctor</p>
+    </div>
+
+    @if (Model.Schedules != null && Model.Schedules.Any(s => s.IsAvailable))
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Session Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Schedules.Where(s => s.IsAvailable).OrderBy(s => s.Date))
+                    {
+                        <tr>
+                            <td>
+                                <i class="far fa-calendar-alt" style="margin-right: 8px;"></i>
+                                @item.Date.ToString("dddd, dd MMMM yyyy")
+                                <br>
+                                <small style="color: #718096;">
+                                    <i class="far fa-clock" style="margin-right: 5px;"></i>
+                                    @item.Date.ToString("hh:mm tt")
+                                </small>
+                            </td>
+                            <td>
+                                <span class="price-tag">@item.Price.ToString("N0") EGP</span>
+                            </td>
+                            <td>
+                                <form asp-controller="Appointment" asp-action="BookAppointment" method="post" onsubmit="return confirmBooking()">
+                                    <input type="hidden" name="doctorId" value="@Model.Id" />
+                                    <input type="hidden" name="scheduleId" value="@item.Id" />
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="far fa-calendar-plus"></i> Book Now
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="no-appointments">
+            <i class="far fa-calendar-times fa-3x"></i>
+            <h4>No Available Appointments</h4>
+            <p>There are no available appointments at the moment. Please check back later.</p>
+        </div>
+    }
+</div>
+
+<script>
+    function confirmBooking() {
+        return confirm('Are you sure you want to book this appointment?');
+    }
+</script>

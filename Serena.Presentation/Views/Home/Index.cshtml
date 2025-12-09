@@ -685,11 +685,11 @@
                             </div>
 
                             <div class="doctor-actions">
-                                <a asp-controller="Account" asp-action="Profile" asp-route-id="@doctor.UserId" class="view-profile-btn">
+                                <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="view-profile-btn">
                                     <i class="fas fa-user-circle"></i>
                                     <span>Profile</span>
                                 </a>
-                                <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" class="book-appointment-btn">
+                                <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="book-appointment-btn">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span>Book Now</span>
                                 </a>

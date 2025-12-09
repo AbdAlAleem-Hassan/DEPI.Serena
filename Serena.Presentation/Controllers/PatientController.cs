@@ -1,16 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Serena.BLL.Models.Patients;
+using Serena.BLL.Services.Appointments;
 using Serena.BLL.Services.Patients;
+using Serena.DAL.Entities;
 
 namespace Serena.Presentation.Controllers
 {
     public class PatientController : Controller
     {
         private readonly IPatientService _patientService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAppointmentService _appointmentService;
 
-        public PatientController(IPatientService patientService)
+
+        public PatientController(IPatientService patientService, UserManager<ApplicationUser> userManager, IAppointmentService appointmentService)
         {
             _patientService = patientService;
+            _userManager = userManager;
+            _appointmentService = appointmentService;
         }
 
         // GET: /Patient
@@ -81,9 +89,13 @@ namespace Serena.Presentation.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Appointments()
+        [HttpGet]
+        public async Task<IActionResult> Appointments()
         {
-            return View();
+            var patient = await _patientService.GetPatientByUserIdAsync(_userManager.GetUserId(User));
+            var appointments = await _appointmentService.GetAppointmentsByPatientIdAsync(patient.Id);
+            return View(appointments);
+
         }
     }
 }
