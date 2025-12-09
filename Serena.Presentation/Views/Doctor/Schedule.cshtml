@@ -11,6 +11,7 @@
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 
     var user = await UserManager.GetUserAsync(User);
+    if (user == null) return;
     var doctor = await DoctorService.GetDoctorByUserIdAsync(user.Id);
 }
 
@@ -178,7 +179,7 @@
         }
 
         /* Add Slot Form
-                            /* Modal Styles */
+                                /* Modal Styles */
         .modal-overlay {
             display: none;
             position: fixed;
