@@ -21,12 +21,22 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2.5rem;
+            padding: 0rem;
             padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--light-gray);
+            border-bottom: 2px solid;
+            border-image: linear-gradient(to right, #3b82f6, #10b981) 1;
+            background: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            border-bottom: 0px;
         }
 
         .dark-mode .page-header {
-            border-bottom-color: #334155;
+            border-bottom-color: linear-gradient(to right, #3b82f6, #10b981);
         }
 
         /* Doctors grid */
@@ -49,16 +59,16 @@
             border-radius: var(--border-radius);
             padding: 1.5rem;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
 
-            .doctor-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            }
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
 
         .dark-mode .doctor-card {
             background-color: var(--charcoal);
@@ -77,7 +87,7 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-blue), #4f46e5);
+            background: linear-gradient(to right, #3b82f6, #10b981);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,11 +98,11 @@
             overflow: hidden;
         }
 
-            .doctor-avatar img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
+        .doctor-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .doctor-info {
             flex: 1;
@@ -320,28 +330,28 @@
             font-size: 0.9rem;
         }
 
-            .btn-action:hover {
-                background: var(--accent-blue);
-                color: white;
-                border-color: var(--accent-blue);
-            }
+        .btn-action:hover {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
 
-            .btn-action.book {
-                background: var(--accent-blue);
-                color: white;
-                border-color: var(--accent-blue);
-            }
+        .btn-action.book {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
 
-                .btn-action.book:hover {
-                    background: #2563eb;
-                    border-color: #2563eb;
-                }
+        .btn-action.book:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
 
-            .btn-action.review:hover {
-                background: #f59e0b;
-                color: white;
-                border-color: #f59e0b;
-            }
+        .btn-action.review:hover {
+            background: #f59e0b;
+            color: white;
+            border-color: #f59e0b;
+        }
 
         .dark-mode .btn-action {
             background: #1e293b;
@@ -357,30 +367,30 @@
             grid-column: 1 / -1;
         }
 
-            .empty-state i {
-                font-size: 4rem;
-                margin-bottom: 1rem;
-                opacity: 0.5;
-            }
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
 
-            .empty-state h3 {
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
-                color: var(--text-dark);
-            }
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
 
-            .empty-state p {
-                max-width: 500px;
-                margin: 0 auto 1.5rem;
-            }
+        .empty-state p {
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
 
         .dark-mode .empty-state {
             color: #9ca3af;
         }
 
-            .dark-mode .empty-state h3 {
-                color: #f8fafc;
-            }
+        .dark-mode .empty-state h3 {
+            color: #f8fafc;
+        }
 
         /* Loading skeleton */
         .loading-skeleton {
@@ -392,7 +402,9 @@
         }
 
         @@keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
             }
 
@@ -453,16 +465,16 @@
             font-size: 0.9rem;
         }
 
-            .filter-tab:hover {
-                border-color: var(--accent-blue);
-                color: var(--accent-blue);
-            }
+        .filter-tab:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
 
-            .filter-tab.active {
-                background: var(--accent-blue);
-                color: white;
-                border-color: var(--accent-blue);
-            }
+        .filter-tab.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
 
         .dark-mode .filter-tab {
             background: #1e293b;
@@ -470,10 +482,10 @@
             color: #f8fafc;
         }
 
-            .dark-mode .filter-tab.active {
-                background: var(--accent-blue);
-                border-color: var(--accent-blue);
-            }
+        .dark-mode .filter-tab.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
     </style>
 }
 
@@ -494,19 +506,19 @@
     @if (Model?.Any() == true)
     {
         @* Group appointments by doctor to get unique doctors *@
-        var doctors = Model
-        .Where(a => a.Doctor != null)
-        .GroupBy(a => a.Doctor.Id)
-        .Select(g => new
-        {
-            Doctor = g.Key,
-            DoctorInfo = g.First().Doctor,
-            Appointments = g.OrderByDescending(a => a.Schedule?.Date ?? DateTime.MinValue).ToList(),
-            LastAppointment = g.Max(a => a.Schedule?.Date),
-            AppointmentCount = g.Count()
-        })
-        .OrderByDescending(d => d.LastAppointment)
-        .ToList();
+            var doctors = Model
+    .Where(a => a.Doctor != null)
+    .GroupBy(a => a.Doctor.Id)
+    .Select(g => new
+    {
+        Doctor = g.Key,
+        DoctorInfo = g.First().Doctor,
+        Appointments = g.OrderByDescending(a => a.Schedule?.Date ?? DateTime.MinValue).ToList(),
+        LastAppointment = g.Max(a => a.Schedule?.Date),
+        AppointmentCount = g.Count()
+    })
+    .OrderByDescending(d => d.LastAppointment)
+    .ToList();
 
         <div class="doctors-grid" id="doctorsContainer">
             @foreach (var doctorGroup in doctors)
@@ -516,9 +528,8 @@
                 var lastAppointment = doctorGroup.LastAppointment;
                 var appointmentCount = doctorGroup.AppointmentCount;
 
-                <div class="doctor-card" data-doctor-id="@doctor.Id"
-                     data-specialty="@doctor.Specialization?.ToLower()"
-                     data-last-appointment="@lastAppointment?.ToString("yyyy-MM-dd")">
+                <div class="doctor-card" data-doctor-id="@doctor.Id" data-specialty="@doctor.Specialization?.ToLower()"
+                    data-last-appointment="@lastAppointment?.ToString("yyyy-MM-dd")">
                     <div class="doctor-header">
                         <div class="doctor-avatar">
                             @if (!string.IsNullOrEmpty(doctor.ImageUrl))
@@ -539,7 +550,7 @@
                             }
 
                             @* Doctor Rating (you can add this if you have review data) *@
-                            @* <div class="doctor-rating">
+                                    @* <div class="doctor-rating">
                                 <div class="rating-stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -599,26 +610,27 @@
                             <h4 class="history-title">
                                 <i class="fas fa-history"></i> Appointment History
                             </h4>
-                           <div class="history-list">
-    @foreach (var appointment in appointments.Take(3))
-    {
-        var scheduleDate = appointment.Schedule?.Date ?? DateTime.Now;
-        var isCompleted = scheduleDate < DateTime.Now;
-        
-        // التحقق مما إذا كان الموعد محذوفًا
-        var isCancelled = appointment.IsDeleted; // أو حسب الخاصية في كيان Appointment
-        
-        <div class="history-item @(isCancelled ? "cancelled" : isCompleted ? "" : "upcoming")">
-            <div>
-                <div class="history-date">@scheduleDate.ToString("dd MMM yyyy")</div>
-                <div class="history-time">@scheduleDate.ToString("hh:mm tt")</div>
-            </div>
-            <span class="history-status @(isCancelled ? "status-cancelled" : isCompleted ? "status-completed" : "status-upcoming")">
-                @(isCancelled ? "Cancelled" : isCompleted ? "Completed" : "Upcoming")
-            </span>
-        </div>
-    }
-</div>
+                            <div class="history-list">
+                                @foreach (var appointment in appointments.Take(3))
+                                {
+                                    var scheduleDate = appointment.Schedule?.Date ?? DateTime.Now;
+                                    var isCompleted = scheduleDate < DateTime.Now;
+
+                                    // التحقق مما إذا كان الموعد محذوفًا
+                                    var isCancelled = appointment.IsDeleted; // أو حسب الخاصية في كيان Appointment
+
+                                    <div class="history-item @(isCancelled ? "cancelled" : isCompleted ? "" : "upcoming")">
+                                        <div>
+                                            <div class="history-date">@scheduleDate.ToString("dd MMM yyyy")</div>
+                                            <div class="history-time">@scheduleDate.ToString("hh:mm tt")</div>
+                                        </div>
+                                        <span
+                                            class="history-status @(isCancelled ? "status-cancelled" : isCompleted ? "status-completed" : "status-upcoming")">
+                                            @(isCancelled ? "Cancelled" : isCompleted ? "Completed" : "Upcoming")
+                                        </span>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     }
 
@@ -643,8 +655,9 @@
             <i class="fas fa-user-md"></i>
             <h3>No Doctors Found</h3>
             <p>You haven't booked any appointments with doctors yet. Find a doctor and book your first appointment!</p>
-            <a asp-controller="Doctor" asp-action="Index" class="btn btn-primary">
-                <i class="fas fa-search"></i> Find a Doctor
+            <a asp-controller="Doctor" asp-action="Index" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; width: fit-content; margin: auto;">
+                <i class="fas fa-search" style="font-size: 1rem; margin-bottom: 0rem;"></i>
+                <span>Find a Doctor</span>
             </a>
         </div>
     }
@@ -655,8 +668,12 @@
             <div class="doctor-header">
                 <div class="doctor-avatar" style="background: #e5e7eb;"></div>
                 <div class="doctor-info">
-                    <div style="background: #e5e7eb; height: 24px; width: 150px; border-radius: 4px; margin-bottom: 8px;"></div>
-                    <div style="background: #e5e7eb; height: 18px; width: 120px; border-radius: 4px; margin-bottom: 4px;"></div>
+                    <div
+                        style="background: #e5e7eb; height: 24px; width: 150px; border-radius: 4px; margin-bottom: 8px;">
+                    </div>
+                    <div
+                        style="background: #e5e7eb; height: 18px; width: 120px; border-radius: 4px; margin-bottom: 4px;">
+                    </div>
                     <div style="background: #e5e7eb; height: 16px; width: 100px; border-radius: 4px;"></div>
                 </div>
             </div>
@@ -676,7 +693,7 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Initialize page
             console.log('My Doctors page loaded');
         });
@@ -696,7 +713,7 @@
             doctors.forEach(doctor => {
                 doctor.style.display = 'block';
 
-                switch(filterType) {
+                switch (filterType) {
                     case 'recent':
                         const lastAppointment = doctor.getAttribute('data-last-appointment');
                         if (lastAppointment) {
@@ -734,10 +751,10 @@
             const message = document.createElement('div');
             message.className = 'empty-state';
             message.innerHTML = `
-                <i class="fas fa-filter"></i>
-                <h3>No Doctors Found</h3>
-                <p>No doctors match your filter criteria. Try a different filter.</p>
-            `;
+                    <i class="fas fa-filter"></i>
+                    <h3>No Doctors Found</h3>
+                    <p>No doctors match your filter criteria. Try a different filter.</p>
+                `;
 
             container.appendChild(message);
         }

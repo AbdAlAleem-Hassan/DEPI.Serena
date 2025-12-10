@@ -12,8 +12,8 @@
     var maxCost = ViewBag.MaxAverageCost as decimal?;
     var sortBy = ViewBag.SortBy as string ?? "name";
 
-    // Assuming simple pagination for now or list view. The original index didn't explicitly check page vars in View but in Controller presumably.
-    // We will assume basic list for now, or match Doctor pagination if vars exist.
+    // Assuming simple pagination or list view.
+    // The original logic handles pagination in the Controller.
     var totalCount = ViewBag.TotalCount ?? (Model?.Count() ?? 0);
 }
 
@@ -145,14 +145,13 @@
                     }
                     @if (!string.IsNullOrEmpty(department))
                     {
-                        <span class="active-tag"
-                            onclick="removeFilter('department')">@department <i
+                        <span class="active-tag" onclick="removeFilter('department')">@department <i
                                 class="fas fa-times active-tag-close"></i></span>
                     }
                     @if (!string.IsNullOrEmpty(country))
                     {
-                        <span class="active-tag"
-                            onclick="removeFilter('country')">@country <i class="fas fa-times active-tag-close"></i></span>
+                        <span class="active-tag" onclick="removeFilter('country')">@country <i
+                                class="fas fa-times active-tag-close"></i></span>
                     }
                     @if (!string.IsNullOrEmpty(rank))
                     {
@@ -204,9 +203,9 @@
             <div class="hospitals-list-header">
                 <div class="list-header-item">Hospital</div>
                 <div class="list-header-item">Rank</div>
-                <div class="list-header-item">Departments</div>
-                <div class="list-header-item">Rating</div>
                 <div class="list-header-item">Avg Cost</div>
+                <div class="list-header-item">Phone</div>
+                <div class="list-header-item">Ambulance</div>
                 <div class="list-header-item" style="text-align:right">Actions</div>
             </div>
 

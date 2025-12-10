@@ -220,24 +220,33 @@
             text-align: center;
             padding: 4rem 2rem;
             color: #6b7280;
+            grid-column: 1 / -1;
         }
 
-            .empty-state i {
-                font-size: 4rem;
-                margin-bottom: 1rem;
-                opacity: 0.5;
-            }
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
 
-            .empty-state h3 {
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
-                color: var(--text-dark);
-            }
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
 
-            .empty-state p {
-                max-width: 500px;
-                margin: 0 auto 1.5rem;
-            }
+        .empty-state p {
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .dark-mode .empty-state {
+            color: #9ca3af;
+        }
+
+        .dark-mode .empty-state h3 {
+            color: #f8fafc;
+        }
 
         /* Loading state */
         .loading-skeleton {
@@ -431,7 +440,8 @@
                 @if (!isDoctor)
                 {
                     <a asp-controller="Doctor" asp-action="Index" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Find a Doctor
+                        <i class="fas fa-search" style="font-size: 1rem; margin-bottom: 0rem;"></i>
+                        <span>Find a Doctor</span>
                     </a>
                 }
             </div>
