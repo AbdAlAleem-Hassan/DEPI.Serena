@@ -411,7 +411,7 @@
                         </button>
                         @if (appointmentStatus == "upcoming" || appointmentStatus == "pending")
                         {
-                            <button class="btn-icon" title="Reschedule" onclick="rescheduleAppointment('@appointment.Id')">
+                            <button class="btn-icon" title="reschedule" onclick="rescheduleappointment('@appointment.Id')">
                                 <i class="fas fa-calendar-alt"></i>
                             </button>
                             <button class="btn-icon danger" title="Cancel" onclick="cancelAppointment('@appointment.Id')">
@@ -421,7 +421,7 @@
                     </div>
                 </div>
             }
-        }
+        }   
         else
         {
             <div class="empty-state">

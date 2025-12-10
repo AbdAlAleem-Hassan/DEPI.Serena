@@ -104,16 +104,13 @@ namespace Serena.Presentation.Controllers
             return View(appointment);
         }
 
-        [HttpDelete("api/appointments/{id}")]
-        public async Task<IActionResult> DeleteAppointment(int id)
+        // POST: Appointment/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appointment = await _appointmentService.GetAppointmentByIdAsync(id);
-            if (appointment == null)
-                return NotFound(new { message = "Appointment not found" });
-
             await _appointmentService.DeleteAppointmentAsync(id);
-            return Ok(new {success=true, message = "Appointment cancelled successfully" });
+            return Ok(new {success=true,message="Appointement Canceled Successfully"});
         }
-
     }
 }
