@@ -7,9 +7,10 @@
     <!-- List: display: flex (Children grouped) -->
     <div class="doctor-identity">
         <div class="card-img-wrapper">
-             @if (!string.IsNullOrEmpty(Model.Image))
+             @if (!string.IsNullOrEmpty(Model.ImageUrl))
             {
-                <img src="@Model.Image" alt="@Model.FirstName" class="card-img">
+         
+                <img src="~/files/Imgs/@Model.ImageUrl" alt="@Model.FirstName @Model.LastName" class="doctor-image">
             }
             else
             {
@@ -88,18 +89,18 @@
 
         <!-- COL 7: Actions -->
         <div class="card-actions-row">
-            <a href="@Url.Action("Schedule", "Doctor", new { doctorId = Model.Id })" class="btn-primary-card">
+            <a href="@Url.Action("DoctorProfile", "Doctor", new { id = Model.Id })" class="btn-primary-card">
                 <i class="fas fa-calendar-alt"></i>
                 <span>Book</span>
             </a>
 
-            <a href="@Url.Action("Details", "Doctor", new { id = Model.Id })" class="btn-icon-card grid-only"
+            <a href="@Url.Action("DoctorProfile", "Doctor", new { id = Model.Id })" class="btn-icon-card grid-only"
                 style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 6px; width: auto; background: linear-gradient(to right, #6366f1, #a855f7); color: white;">
                 <i class="fas fa-user"></i>
                 <span>View</span>
             </a>
             
-             <a href="@Url.Action("Details", "Doctor", new { id = Model.Id })" class="btn-icon-card list-only">
+            <a href="@Url.Action("DoctorProfile", "Doctor", new { id = Model.Id })" class="btn-icon-card list-only">
                 <i class="fas fa-user"></i>
             </a>
         </div>

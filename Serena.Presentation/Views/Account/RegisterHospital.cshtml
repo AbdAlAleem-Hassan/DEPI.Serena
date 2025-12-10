@@ -99,7 +99,7 @@
 
         <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            @* <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div> *@
 
             <div class="registration-steps">
                 <div class="step active" data-step="1">
@@ -122,7 +122,7 @@
                 <div class="form-group">
                     <label class="form-label" for="Name">Hospital Name</label>
                     <input asp-for="Name" class="form-input" placeholder="Enter hospital name" required />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    @* <span asp-validation-for="Name" class="text-danger"></span> *@
                 </div>
 
                 <div class="row">
@@ -130,14 +130,14 @@
                         <div class="form-group">
                             <label class="form-label" for="Rank">Rank</label>
                             <input asp-for="Rank" class="form-input" placeholder="e.g. Public, Private, A-Class" required />
-                            <span asp-validation-for="Rank" class="text-danger"></span>
+                            @* <span asp-validation-for="Rank" class="text-danger"></span> *@
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="AverageCost">Average Cost ($)</label>
                             <input asp-for="AverageCost" type="number" class="form-input" placeholder="0.00" required />
-                            <span asp-validation-for="AverageCost" class="text-danger"></span>
+                            @* <span asp-validation-for="AverageCost" class="text-danger"></span> *@
                         </div>
                     </div>
                 </div>
@@ -148,14 +148,14 @@
                         <div class="form-group">
                             <label class="form-label" for="HospitalPhone">Hospital Phone</label>
                             <input asp-for="HospitalPhone" class="form-input" placeholder="Main phone number" required />
-                            <span asp-validation-for="HospitalPhone" class="text-danger"></span>
+                            @* <span asp-validation-for="HospitalPhone" class="text-danger"></span> *@
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="EmergencyPhone">Emergency Phone</label>
                             <input asp-for="EmergencyPhone" class="form-input" placeholder="Emergency hotline" required />
-                            <span asp-validation-for="EmergencyPhone" class="text-danger"></span>
+                            @* <span asp-validation-for="EmergencyPhone" class="text-danger"></span> *@
                         </div>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
                     <input asp-for="Image" type="file" id="Image" style="display: none;" accept="image/*" />
                     <img id="logoPreview" class="image-preview" />
                 </div>
-                <span asp-validation-for="Image" class="text-danger"></span>
+                @* <span asp-validation-for="Image" class="text-danger"></span> *@
 
                 <div class="nav-buttons">
                     <button type="button" class="btn-prev" disabled>Previous</button>

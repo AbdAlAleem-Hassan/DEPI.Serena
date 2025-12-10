@@ -432,44 +432,32 @@ namespace Serena.Presentation.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterHospital(CreateAndUpdateHospitalDTO model)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
 
-                TempData["Error"] = "Please correct the following errors:<br>" +
-                                    string.Join("<br>• ", errors);
-
-                return View(model);
-            }
 
             try
             {
-                // Validate at least one address
-                if (model.Address is null || !model.Address.Any())
-                {
-                    TempData["Error"] = "At least one address is required";
-                    return View(model);
-                }
+                //// Validate at least one address
+                //if (model.Address is null || !model.Address.Any())
+                //{
+                //    TempData["Error"] = "At least one address is required";
+                //    return View(model);
+                //}
 
                 // Validate at least one department
-                if (model.Department is null || !model.Department.Any())
-                {
-                    TempData["Error"] = "At least one department is required";
-                    return View(model);
-                }
+                //if (model.Department is null || !model.Department.Any())
+                //{
+                //    TempData["Error"] = "At least one department is required";
+                //    return View(model);
+                //}
 
-                // Validate image if required
-                if (model.Image == null)
-                {
-                    TempData["Error"] = "Hospital image is required";
-                    return View(model);
-                }
+                //// Validate image if required
+                //if (model.Image == null)
+                //{
+                //    TempData["Error"] = "Hospital image is required";
+                //    return View(model);
+                //}
 
                 // Convert Addresses → DTO
                 var addressesDto = model.Address
@@ -514,7 +502,7 @@ namespace Serena.Presentation.Controllers
             {
                 _logger.LogError(ex, "Error while adding hospital");
 
-                TempData["Error"] = $"❌ An error occurred: {ex.Message}";
+                //TempData["Error"] = $"❌ An error occurred: {ex.Message}";
                 return View(model);
             }
       

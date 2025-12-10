@@ -38,7 +38,7 @@ namespace Serena.Presentation.Controllers
             {
                 // Get statistics data
                 var hospitals = await _hospitalService.GetAllHospitalsAsync();
-                var doctors = await _doctorService.GetAllDoctorsAsync();
+                IEnumerable<BLL.Models.Doctors.DoctorDTO>? doctors = await _doctorService.GetAllDoctorsAsync();
                 var patients = await _patientService.GetAllPatientsAsync();
 
                 // Calculate real statistics

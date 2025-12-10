@@ -56,7 +56,7 @@ namespace Serena.BLL.Services.Doctors
                 FirstName = doctor.FirstName,
                 MiddleName = doctor.MiddleName,
                 LastName = doctor.LastName,
-                Image = doctor.ImageUrl,
+                ImageUrl = doctor.ImageUrl,
                 Rank = doctor.Rank,
                 YearsOfExperience = doctor.YearsOfExperience,
                 City = doctor.City,
@@ -198,7 +198,7 @@ namespace Serena.BLL.Services.Doctors
                 YearsOfExperience = doctor.YearsOfExperience,
                 Street = doctor.Street,
                 ZipCode = doctor.ZipCode,
-                Image = doctor.ImageUrl
+                ImageUrl = doctor.ImageUrl
 
             };
 
@@ -252,6 +252,7 @@ namespace Serena.BLL.Services.Doctors
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
+
 
             var results = _mapper.Map<List<DoctorDetailsDTO?>>(doctors);
 

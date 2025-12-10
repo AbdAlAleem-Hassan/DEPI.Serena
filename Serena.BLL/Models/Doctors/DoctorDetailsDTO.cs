@@ -19,7 +19,7 @@ namespace Serena.BLL.Models.Doctors
         public string PhoneNumber { get; set; }
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string? Image { get; set; }
+        public string? ImageUrl { get; set; }
         public IFormFile? photo { get; set; }
         public string MaritalStatus { get; set; }
         public string Specialization { get; set; }
