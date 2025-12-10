@@ -14,17 +14,28 @@
             background-color: #0f172a;
         }
 
+        /* Page header */
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2.5rem;
+            padding: 0rem;
             padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--light-gray);
+            border-bottom: 2px solid;
+            border-image: linear-gradient(to right, #3b82f6, #10b981) 1;
+            background: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            border-bottom: 0px;
         }
 
         .dark-mode .page-header {
-            border-bottom-color: #334155;
+            border-bottom-color: linear-gradient(to right, #3b82f6, #10b981);
         }
 
         .doctors-grid {
@@ -227,6 +238,37 @@
             color: #f8fafc;
         }
 
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6b7280;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .empty-state p {
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .dark-mode .empty-state {
+            color: #9ca3af;
+        }
+
+        .dark-mode .empty-state h3 {
+            color: #f8fafc;
+        }
+
         .patient-actions {
             display: flex;
             gap: 0.5rem;
@@ -292,7 +334,7 @@
     <div class="page-header">
         <div>
             <h1 class="section-title" style="margin: 0 0 0.5rem 0;">My Patients</h1>
-            <p style="color: #6b7280; margin: 0;">Patients who have appointments with me</p>
+            @* <p style="color: #6b7280; margin: 0;">Patients who have appointments with me</p> *@
         </div>
         <a href="/Doctor/Schedule" class="btn btn-primary">
             <i class="fas fa-search"></i> View Schedule

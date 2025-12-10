@@ -112,7 +112,7 @@
 
 /* -- Search Bar -- */
 .search-container-new {
-    background: #1e293b;
+    background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #ecfdf5 100%);
     padding: 1rem;
     border-radius: 12px;
     display: flex;
@@ -121,6 +121,10 @@
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     border: 1px solid #334155;
     margin-bottom: 2rem;
+}
+
+.dark-mode .search-container-new {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
 }
 
 .search-input-wrapper {
@@ -166,12 +170,16 @@
 
 /* -- Filters Card -- */
 .filters-card-new {
-    background: #1e293b;
+    background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #ecfdf5 100%);
     border-radius: 16px;
     padding: 1.5rem 2rem;
     border: 1px solid #334155;
     margin-bottom: 1.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .filters-card-new {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
 }
 
 .filters-header-new {
@@ -184,7 +192,7 @@
 .filters-title-new {
     font-size: 1.1rem;
     font-weight: 700;
-    color: white;
+    color: var(--text-dark);
     margin: 0;
 }
 
@@ -213,7 +221,7 @@
 
 .filter-group-new label {
     display: block;
-    color: #CBD5E1;
+    color: var(--text-dark);
     font-size: 0.85rem;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -222,18 +230,18 @@
 .filter-select-new,
 .filter-input-new {
     width: 100%;
-    background: #0f172a;
-    border: 1px solid #334155;
+    background: var(--light-gray);
+    border: 1px solid var(--border-dark);
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    color: #E2E8F0;
+    color: var(--text-dark);
     font-size: 0.95rem;
     cursor: pointer;
 }
 
 .filter-select-new:focus,
 .filter-input-new:focus {
-    border-color: #3B82F6;
+    border-color: var(--primary-color);
     outline: none;
 }
 
@@ -247,7 +255,7 @@
 }
 
 .active-tag {
-    background: #3B82F6;
+    background: var(--text-dark);
     color: white;
     padding: 0.4rem 1rem;
     border-radius: 20px;
@@ -292,11 +300,15 @@
 }
 
 .view-btn-group {
-    background: #1e293b;
+    /* background: #1e293b; */
     padding: 4px;
     border-radius: 8px;
     border: 1px solid #334155;
     display: flex;
+}
+
+.dark-mode .view-btn-group {
+    background: #1e293b;
 }
 
 .view-btn {
@@ -316,8 +328,8 @@
 }
 
 .sort-select {
-    background: #1e293b;
-    color: #E2E8F0;
+    /* background: #1e293b;
+    color: #E2E8F0; */
     border: 1px solid #334155;
     padding: 0.4rem 1rem;
     border-radius: 6px;
@@ -325,48 +337,67 @@
     cursor: pointer;
 }
 
+.dark-mode .sort-select {
+    background: #1e293b;
+    color: #E2E8F0;
+}
+
+/* =========================================
+   Unified Card System (List vs Grid) 
+   ========================================= */
+
 /* =========================================
    Unified Card System (List vs Grid) 
    ========================================= */
 
 /* Define the Table Column Layout centrally */
 :root {
-    --hospital-table-cols: minmax(280px, 2.5fr) 0.8fr 1.2fr 1fr 0.8fr 1.4fr;
-    /* Col 1: Identity (Name, Loc)
+    /* 
+       Col 1: Identity (Name + Image)
        Col 2: Rank
-       Col 3: Departments
-       Col 4: Rating
-       Col 5: Cost
-       Col 6: Actions */
+       Col 3: Cost
+       Col 4: Phone
+       Col 5: Ambulance
+       Col 6: Actions 
+    */
+    --hospital-table-cols: minmax(280px, 2fr) 0.8fr 1fr 1.2fr 1.2fr 1fr;
 }
 
 /* -- List View Specific Header -- */
 .hospitals-list-header {
     display: none;
-    /* Hidden by default (Grid mode) */
     grid-template-columns: var(--hospital-table-cols);
     gap: 1rem;
-    background: #1e293b;
+    background: #f8fafc;
     padding: 1rem 1.5rem;
     border-radius: 12px 12px 0 0;
     margin-bottom: 0;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid #e2e8f0;
     align-items: center;
 }
 
+.dark-mode .hospitals-list-header {
+    background: #1e293b;
+    border-color: #334155;
+}
+
 .list-header-item {
-    color: #94A3B8;
+    color: #64748B;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
+.dark-mode .list-header-item {
+    color: #94A3B8;
+}
+
 /* -- Container Modes -- */
 /* GRID MODE (Default) */
 .hospitals-container.view-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 2rem;
 }
 
@@ -381,132 +412,204 @@
     display: grid;
 }
 
-/* -- Universal Card Structure -- */
-.hospital-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    overflow: hidden;
-    transition: all 0.3s ease;
+/* =========================================
+   NEW CARD STYLES (Grid View)
+   ========================================= */
+
+.hospital-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
 }
 
-/* GRID Styling */
-.view-grid .hospital-card {
+.hospital-card {
+    background: #ffffff;
     border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
     display: flex;
     flex-direction: column;
+}
+
+.dark-mode .hospital-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* GRID Specific Styles */
+.view-grid .hospital-card {
     height: 100%;
 }
 
 .view-grid .hospital-card:hover {
-    border-color: #3B82F6;
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.view-grid .card-img-wrapper {
-    height: 200px;
-    position: relative;
-    background: #0f172a;
+.dark-mode .view-grid .hospital-card:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.view-grid .hospital-card-header {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.view-grid .card-img {
+.view-grid .hospital-card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,50 Q25,40 50,50 T100,50 L100,100 L0,100 Z" fill="white"/></svg>');
+    background-size: cover;
+}
+
+.view-grid .hospital-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0.9;
+    /* Placeholder fallback style if image fails or for the overlay effect */
 }
 
-.view-grid .card-content {
-    padding: 1.5rem;
+/* If no image, fallback to icon style */
+.grid-icon-placeholder {
+    font-size: 3.5rem;
+    color: white;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.view-grid .hospital-card-body {
+    padding: 24px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    flex: 1;
 }
 
-.view-grid .hospital-name {
-    font-size: 1.25rem;
-    color: white;
-    margin: 1rem;
+.hospital-name {
+    font-size: 1.5rem;
     font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    line-height: 1.3;
 }
 
-.view-grid .hospital-location {
-    color: #94A3B8;
-    font-size: 0.85rem;
+.dark-mode .hospital-name {
+    color: #F8FAFC;
+}
+
+.view-grid .hospital-rank-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    color: #0369a1;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    border: 1px solid #bae6fd;
+    align-self: flex-start;
+}
+
+.dark-mode .view-grid .hospital-rank-badge {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #38bdf8;
+    border-color: #334155;
+}
+
+.view-grid .hospital-info {
+    margin-bottom: 20px;
+}
+
+.hospital-cost {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #059669;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 8px;
 }
 
-.view-grid .hospital-departments {
+.dark-mode .hospital-cost {
+    color: #34d399;
+}
+
+.hospital-cost span {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.dark-mode .hospital-cost span {
+    color: #94a3b8;
+}
+
+.hospital-phone-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    align-items: center;
+    gap: 10px;
+    color: #4b5563;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
 }
 
-.view-grid .department-tag {
-    background: rgba(59, 130, 246, 0.1);
-    color: #60A5FA;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
+.dark-mode .hospital-phone-row {
+    background: #0f172a;
+    border-color: #334155;
+    color: #cbd5e1;
 }
 
-/* Grid Specific Stats Row */
-.view-grid .grid-stats-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 1.5rem 0;
-    text-align: center;
-    border-top: 1px solid #334155;
-    border-bottom: 1px solid #334155;
-    padding: 1rem 0;
+.hospital-phone-row i {
+    color: #3b82f6;
+    font-size: 1rem;
 }
 
-.grid-stat h4 {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin: 0;
+/* =========================================
+   LIST MODE - TABLE LAYOUT
+   ========================================= */
+
+.view-list .hospital-card-link {
+    height: auto;
 }
 
-.grid-stat span {
-    color: #94A3B8;
-    font-size: 0.8rem;
-}
-
-.view-grid .card-actions-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-top: auto;
-}
-
-/* Hide List-specific elements in Grid */
-.view-grid .list-only {
-    display: none !important;
-}
-
-/* LIST Styling */
 .view-list .hospital-card {
     display: grid;
     grid-template-columns: var(--hospital-table-cols);
     align-items: center;
+    /* Vertical center alignment for table row effect */
+    gap: 1rem;
     padding: 1rem 1.5rem;
     border-radius: 0;
-    background: #1e293b;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid #e2e8f0;
     border-top: none;
-    border-left: 1px solid #334155;
-    border-right: 1px solid #334155;
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: none;
+    min-height: 80px;
+    /* Consistent row height */
 }
 
-.view-list .card-content {
-    display: contents;
+.dark-mode .view-list .hospital-card {
+    background: #1e293b;
+    border-color: #334155;
 }
 
 .view-list .hospital-card:last-child {
@@ -514,87 +617,62 @@
 }
 
 .view-list .hospital-card:hover {
-    background: #263345;
-    border-color: #334155;
+    background: #f8fafc;
 }
 
-/* Col 1: Hospital Identity */
-.view-list .hospital-identity {
+.dark-mode .view-list .hospital-card:hover {
+    background: #263345;
+}
+
+/* Cell specific adjustments for List View */
+
+/* Col 1: Identity */
+.view-list .identity-cell {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.view-list .card-img-wrapper {
+.view-list .list-img-thumb {
     width: 48px;
     height: 48px;
     border-radius: 8px;
-    background: #0f172a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
+    object-fit: cover;
+    background: #f1f5f9;
 }
 
-.view-list .hospital-info-text h3 {
+.view-list .hospital-name {
     margin: 0;
     font-size: 1rem;
-    color: white;
-    font-weight: 600;
 }
 
-.view-list .hospital-info-text .location {
-    font-size: 0.8rem;
-    color: #94A3B8;
+/* General Cell Styling */
+.view-list .list-cell {
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.dark-mode .view-list .list-cell {
+    color: #cbd5e1;
+}
+
+/* Col 6: Actions in List View */
+.view-list .actions-cell {
     display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
-/* Hide Grid-specific elements in List */
+/* Hide/Show Logic */
+.view-grid .list-only {
+    display: none !important;
+}
+
 .view-list .grid-only {
     display: none !important;
 }
 
-/* List Cell Styles */
-.view-list .list-cell {
-    color: #E2E8F0;
-    font-size: 0.9rem;
-}
-
-.view-list .rating-cell {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #F59E0B;
-    font-weight: 600;
-}
-
-.view-list .badge-rank {
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    color: white;
-    padding: 0.25rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.view-list .card-actions-row {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-
-/* Grid specific overrides for identity */
-.view-grid .hospital-identity {
-    display: contents;
-    /* Just a wrapper in grid that shouldn't affect flow if handled right, or flex column */
-    /* Actually for Grid we have separated Img and Text. 
-       We will need structure in partial to handle this. */
-}
-
-/* Buttons */
+/* Buttons reused */
 .btn-primary-card {
     background: #3B82F6;
     color: white;
@@ -609,11 +687,16 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    transition: background 0.2s;
+}
+
+.btn-primary-card:hover {
+    background: #2563EB;
 }
 
 .btn-icon-card {
-    background: #334155;
-    color: #94A3B8;
+    background: #f1f5f9;
+    color: #64748B;
     width: 36px;
     height: 36px;
     border-radius: 6px;
@@ -623,9 +706,20 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    transition: all 0.2s;
+}
+
+.dark-mode .btn-icon-card {
+    background: #334155;
+    color: #94A3B8;
 }
 
 .btn-icon-card:hover {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.dark-mode .btn-icon-card:hover {
     background: #475569;
     color: white;
 }

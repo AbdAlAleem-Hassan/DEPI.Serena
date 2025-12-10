@@ -2,135 +2,139 @@
 
 @{
     var primaryAddress = Model.Addresses?.FirstOrDefault();
-    var reviewCount = (Model.PatientHospitalReviews?.Count ?? 0) + (Model.DoctorHospitalReviews?.Count ?? 0);
-    var averageRating = 0.0;
-    if (reviewCount > 0)
-    {
-        var patientRatings = Model.PatientHospitalReviews?.Select(r => r.Rating).ToList() ?? new List<int>();
-        var doctorRatings = Model.DoctorHospitalReviews?.Select(r => r.Rating).ToList() ?? new List<int>();
-        var allRatings = patientRatings.Concat(doctorRatings).ToList();
-        averageRating = allRatings.Any() ? allRatings.Average() : 0;
-    }
+    // Placeholder image logic
+    var randomImageId = Model.Id % 5 + 1; // 1-5
 }
 
-<div class="hospital-card">
+<a asp-action="Details" asp-route-id="@Model.Id" class="hospital-card-link">
+    <div class="hospital-card">
 
-    <!-- COL 1: Identity (Wrapper for Image + Name) -->
-    <!-- Grid: display: contents -> Image and Text split -->
-    <!-- List: display: flex -> Image and Text side-by-side in Col 1 -->
-    <div class="hospital-identity">
-
-        <!-- Part A: Image -->
-        <div class="card-img-wrapper">
-            <!-- Placeholder since DTO has no image -->
-            <i class="fas fa-hospital" style="font-size: 2rem; color: #475569;"></i>
-
-            <!-- Rank Badge for Grid -->
-            @if (!string.IsNullOrEmpty(Model.Rank))
-            {
-                <div class="badge-rank grid-only"
-                    style="position: absolute; top: 1rem; right: 1rem; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; padding: 4px 8px; border-radius: 6px; font-weight: 700; backdrop-filter: blur(4px);">
-                    #@Model.Rank
-                </div>
-            }
+        <!-- ============================================= -->
+        <!-- GRID VIEW CONTENT -->
+        <!-- ============================================= -->
+        <div class="hospital-card-header grid-only">
+            <!-- Using a gradient/pattern placeholder from CSS -->
+            <div class="grid-icon-placeholder">
+                <i class="fas fa-hospital-alt"></i>
+            </div>
         </div>
 
-        <!-- Part B: Text -->
-        <div class="hospital-info-text" style="flex:1">
+        <div class="hospital-card-body grid-only">
             <h3 class="hospital-name">@Model.Name</h3>
 
-            @if (primaryAddress != null)
-            {
-                <div class="hospital-location">
-                    <i class="fas fa-map-marker-alt"></i> <span>@primaryAddress.City, @primaryAddress.Country</span>
-                </div>
-            }
-        </div>
-    </div>
-
-    <!-- WRAPPER FOR REMAINING CELLS (Flattened in List Mode) -->
-    <div class="card-content">
-
-        <!-- COL 2: Rank (List Only) -->
-        <div class="list-cell list-only">
             @if (!string.IsNullOrEmpty(Model.Rank))
             {
-                <span class="badge-rank">#@Model.Rank</span>
+                <div class="hospital-rank-badge">Rank: #@Model.Rank</div>
             }
-            else
-            {
-                <span style="color:#64748B">-</span>
-            }
-        </div>
 
-        <!-- COL 3: Departments (Tags) -->
-        <div class="list-cell">
-            <!-- Grid view shows tags separately below -->
-            <div class="grid-only hospital-departments">
-                @if (Model.Departments != null)
+            <div class="hospital-info">
+                <div class="hospital-cost">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>@Model.AverageCost.ToString("N0")</span>
+                    <span>per visit</span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.HospitalPhone))
                 {
-                    foreach (var dept in Model.Departments.Take(3))
-                    {
-                        <span class="department-tag">@dept.Name</span>
-                    }
-                    if (Model.Departments.Count > 3)
-                    {
-                        <span class="department-tag" style="background:transparent; color:#94A3B8">+@(Model.Departments.Count -
-                                                3)</span>
-                    }
+                    <div class="hospital-phone-row">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>@Model.HospitalPhone</span>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.EmergencyPhone))
+                {
+                    <div class="hospital-phone-row">
+                        <i class="fas fa-ambulance"></i>
+                        <span>@Model.EmergencyPhone</span>
+                    </div>
                 }
             </div>
 
-            <!-- List view: just count or text -->
-            <div class="list-only">
-                @(Model.Departments?.Count ?? 0) Departments
+            <!-- Grid Action Hint -->
+            <div
+                style="margin-top:auto; color: #3b82f6; font-weight:600; font-size:0.9rem; display:flex; align-items:center; gap:0.5rem;">
+                View Details <i class="fas fa-arrow-right"></i>
             </div>
         </div>
 
-        <!-- COL 4: Rating -->
-        <div class="list-cell rating-cell list-only">
-            <i class="fas fa-star"></i> @averageRating.ToString("0.1") <span
-                style="color:#64748B; font-weight:400; font-size:0.8rem">(@reviewCount)</span>
+
+        <!-- ============================================= -->
+        <!-- LIST VIEW CONTENT (Table Cells) -->
+        <!-- ============================================= -->
+
+        <!-- Col 1: Identity -->
+        <div class="list-cell identity-cell list-only">
+            <div class="list-img-thumb"
+                style="display:flex; align-items:center; justify-content:center; color:#94a3b8;">
+                <i class="fas fa-hospital"></i>
+            </div>
+            <div>
+                <h3 class="hospital-name" style="margin:0; font-size:1rem;">@Model.Name</h3>
+                @if (primaryAddress != null)
+                {
+                    <span style="font-size:0.75rem; color:#64748B;">@primaryAddress.City</span>
+                }
+            </div>
         </div>
 
-        <!-- COL 5: Cost -->
-        <div class="list-cell list-only" style="font-weight: 700; color: #10B981;">
+        <!-- Col 2: Rank -->
+        <div class="list-cell list-only">
+            @if (!string.IsNullOrEmpty(Model.Rank))
+            {
+                <span
+                    style="background:#e0f2fe; color:#0284c7; padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600;">#@Model.Rank</span>
+            }
+            else
+            {
+
+                <span>-</span>
+            }
+        </div>
+
+        <!-- Col 3: Cost -->
+        <div class="list-cell list-only" style="font-weight:600; color:#059669;">
             $@Model.AverageCost.ToString("N0")
         </div>
 
-        <!-- Grid Only: Stats Row (To look like Doctor Premium Grid) -->
-        <div class="grid-stats-row grid-only">
-            <div class="grid-stat">
-                <h4>@reviewCount</h4>
-                <span>Reviews</span>
-            </div>
-            <div class="grid-stat">
-                <h4>@averageRating.ToString("0.1")</h4>
-                <span>Rating</span>
-            </div>
-            <div class="grid-stat">
-                <h4>$@Model.AverageCost.ToString("N0")</h4>
-                <span>Avg Cost</span>
-            </div>
+        <!-- Col 4: Phone -->
+        <div class="list-cell list-only">
+            @if (!string.IsNullOrEmpty(Model.HospitalPhone))
+            {
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-phone" style="color:#64748B; font-size:0.8rem;"></i>
+                    <span>@Model.HospitalPhone</span>
+                </div>
+            }
+            else
+            {
+
+                <span>-</span>
+            }
         </div>
 
-        <!-- COL 6: Actions -->
-        <div class="card-actions-row">
-            <a asp-action="Details" asp-route-id="@Model.Id"
-                class="btn-primary-card">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Book</span>
-            </a>
+        <!-- Col 5: Ambulance -->
+        <div class="list-cell list-only">
+            @if (!string.IsNullOrEmpty(Model.EmergencyPhone))
+            {
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-ambulance" style="color:#ef4444; font-size:0.8rem;"></i>
+                    <span>@Model.EmergencyPhone</span>
+                </div>
+            }
+            else
+            {
 
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-icon-card grid-only"
-                style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 6px; width: auto; background: linear-gradient(to right, #6366f1, #a855f7); color: white;">
-                <i class="fas fa-eye"></i>
-                <span>View</span>
-            </a>
-
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-icon-card list-only">
-                <i class="fas fa-eye"></i>
-            </a>
+                <span>-</span>
+            }
         </div>
+
+        <!-- Col 6: Actions -->
+        <div class="list-cell actions-cell list-only">
+            <span class="btn-primary-card" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
+                View
+            </span>
+        </div>
+
     </div>
-</div>
+</a>
