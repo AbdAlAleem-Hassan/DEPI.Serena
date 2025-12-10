@@ -20,22 +20,9 @@
             background-image: linear-gradient(to right, rgb(255 255 255 / 52%), rgb(255 255 255 / 15%), rgb(255 255 255 / 52%));
         }
 
-        /* Validation styles */
-        .field-validation-error {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .input-error {
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-        }
-
         /* --------------------------------------
-                                   Multi-Colored Card Logic (Cycle of 4)
-                                   -------------------------------------- */
+                                           Multi-Colored Card Logic (Cycle of 4)
+                                           -------------------------------------- */
 
         /* Color 1: Blue (Default) */
         .dynamic-item:nth-of-type(4n+1) {
@@ -110,7 +97,7 @@
             <p class="auth-subtitle">Register your healthcare facility profile</p>
         </div>
 
-        <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data" novalidate>
+        <form class="auth-form" id="hospitalForm" asp-action="RegisterHospital" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
@@ -133,24 +120,24 @@
                 <div class="section-title">Basic Details</div>
 
                 <div class="form-group">
-                    <label class="form-label" for="Name">Hospital Name *</label>
-                    <input asp-for="Name" class="form-input" placeholder="Enter hospital name" />
-                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                    <label class="form-label" for="Name">Hospital Name</label>
+                    <input asp-for="Name" class="form-input" placeholder="Enter hospital name" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="Rank">Rank *</label>
-                            <input asp-for="Rank" class="form-input" placeholder="e.g. Public, Private, A-Class" />
-                            <span asp-validation-for="Rank" class="field-validation-error"></span>
+                            <label class="form-label" for="Rank">Rank</label>
+                            <input asp-for="Rank" class="form-input" placeholder="e.g. Public, Private, A-Class" required />
+                            <span asp-validation-for="Rank" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="AverageCost">Average Cost ($) *</label>
-                            <input asp-for="AverageCost" type="number" class="form-input" placeholder="0.00" />
-                            <span asp-validation-for="AverageCost" class="field-validation-error"></span>
+                            <label class="form-label" for="AverageCost">Average Cost ($)</label>
+                            <input asp-for="AverageCost" type="number" class="form-input" placeholder="0.00" required />
+                            <span asp-validation-for="AverageCost" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -159,16 +146,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="HospitalPhone">Hospital Phone *</label>
-                            <input asp-for="HospitalPhone" class="form-input" placeholder="Main phone number" />
-                            <span asp-validation-for="HospitalPhone" class="field-validation-error"></span>
+                            <label class="form-label" for="HospitalPhone">Hospital Phone</label>
+                            <input asp-for="HospitalPhone" class="form-input" placeholder="Main phone number" required />
+                            <span asp-validation-for="HospitalPhone" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="EmergencyPhone">Emergency Phone *</label>
-                            <input asp-for="EmergencyPhone" class="form-input" placeholder="Emergency hotline" />
-                            <span asp-validation-for="EmergencyPhone" class="field-validation-error"></span>
+                            <label class="form-label" for="EmergencyPhone">Emergency Phone</label>
+                            <input asp-for="EmergencyPhone" class="form-input" placeholder="Emergency hotline" required />
+                            <span asp-validation-for="EmergencyPhone" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -181,7 +168,7 @@
                     <input asp-for="Image" type="file" id="Image" style="display: none;" accept="image/*" />
                     <img id="logoPreview" class="image-preview" />
                 </div>
-                <span asp-validation-for="Image" class="field-validation-error"></span>
+                <span asp-validation-for="Image" class="text-danger"></span>
 
                 <div class="nav-buttons">
                     <button type="button" class="btn-prev" disabled>Previous</button>
@@ -191,7 +178,7 @@
 
             <div class="step-content" data-step="2">
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">
-                    <h3 style="flex: 2;">Hospital Addresses *</h3>
+                    <h3 style="flex: 2;">Hospital Addresses</h3>
                     <button type="button" class="btn btn-primary btn-sm" id="btnAddAddress">
                         <i class="fas fa-plus"></i> Add Branch
                     </button>
@@ -212,57 +199,51 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-label">Street Address *</label>
-                                        <input name="Address[0].Street" class="form-input address-street" />
-                                        <span class="field-validation-valid address-street-error"></span>
+                                        <label class="form-label">Street Address</label>
+                                        <input name="Address[0].Street" class="form-input" required />
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Address[0].Street"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">City *</label>
-                                        <input name="Address[0].City" class="form-input address-city" />
-                                        <span class="field-validation-valid address-city-error"></span>
+                                        <label class="form-label">City</label>
+                                        <input name="Address[0].City" class="form-input" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">District *</label>
-                                        <input name="Address[0].District" class="form-input address-district" />
-                                        <span class="field-validation-valid address-district-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Country *</label>
-                                        <input name="Address[0].Country" class="form-input address-country" />
-                                        <span class="field-validation-valid address-country-error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Zip Code *</label>
-                                        <input name="Address[0].ZipCode" class="form-input address-zip" />
-                                        <span class="field-validation-valid address-zip-error"></span>
+                                        <label class="form-label">District</label>
+                                        <input name="Address[0].District" class="form-input" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Latitude *</label>
-                                        <input name="Address[0].Latitude" type="number" step="any" class="form-input address-lat" />
-                                        <span class="field-validation-valid address-lat-error"></span>
+                                        <label class="form-label">Country</label>
+                                        <input name="Address[0].Country" class="form-input" required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Longitude *</label>
-                                        <input name="Address[0].Longitude" type="number" step="any" class="form-input address-lng" />
-                                        <span class="field-validation-valid address-lng-error"></span>
+                                        <label class="form-label">Zip Code</label>
+                                        <input name="Address[0].ZipCode" class="form-input" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Latitude</label>
+                                        <input name="Address[0].Latitude" type="number" step="any" class="form-input" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Longitude</label>
+                                        <input name="Address[0].Longitude" type="number" step="any" class="form-input" required />
                                     </div>
                                 </div>
                             </div>
@@ -278,7 +259,7 @@
 
             <div class="step-content" data-step="3">
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">
-                    <h3 style="flex: 2;">Hospital Departments *</h3>
+                    <h3 style="flex: 2;">Hospital Departments</h3>
                     <button type="button" class="btn btn-primary btn-sm" id="btnAddDepartment">
                         <i class="fas fa-plus"></i> Add Department
                     </button>
@@ -296,9 +277,9 @@
 
                         <div class="card-body" style="padding: 8px;">
                             <div class="form-group">
-                                <label class="form-label">Department Name *</label>
-                                <input name="Department[0].Name" class="form-input dept-name" placeholder="e.g. Cardiology" />
-                                <span class="field-validation-valid dept-name-error"></span>
+                                <label class="form-label">Department Name</label>
+                                <input name="Department[0].Name" class="form-input" placeholder="e.g. Cardiology" required />
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Department[0].Name"></span>
                             </div>
 
                             <div class="form-group">
@@ -311,7 +292,7 @@
 
                 <div class="nav-buttons">
                     <button type="button" class="btn-prev" data-prev="2">Previous</button>
-                    <button type="submit" class="auth-submit-btn" id="submitBtn">
+                    <button type="submit" class="auth-submit-btn">
                         <span class="btn-text">Complete Registration</span>
                     </button>
                 </div>
@@ -334,57 +315,50 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="form-label">Street Address *</label>
-                        <input name="Address[{index}].Street" class="form-input address-street" />
-                        <span class="field-validation-valid address-street-error"></span>
+                        <label class="form-label">Street Address</label>
+                        <input name="Address[{index}].Street" class="form-input" required />
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">City *</label>
-                        <input name="Address[{index}].City" class="form-input address-city" />
-                        <span class="field-validation-valid address-city-error"></span>
+                        <label class="form-label">City</label>
+                        <input name="Address[{index}].City" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">District *</label>
-                        <input name="Address[{index}].District" class="form-input address-district" />
-                        <span class="field-validation-valid address-district-error"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Country *</label>
-                        <input name="Address[{index}].Country" class="form-input address-country" />
-                        <span class="field-validation-valid address-country-error"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Zip Code *</label>
-                        <input name="Address[{index}].ZipCode" class="form-input address-zip" />
-                        <span class="field-validation-valid address-zip-error"></span>
+                        <label class="form-label">District</label>
+                        <input name="Address[{index}].District" class="form-input" required />
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Latitude *</label>
-                        <input name="Address[{index}].Latitude" type="number" step="any" class="form-input address-lat" />
-                        <span class="field-validation-valid address-lat-error"></span>
+                        <label class="form-label">Country</label>
+                        <input name="Address[{index}].Country" class="form-input" required />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Longitude *</label>
-                        <input name="Address[{index}].Longitude" type="number" step="any" class="form-input address-lng" />
-                        <span class="field-validation-valid address-lng-error"></span>
+                        <label class="form-label">Zip Code</label>
+                        <input name="Address[{index}].ZipCode" class="form-input" required />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Latitude</label>
+                        <input name="Address[{index}].Latitude" type="number" step="any" class="form-input" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Longitude</label>
+                        <input name="Address[{index}].Longitude" type="number" step="any" class="form-input" required />
                     </div>
                 </div>
             </div>
@@ -403,9 +377,8 @@
 
         <div class="card-body" style="padding: 8px;">
             <div class="form-group">
-                <label class="form-label">Department Name *</label>
-                <input name="Department[{index}].Name" class="form-input dept-name" />
-                <span class="field-validation-valid dept-name-error"></span>
+                <label class="form-label">Department Name</label>
+                <input name="Department[{index}].Name" class="form-input" required />
             </div>
 
             <div class="form-group">
@@ -421,12 +394,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             initRegistrationSteps();
             initDynamicForms();
-            initImagePreview();
-            initFormSubmission();
-        });
 
-        // صورة المستشفى
-        function initImagePreview() {
+            // Image preview
             const logoInput = document.getElementById('Image');
             const logoPreview = document.getElementById('logoPreview');
 
@@ -434,21 +403,6 @@
                 logoInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if (file) {
-                        // التحقق من حجم الملف (5MB كحد أقصى)
-                        if (file.size > 5 * 1024 * 1024) {
-                            showError('File size must be less than 5MB');
-                            logoInput.value = '';
-                            return;
-                        }
-
-                        // التحقق من نوع الملف
-                        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-                        if (!validTypes.includes(file.type)) {
-                            showError('Only JPG, PNG files are allowed');
-                            logoInput.value = '';
-                            return;
-                        }
-
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             logoPreview.src = e.target.result;
@@ -458,7 +412,7 @@
                     }
                 });
             }
-        }
+        });
 
         // Dynamic Form Handling
         function initDynamicForms() {
@@ -533,7 +487,6 @@
                 button.addEventListener('click', function() {
                     const currentStep = getCurrentStep();
                     const nextStep = parseInt(this.dataset.next);
-                    
                     if (validateStep(currentStep)) {
                         updateProgress(nextStep);
                     }
@@ -553,289 +506,31 @@
             }
 
             function validateStep(step) {
+                const currentContent = document.querySelector(`.step-content[data-step="${step}"]`);
+                const requiredFields = currentContent.querySelectorAll('[required], input[data-val-required]');
                 let isValid = true;
-                
-                // إخفاء جميع رسائل الخطأ أولاً
-                hideAllValidationErrors(step);
-                
-                switch(step) {
-                    case 1:
-                        isValid = validateStep1();
-                        break;
-                    case 2:
-                        isValid = validateStep2();
-                        break;
-                    case 3:
-                        isValid = validateStep3();
-                        break;
-                }
-                
-                return isValid;
-            }
-        }
 
-        // التحقق من الخطوة 1
-        function validateStep1() {
-            let isValid = true;
-            
-            const fields = [
-                { 
-                    id: 'Name', 
-                    errorMsg: 'Hospital name is required',
-                    validation: (value) => value && value.trim().length > 0
-                },
-                { 
-                    id: 'Rank', 
-                    errorMsg: 'Rank is required',
-                    validation: (value) => value && value.trim().length > 0
-                },
-                { 
-                    id: 'AverageCost', 
-                    errorMsg: 'Average cost is required and must be a valid number',
-                    validation: (value) => {
-                        if (!value) return false;
-                        const num = parseFloat(value);
-                        return !isNaN(num) && num >= 0;
-                    }
-                },
-                { 
-                    id: 'HospitalPhone', 
-                    errorMsg: 'Hospital phone is required',
-                    validation: (value) => value && value.trim().length > 0
-                },
-                { 
-                    id: 'EmergencyPhone', 
-                    errorMsg: 'Emergency phone is required',
-                    validation: (value) => value && value.trim().length > 0
-                }
-            ];
-            
-            fields.forEach(field => {
-                const input = document.getElementById(field.id);
-                const errorSpan = input ? input.nextElementSibling : null;
-                
-                if (!input || !field.validation(input.value)) {
-                    isValid = false;
-                    if (input) {
-                        input.classList.add('input-error');
-                        if (errorSpan && errorSpan.classList.contains('field-validation-error')) {
-                            errorSpan.textContent = field.errorMsg;
-                            errorSpan.style.display = 'block';
-                        }
-                    }
-                } else {
-                    if (input) {
-                        input.classList.remove('input-error');
-                        if (errorSpan && errorSpan.classList.contains('field-validation-error')) {
-                            errorSpan.style.display = 'none';
-                        }
-                    }
-                }
-            });
-            
-            if (!isValid) {
-                showError('Please fill all required fields correctly');
-            }
-            
-            return isValid;
-        }
-
-        // التحقق من الخطوة 2 (العناوين)
-        function validateStep2() {
-            let isValid = true;
-            const addressItems = document.querySelectorAll('.address-item');
-            
-            if (addressItems.length === 0) {
-                showError('At least one hospital address is required');
-                return false;
-            }
-            
-            addressItems.forEach((item, itemIndex) => {
-                const addressFields = [
-                    { 
-                        selector: '.address-street', 
-                        errorMsg: 'Street address is required',
-                        validation: (value) => value && value.trim().length > 0
-                    },
-                    { 
-                        selector: '.address-city', 
-                        errorMsg: 'City is required',
-                        validation: (value) => value && value.trim().length > 0
-                    },
-                    { 
-                        selector: '.address-district', 
-                        errorMsg: 'District is required',
-                        validation: (value) => value && value.trim().length > 0
-                    },
-                    { 
-                        selector: '.address-country', 
-                        errorMsg: 'Country is required',
-                        validation: (value) => value && value.trim().length > 0
-                    },
-                    { 
-                        selector: '.address-zip', 
-                        errorMsg: 'Zip code is required',
-                        validation: (value) => value && value.trim().length > 0
-                    },
-                    { 
-                        selector: '.address-lat', 
-                        errorMsg: 'Valid latitude is required',
-                        validation: (value) => {
-                            if (!value) return false;
-                            const lat = parseFloat(value);
-                            return !isNaN(lat) && lat >= -90 && lat <= 90;
-                        }
-                    },
-                    { 
-                        selector: '.address-lng', 
-                        errorMsg: 'Valid longitude is required',
-                        validation: (value) => {
-                            if (!value) return false;
-                            const lng = parseFloat(value);
-                            return !isNaN(lng) && lng >= -180 && lng <= 180;
-                        }
-                    }
-                ];
-                
-                addressFields.forEach(field => {
-                    const input = item.querySelector(field.selector);
-                    const errorSpan = input ? input.nextElementSibling : null;
-                    
-                    if (!input || !field.validation(input.value)) {
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
                         isValid = false;
-                        if (input) {
-                            input.classList.add('input-error');
-                            if (errorSpan && errorSpan.classList.contains('field-validation-valid')) {
-                                errorSpan.textContent = field.errorMsg;
-                                errorSpan.style.color = '#dc3545';
-                                errorSpan.style.display = 'block';
-                            }
-                        }
+                        field.classList.add('error');
+                        field.style.borderColor = 'red';
                     } else {
-                        if (input) {
-                            input.classList.remove('input-error');
-                            if (errorSpan && errorSpan.classList.contains('field-validation-valid')) {
-                                errorSpan.style.display = 'none';
-                            }
-                        }
+                        field.classList.remove('error');
+                        field.style.borderColor = '#e2e8f0';
                     }
                 });
-            });
-            
-            if (!isValid) {
-                showError('Please fill all address fields correctly');
-            }
-            
-            return isValid;
-        }
 
-        // التحقق من الخطوة 3 (الأقسام)
-        function validateStep3() {
-            let isValid = true;
-            const deptItems = document.querySelectorAll('.department-item');
-            
-            if (deptItems.length === 0) {
-                showError('At least one department is required');
-                return false;
-            }
-            
-            deptItems.forEach((item, itemIndex) => {
-                const deptNameInput = item.querySelector('.dept-name');
-                const errorSpan = deptNameInput ? deptNameInput.nextElementSibling : null;
-                
-                if (!deptNameInput || !deptNameInput.value || deptNameInput.value.trim().length === 0) {
-                    isValid = false;
-                    if (deptNameInput) {
-                        deptNameInput.classList.add('input-error');
-                        if (errorSpan && errorSpan.classList.contains('dept-name-error')) {
-                            errorSpan.textContent = 'Department name is required';
-                            errorSpan.style.color = '#dc3545';
-                            errorSpan.style.display = 'block';
-                        }
-                    }
-                } else {
-                    if (deptNameInput) {
-                        deptNameInput.classList.remove('input-error');
-                        if (errorSpan && errorSpan.classList.contains('dept-name-error')) {
-                            errorSpan.style.display = 'none';
-                        }
+                if (!isValid) {
+                    if(typeof showNotification === 'function') {
+                        showNotification('Please fill all required fields', 'error');
+                    } else {
+                        alert('Please fill all required fields');
                     }
                 }
-            });
-            
-            if (!isValid) {
-                showError('Please fill all department names');
-            }
-            
-            return isValid;
-        }
-
-        // إخفاء جميع أخطاء التحقق
-        function hideAllValidationErrors(step) {
-            const stepContent = document.querySelector(`.step-content[data-step="${step}"]`);
-            if (!stepContent) return;
-            
-            // إخفاء رسائل الخطأ
-            const errorSpans = stepContent.querySelectorAll('.field-validation-error, .field-validation-valid');
-            errorSpans.forEach(span => {
-                span.style.display = 'none';
-                span.textContent = '';
-            });
-            
-            // إزالة تظليل الحقول
-            const inputs = stepContent.querySelectorAll('.form-input');
-            inputs.forEach(input => {
-                input.classList.remove('input-error');
-            });
-        }
-
-        // التحقق النهائي قبل الإرسال
-        function initFormSubmission() {
-            const form = document.getElementById('hospitalForm');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    // التحقق من جميع الخطوات قبل الإرسال
-                    const isStep1Valid = validateStep1();
-                    const isStep2Valid = validateStep2();
-                    const isStep3Valid = validateStep3();
-                    
-                    if (!isStep1Valid || !isStep2Valid || !isStep3Valid) {
-                        e.preventDefault();
-                        
-                        // الانتقال إلى أول خطوة بها خطأ
-                        if (!isStep1Valid) {
-                            updateProgress(1);
-                        } else if (!isStep2Valid) {
-                            updateProgress(2);
-                        } else {
-                            updateProgress(3);
-                        }
-                        
-                        showError('Please fix all validation errors before submitting');
-                    }
-                });
-            }
-        }
-
-        // وظيفة لعرض رسائل الخطأ
-        function showError(message) {
-            // يمكنك استبدال هذا بمنظومة التنبيهات الخاصة بك
-            if (typeof showNotification === 'function') {
-                showNotification(message, 'error');
-            } else {
-                alert('Error: ' + message);
-            }
-        }
-
-        // وظيفة لعرض رسائل النجاح
-        function showSuccess(message) {
-            if (typeof showNotification === 'function') {
-                showNotification(message, 'success');
-            } else {
-                alert('Success: ' + message);
+                return isValid;
             }
         }
     </script>
 }
+ هنا ممكن تحل مشكله اني اصلا اول ما الصفحه ديه بتتفتح الvalidation علاطول بتتنفذ ويظهر ايرور قبل ما اكتب اي حاجه لسه

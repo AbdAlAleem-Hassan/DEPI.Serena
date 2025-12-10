@@ -83,7 +83,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" asp-for="Email"></label>
-                            <input asp-for="Email" class="form-input" placeholder="doctor@email.com" type="email" required />
+                            <input asp-for="Email" class="form-input" placeholder="doctor@email.com" type="email"
+                                required />
                             <span asp-validation-for="Email" class="text-danger"></span>
                             <div class="validation-message" id="email-validation"></div>
                         </div>
@@ -116,6 +117,31 @@
                             <input asp-for="DateOfBirth" type="date" class="form-input" required />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                             <div class="validation-message" id="dob-validation"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="NationalID"></label>
+                            <input asp-for="NationalID" class="form-input" placeholder="14 digit National ID"
+                                maxlength="14" required />
+                            <span asp-validation-for="NationalID" class="text-danger"></span>
+                            <div class="validation-message" id="nid-validation"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="MaritalStatus"></label>
+                            <select asp-for="MaritalStatus" class="form-input" required>
+                                <option value="">Select Marital Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -158,7 +184,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" asp-for="YearsOfExperience"></label>
-                            <input asp-for="YearsOfExperience" type="number" class="form-input" placeholder="Years" min="0" required />
+                            <input asp-for="YearsOfExperience" type="number" class="form-input" placeholder="Years"
+                                min="0" required />
                             <span asp-validation-for="YearsOfExperience" class="text-danger"></span>
                         </div>
                     </div>
@@ -195,9 +222,8 @@
                         <div class="form-group">
                             <label class="form-label" asp-for="Password"></label>
                             <div class="password-input-wrapper">
-                                <input asp-for="Password" type="password" class="form-input"
-                                       placeholder="Password" id="doctorPassword" required
-                                       data-validation="password" />
+                                <input asp-for="Password" type="password" class="form-input" placeholder="Password"
+                                    id="doctorPassword" required data-validation="password" />
                                 <button type="button" class="password-toggle" id="password-toggle">
                                     <i class="far fa-eye"></i>
                                 </button>
@@ -218,7 +244,7 @@
                             <label class="form-label" asp-for="ConfirmPassword"></label>
                             <div class="password-input-wrapper">
                                 <input asp-for="ConfirmPassword" type="password" class="form-input"
-                                       placeholder="Confirm password" id="doctorConfirmPassword" required />
+                                    placeholder="Confirm password" id="doctorConfirmPassword" required />
                                 <button type="button" class="password-toggle" id="confirm-password-toggle">
                                     <i class="far fa-eye"></i>
                                 </button>
@@ -268,7 +294,8 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="termsAgreement" required>
                         <label class="form-check-label" for="termsAgreement">
-                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#"
+                                target="_blank">Privacy Policy</a>
                         </label>
                     </div>
                     <div class="validation-message" id="terms-validation"></div>
@@ -294,7 +321,7 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // ========================
             // Bilingual Messages
             // ========================
@@ -466,7 +493,7 @@
 
             // Form submission handler
             if (form) {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     e.preventDefault();
 
                     // Validate all steps before submission
@@ -498,7 +525,7 @@
             const imagePreview = document.getElementById('imagePreview');
 
             if (imageInput && imagePreview) {
-                imageInput.addEventListener('change', function(e) {
+                imageInput.addEventListener('change', function (e) {
                     const file = e.target.files[0];
                     if (file) {
                         // Check file size (5MB limit)
@@ -509,7 +536,7 @@
                         }
 
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             imagePreview.src = e.target.result;
                             imagePreview.style.display = 'block';
                         }
@@ -524,7 +551,7 @@
             function initStepNavigation() {
                 // Next button click handlers
                 nextButtons.forEach(button => {
-                    button.addEventListener('click', function() {
+                    button.addEventListener('click', function () {
                         const nextStep = parseInt(this.dataset.next);
 
                         // Validate current step before proceeding
@@ -536,7 +563,7 @@
 
                 // Previous button click handlers
                 prevButtons.forEach(button => {
-                    button.addEventListener('click', function() {
+                    button.addEventListener('click', function () {
                         const prevStep = parseInt(this.dataset.prev);
                         goToStep(prevStep);
                     });
@@ -646,6 +673,12 @@
 
                     if (dobField && !validateDateOfBirth(dobField.value)) {
                         showValidationError('dob-validation', 'You must be at least 25 years old to register as a doctor');
+                        isValid = false;
+                    }
+
+                    const nidField = document.querySelector('[name="NationalID"]');
+                    if (nidField && !validateNationalID(nidField.value)) {
+                        showValidationError('nid-validation', 'National ID must be exactly 14 digits');
                         isValid = false;
                     }
                 }
@@ -767,6 +800,11 @@
                 return age >= 25;
             }
 
+            function validateNationalID(nid) {
+                const regex = /^\d{14}$/;
+                return regex.test(nid);
+            }
+
             function validatePassword(password) {
                 // Updated pattern: allows underscores and hashtags
                 // @@$!%*?&.#_- are the allowed special characters
@@ -844,7 +882,7 @@
                 // Real-time email validation
                 const emailField = document.querySelector('[name="Email"]');
                 if (emailField) {
-                    emailField.addEventListener('blur', function() {
+                    emailField.addEventListener('blur', function () {
                         if (this.value && !validateEmail(this.value)) {
                             showValidationError('email-validation', 'Please enter a valid email address');
                             markFieldAsInvalid(this);
@@ -860,7 +898,7 @@
                 const confirmPasswordField = document.getElementById('doctorConfirmPassword');
 
                 if (passwordField) {
-                    passwordField.addEventListener('input', function() {
+                    passwordField.addEventListener('input', function () {
                         // Update password strength bar
                         updatePasswordStrength();
 
@@ -889,7 +927,7 @@
                 }
 
                 if (confirmPasswordField) {
-                    confirmPasswordField.addEventListener('input', function() {
+                    confirmPasswordField.addEventListener('input', function () {
                         if (passwordField && passwordField.value && this.value !== passwordField.value) {
                             showValidationError('confirm-password-validation', 'Passwords do not match');
                             markFieldAsInvalid(this);
@@ -903,7 +941,7 @@
                 // Real-time phone validation
                 const phoneField = document.querySelector('[name="PhoneNumber"]');
                 if (phoneField) {
-                    phoneField.addEventListener('blur', function() {
+                    phoneField.addEventListener('blur', function () {
                         if (this.value && !validatePhone(this.value)) {
                             showValidationError('phone-validation', 'Please enter a valid phone number');
                             markFieldAsInvalid(this);
@@ -927,32 +965,32 @@
                 const notification = document.createElement('div');
                 notification.className = `auth-notification auth-notification-${type}`;
                 notification.innerHTML = `
-                    <div class="notification-content">
-                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                        <span>${message}</span>
-                    </div>
-                    <button class="notification-close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
+                                <div class="notification-content">
+                                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                                    <span>${message}</span>
+                                </div>
+                                <button class="notification-close">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
 
                 // Add styles
                 notification.style.cssText = `
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                    color: white;
-                    padding: 1rem 1.5rem;
-                    border-radius: 0.5rem;
-                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                    z-index: 10000;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    max-width: 400px;
-                    animation: slideIn 0.3s ease;
-                `;
+                                position: fixed;
+                                top: 100px;
+                                right: 20px;
+                                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                                color: white;
+                                padding: 1rem 1.5rem;
+                                border-radius: 0.5rem;
+                                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                                z-index: 10000;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+                                max-width: 400px;
+                                animation: slideIn 0.3s ease;
+                            `;
 
                 // Close button
                 notification.querySelector('.notification-close').addEventListener('click', () => {

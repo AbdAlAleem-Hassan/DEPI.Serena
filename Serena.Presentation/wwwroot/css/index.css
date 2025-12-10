@@ -64,9 +64,19 @@
 }
 
 @keyframes blob {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -50px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
 }
 
 .hero-container {
@@ -239,8 +249,15 @@
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .floating-card-content {
@@ -312,8 +329,15 @@
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(10px); }
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
 }
 
 /* Partners Section */
@@ -355,8 +379,13 @@
 }
 
 @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-150px * 6 - 4rem * 6)); }
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-150px * 6 - 4rem * 6));
+    }
 }
 
 /* Services Section */
@@ -596,12 +625,14 @@
 }
 
 /* Hospitals & Doctors Grid */
-.hospitals, .doctors {
+.hospitals,
+.doctors {
     padding: 5rem 0;
     background-color: var(--light-gray);
 }
 
-.dark-mode .hospitals, .dark-mode .doctors {
+.dark-mode .hospitals,
+.dark-mode .doctors {
     background-color: #0f172a;
 }
 
@@ -908,7 +939,7 @@
 
 .grid-image:nth-child(2) {
     height: 16rem;
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
 }
 
 .grid-image:nth-child(3) {
@@ -918,8 +949,8 @@
 
 .about-floating-stat {
     position: absolute;
-    top: 25%;
-    left: -1rem;
+    /* top: 25%;
+    left: -1rem; */
     padding: 1rem;
     border-radius: 1rem;
     backdrop-filter: blur(16px);
@@ -1178,7 +1209,8 @@ body.rtl .review-text::after {
     font-size: 0.95rem;
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
     width: 100%;
     padding: 1rem 1.25rem;
     border: 1px solid #cbd5e1;
@@ -1189,12 +1221,14 @@ body.rtl .review-text::after {
     font-size: 1rem;
 }
 
-.dark-mode .form-input, .dark-mode .form-textarea {
+.dark-mode .form-input,
+.dark-mode .form-textarea {
     background-color: var(--charcoal);
     border-color: #475569;
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -1221,11 +1255,12 @@ body.rtl .review-text::after {
 }
 
 @media (min-width: 1025px) {
+
     .hospitals-grid,
     .doctors-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     .reviews-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -1233,19 +1268,22 @@ body.rtl .review-text::after {
 
 /* Responsive Design for Home Page */
 @media (max-width: 1024px) {
-    .hero-grid, .about-container, .contact-container {
+
+    .hero-grid,
+    .about-container,
+    .contact-container {
         grid-template-columns: 1fr;
     }
 
     .about-image {
         display: none;
     }
-    
+
     .hero-visual {
         order: -1;
         margin-bottom: 2rem;
     }
-    
+
     .hero-content {
         text-align: center;
     }
@@ -1253,23 +1291,24 @@ body.rtl .review-text::after {
     .hero-actions {
         justify-content: center;
     }
-    
+
     .hero-stats {
         justify-content: center;
         margin-bottom: 6rem;
     }
-    
+
     .hero-stat {
         text-align: center;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+
     .hospitals-grid,
     .doctors-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .reviews-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1279,15 +1318,17 @@ body.rtl .review-text::after {
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
-    .features-grid, .services-grid, .reviews-grid {
+
+    .features-grid,
+    .services-grid,
+    .reviews-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .hero-actions {
         flex-direction: column;
     }
@@ -1298,21 +1339,21 @@ body.rtl .review-text::after {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     .review-card {
         padding: 1.5rem;
         min-height: 250px;
     }
-    
+
     .review-text {
         font-size: 1rem;
         padding: 0 0.5rem;
     }
-    
+
     .contact-container {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-map {
         height: 300px;
     }
@@ -1334,8 +1375,8 @@ body.rtl .review-text::after {
 }
 
 /* Home Page Specific Dark Mode Styles */
-.dark-mode .hospital-card, 
-.dark-mode .doctor-card, 
+.dark-mode .hospital-card,
+.dark-mode .doctor-card,
 .dark-mode .review-card {
     background-color: #1e293b;
     border: 1px solid #334155;

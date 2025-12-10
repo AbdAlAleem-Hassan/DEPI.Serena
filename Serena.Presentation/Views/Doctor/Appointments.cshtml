@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "My Appointments";
     Layout = "~/Views/Shared/_Layout.cshtml";
     // Mock role check for demonstration
@@ -24,12 +24,14 @@
         }
 
         .tabs-wrapper {
-            background-color: rgba(0, 0, 0, 0.05); /* Light container background */
+            background-color: rgba(0, 0, 0, 0.05);
+            /* Light container background */
             padding: 0.5rem;
-            border-radius: 999px; /* Pill shape */
+            border-radius: 999px;
+            /* Pill shape */
             display: inline-flex;
             gap: 0.5rem;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .tab-btn {
@@ -44,17 +46,17 @@
             opacity: 0.7;
         }
 
-            .tab-btn:hover {
-                opacity: 1;
-            }
+        .tab-btn:hover {
+            opacity: 1;
+        }
 
-            .tab-btn.active {
-                background-color: var(--primary-white);
-                color: var(--accent-blue);
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                opacity: 1;
-                transform: scale(1.05);
-            }
+        .tab-btn.active {
+            background-color: var(--primary-white);
+            color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            transform: scale(1.05);
+        }
 
         /* 3. Obvious Card Styling */
         .appt-card {
@@ -64,7 +66,7 @@
             margin-bottom: 1.5rem;
             /* Enhanced Shadow and Border for "Pop" */
             box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             border-left: 5px solid var(--accent-blue);
             display: flex;
             align-items: center;
@@ -72,10 +74,10 @@
             transition: var(--transition);
         }
 
-            .appt-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            }
+        .appt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
         .appt-time-box {
             text-align: center;
@@ -124,19 +126,19 @@
             gap: 0.75rem;
         }
 
-            .appt-meta i {
-                color: var(--accent-blue);
-                width: 20px;
-                text-align: center;
-            }
+        .appt-meta i {
+            color: var(--accent-blue);
+            width: 20px;
+            text-align: center;
+        }
 
         .status-badge {
             display: inline-block;
-            padding: 0.35rem 1rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 99px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-left: 1rem;
+            margin-top: 0.5rem;
         }
 
         .status-upcoming {
@@ -174,17 +176,17 @@
             font-size: 1.1rem;
         }
 
-            .btn-icon:hover {
-                background: var(--accent-blue);
-                color: white;
-                border-color: var(--accent-blue);
-            }
+        .btn-icon:hover {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
 
-            .btn-icon.danger:hover {
-                background: #ef4444;
-                border-color: #ef4444;
-                color: white;
-            }
+        .btn-icon.danger:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
 
         /* Dark Mode Specifics */
         .dark-mode .tabs-wrapper {
@@ -265,11 +267,11 @@
             <div class="appt-time-box">
                 <div class="appt-date">12 Dec</div>
                 <div class="appt-time">09:30 AM</div>
+                <span class="status-badge status-upcoming">Confirmed</span>
             </div>
             <div class="appt-info">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <div class="appt-title">@(isDoctor ? "Patient: John Doe" : "Dr. Sarah Wilson")</div>
-                    <span class="status-badge status-upcoming">Confirmed</span>
                 </div>
                 <div class="appt-details">
                     <div class="appt-meta">
@@ -286,16 +288,16 @@
                 <button class="btn-icon danger" title="Cancel"><i class="fas fa-times"></i></button>
             </div>
         </div>
-
         <div class="appt-card">
             <div class="appt-time-box">
                 <div class="appt-date">15 Dec</div>
                 <div class="appt-time">11:00 AM</div>
+                <span class="status-badge status-upcoming"
+                    style="background-color: #fef3c7; color: #d97706;">Pending</span>
             </div>
             <div class="appt-info">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <div class="appt-title">@(isDoctor ? "Patient: Mike Ross" : "Dr. James House")</div>
-                    <span class="status-badge status-upcoming" style="background-color: #fef3c7; color: #d97706;">Pending</span>
                 </div>
                 <div class="appt-details">
                     <div class="appt-meta">
@@ -319,11 +321,11 @@
             <div class="appt-time-box">
                 <div class="appt-date">10 Nov</div>
                 <div class="appt-time">14:00 PM</div>
+                <span class="status-badge status-completed">Completed</span>
             </div>
             <div class="appt-info">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <div class="appt-title">@(isDoctor ? "Patient: Jane Smith" : "Dr. Emily Chen")</div>
-                    <span class="status-badge status-completed">Completed</span>
                 </div>
                 <div class="appt-details">
                     <div class="appt-meta">
@@ -343,8 +345,8 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            window.switchTab = function(tabName, btnElement) {
+        document.addEventListener('DOMContentLoaded', function () {
+            window.switchTab = function (tabName, btnElement) {
                 // Hide all contents
                 document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
 
