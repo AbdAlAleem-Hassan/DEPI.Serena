@@ -270,12 +270,6 @@ namespace Serena.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Appointments()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Schedule()
         {
             var doctor = await _userManager.GetUserAsync(User);
@@ -357,7 +351,12 @@ namespace Serena.Presentation.Controllers
                 return View(new { Success = false, Message = ex.Message });
             }
         }
-       
-
+        [HttpGet]
+        public async Task<IActionResult> Appointments()
+        {
+            var doctor = await _doctorService.GetDoctorByUserIdAsync(_userManager.GetUserId(User));
+            var result =await _doctorService.GetPatientForDoctor(doctor.Id);
+            return View(result);
+        }
     }
 }

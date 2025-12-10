@@ -2,6 +2,7 @@
 using Serena.BLL.Common.Services.Attachments;
 using Serena.BLL.Helper;
 using Serena.BLL.Services.Appointments;
+using Serena.BLL.Services.Contact;
 using Serena.BLL.Services.Departments;
 using Serena.BLL.Services.Doctors;
 using Serena.BLL.Services.DoctorServices;
@@ -58,7 +59,8 @@ namespace Serena.BLL.Extensions
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IPatientHospitalReviewService, PatientHospitalReviewService>();
-     
+            services.AddTransient<SendEmailService>();
+
 
             return services;
         }
