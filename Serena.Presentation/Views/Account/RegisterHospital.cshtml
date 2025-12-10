@@ -391,20 +391,21 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initRegistrationSteps();
             initDynamicForms();
+            initFieldTracking(); // important to prevent validation on page load
 
             // Image preview
             const logoInput = document.getElementById('Image');
             const logoPreview = document.getElementById('logoPreview');
 
             if (logoInput && logoPreview) {
-                logoInput.addEventListener('change', function(e) {
+                logoInput.addEventListener('change', function (e) {
                     const file = e.target.files[0];
                     if (file) {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             logoPreview.src = e.target.result;
                             logoPreview.style.display = 'block';
                         }
@@ -414,10 +415,24 @@
             }
         });
 
-        // Dynamic Form Handling
+        // Track fields so validation doesn't run at first load
+        function initFieldTracking() {
+            document.querySelectorAll("input, textarea, select").forEach(field => {
+                field.dataset.touched = "false";
+
+                field.addEventListener("input", () => {
+                    field.dataset.touched = "true";
+                });
+
+                field.addEventListener("blur", () => {
+                    field.dataset.touched = "true";
+                });
+            });
+        }
+
+        // Dynamic Form
         function initDynamicForms() {
-            // Add Address
-            document.getElementById('btnAddAddress').addEventListener('click', function() {
+            document.getElementById('btnAddAddress').addEventListener('click', function () {
                 const container = document.getElementById('addressesContainer');
                 const index = container.querySelectorAll('.address-item').length;
                 const template = document.getElementById('addressTemplate').innerHTML;
@@ -427,10 +442,10 @@
                     .replace(/{displayIndex}/g, index + 1);
 
                 container.insertAdjacentHTML('beforeend', newHtml);
+                initFieldTracking();
             });
 
-            // Add Department
-            document.getElementById('btnAddDepartment').addEventListener('click', function() {
+            document.getElementById('btnAddDepartment').addEventListener('click', function () {
                 const container = document.getElementById('departmentsContainer');
                 const index = container.querySelectorAll('.department-item').length;
                 const template = document.getElementById('departmentTemplate').innerHTML;
@@ -440,15 +455,16 @@
                     .replace(/{displayIndex}/g, index + 1);
 
                 container.insertAdjacentHTML('beforeend', newHtml);
+                initFieldTracking();
             });
         }
 
-        // Remove item function
-        window.removeItem = function(btn) {
+        window.removeItem = function (btn) {
             const item = btn.closest('.address-item, .department-item');
-            if(item) item.remove();
+            if (item) item.remove();
         };
 
+        // Registration Steps
         function initRegistrationSteps() {
             const steps = document.querySelectorAll('.step');
             const stepContents = document.querySelectorAll('.step-content');
@@ -458,33 +474,18 @@
             function updateProgress(currentStep) {
                 steps.forEach(step => {
                     const stepNum = parseInt(step.dataset.step);
-                    if (stepNum < currentStep) {
-                        step.classList.add('completed');
-                        step.classList.remove('active');
-                    } else if (stepNum === currentStep) {
-                        step.classList.add('active');
-                        step.classList.remove('completed');
-                    } else {
-                        step.classList.remove('active', 'completed');
-                    }
+                    step.classList.toggle('active', stepNum === currentStep);
+                    step.classList.toggle('completed', stepNum < currentStep);
                 });
 
                 stepContents.forEach(content => {
-                    const contentStep = parseInt(content.dataset.step);
-                    if (contentStep === currentStep) {
-                        content.classList.add('active');
-                    } else {
-                        content.classList.remove('active');
-                    }
-                });
-
-                prevButtons.forEach(btn => {
-                    btn.disabled = currentStep === 1;
+                    const stepNum = parseInt(content.dataset.step);
+                    content.classList.toggle('active', stepNum === currentStep);
                 });
             }
 
             nextButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const currentStep = getCurrentStep();
                     const nextStep = parseInt(this.dataset.next);
                     if (validateStep(currentStep)) {
@@ -494,35 +495,33 @@
             });
 
             prevButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const prevStep = parseInt(this.dataset.prev);
                     updateProgress(prevStep);
                 });
             });
 
             function getCurrentStep() {
-                const activeStep = document.querySelector('.step.active');
-                return activeStep ? parseInt(activeStep.dataset.step) : 1;
+                return parseInt(document.querySelector('.step.active').dataset.step);
             }
 
             function validateStep(step) {
                 const currentContent = document.querySelector(`.step-content[data-step="${step}"]`);
-                const requiredFields = currentContent.querySelectorAll('[required], input[data-val-required]');
+                const requiredFields = currentContent.querySelectorAll('[required]');
+
                 let isValid = true;
 
                 requiredFields.forEach(field => {
-                    if (!field.value.trim()) {
+                    if (field.dataset.touched === "true" && field.value.trim() === "") {
                         isValid = false;
-                        field.classList.add('error');
                         field.style.borderColor = 'red';
                     } else {
-                        field.classList.remove('error');
                         field.style.borderColor = '#e2e8f0';
                     }
                 });
 
                 if (!isValid) {
-                    if(typeof showNotification === 'function') {
+                    if (typeof showNotification === 'function') {
                         showNotification('Please fill all required fields', 'error');
                     } else {
                         alert('Please fill all required fields');
@@ -533,4 +532,3 @@
         }
     </script>
 }
- هنا ممكن تحل مشكله اني اصلا اول ما الصفحه ديه بتتفتح الvalidation علاطول بتتنفذ ويظهر ايرور قبل ما اكتب اي حاجه لسه

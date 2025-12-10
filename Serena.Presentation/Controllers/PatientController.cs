@@ -97,5 +97,13 @@ namespace Serena.Presentation.Controllers
             return View(appointments);
 
         }
+        [HttpGet]
+        [ActionName("Doctors")]
+        public async Task<IActionResult> GetMyDoctors()
+        {
+            var patient = await _patientService.GetPatientByUserIdAsync(_userManager.GetUserId(User));
+            var appointments = await _patientService.GetPatientsDoctors(patient.Id);
+            return View(appointments);
+        }
     }
 }

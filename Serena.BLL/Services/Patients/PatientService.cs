@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Serena.BLL.Models.Appointements;
 using Serena.BLL.Models.Patients;
+using Serena.DAL.Entities;
 
 namespace Serena.BLL.Services.Patients;
 
@@ -69,5 +71,14 @@ public class PatientService : IPatientService
                                 .GetIQueryable()
                                 .FirstOrDefaultAsync(p => p.UserId == userId);
         return _mapper.Map<PatientDetailsDTO>(patient);
+    }
+    public async Task<List<Appointment?>> GetPatientsDoctors(int patientId)
+    {
+        
+        var result = await _unitOfWork.AppointmentRepository.GetIQueryable()
+            .Where(a => a.PatientId == patientId )
+            .Include(d => d.Doctor).ToListAsync();
+
+        return result;
     }
 }

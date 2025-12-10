@@ -8,4 +8,5 @@ public interface IPatientService
     Task UpdatePatientAsync(int id, CreateAndUpdatePatientDTO patientDto);
     Task DeletePatientAsync(int id);
     Task<PatientDetailsDTO?> GetPatientByUserIdAsync(string userId);
+    Task<List<Appointment?>> GetPatientsDoctors(int patientId);
 }

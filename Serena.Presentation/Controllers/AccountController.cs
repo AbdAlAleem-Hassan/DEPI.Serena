@@ -425,10 +425,12 @@ namespace Serena.Presentation.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult RegisterHospital()
         {
-            return View();
+            return View(new CreateAndUpdateHospitalDTO());
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterHospital(CreateAndUpdateHospitalDTO model)
