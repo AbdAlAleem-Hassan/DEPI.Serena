@@ -197,5 +197,12 @@ namespace Serena.BLL.Services.Hospitals
 
 			return filteredHospitals;
         }
+		public async Task<Hospital?> GetHospitalDetails(int id)
+		{
+			var result = await _unitOfWork.HospitalRepository.GetIQueryable()
+				.Include(h => h.Doctors)
+				.FirstOrDefaultAsync(h => h.Id == id);
+			return result;
+		}
 	}
 }

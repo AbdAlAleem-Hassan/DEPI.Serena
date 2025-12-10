@@ -1,0 +1,1451 @@
+﻿@using Serena.DAL.Entities
+@model Hospital
+@{
+    ViewData["Title"] = $"{Model?.Name ?? "Hospital"} Details";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        /* Base Styles */
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .dark-mode body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 200px;
+        }
+
+        /* Hospital Header */
+        .hospital-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
+
+        .dark-mode .hospital-header {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        }
+
+        .hospital-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hospital-header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .hospital-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 4px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: white;
+        }
+
+        .hospital-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hospital-logo.placeholder {
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .hospital-info {
+            flex: 1;
+        }
+
+        .hospital-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .hospital-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .hospital-rank {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .hospital-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .meta-item i {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .meta-value {
+            font-weight: 400;
+        }
+
+        /* Hospital Stats */
+        .hospital-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-color: #3b82f6;
+        }
+
+        .dark-mode .stat-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.doctors {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .stat-icon.departments {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-icon.cost {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .stat-icon.rating {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .dark-mode .stat-value {
+            color: #f9fafb;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .dark-mode .stat-label {
+            color: #9ca3af;
+        }
+
+        /* Tabs Navigation */
+        .tabs-navigation {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .dark-mode .tabs-navigation {
+            border-bottom-color: #374151;
+        }
+
+        .tab-btn {
+            padding: 0.875rem 1.75rem;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #3b82f6;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3b82f6;
+            border-radius: 3px;
+        }
+
+        .dark-mode .tab-btn {
+            color: #9ca3af;
+        }
+
+        .dark-mode .tab-btn.active {
+            color: #60a5fa;
+        }
+
+        .dark-mode .tab-btn.active::after {
+            background: #60a5fa;
+        }
+
+        /* Doctors Section */
+        .doctors-section {
+            margin-top: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .dark-mode .section-title {
+            color: #f9fafb;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-color: #3b82f6;
+        }
+
+        .dark-mode .doctor-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .doctor-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .doctor-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-avatar.placeholder {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .doctor-info {
+            flex: 1;
+        }
+
+        .doctor-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.3;
+        }
+
+        .dark-mode .doctor-name {
+            color: #f9fafb;
+        }
+
+        .doctor-specialty {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0 0 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doctor-experience {
+            color: #6b7280;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dark-mode .doctor-experience {
+            color: #9ca3af;
+        }
+
+        .doctor-details {
+            margin: 1.25rem 0;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .dark-mode .doctor-details {
+            background: #1f2937;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+
+        .dark-mode .detail-item {
+            color: #d1d5db;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .doctor-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #1f2937;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .btn-secondary {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .dark-mode .btn {
+            background: #1e293b;
+            border-color: #374151;
+            color: #f9fafb;
+        }
+
+        .dark-mode .btn-primary {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .dark-mode .btn-secondary {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        /* Departments Section */
+        .departments-section {
+            margin-top: 2rem;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .department-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-color: #10b981;
+        }
+
+        .dark-mode .department-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .department-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .department-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .department-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .dark-mode .department-name {
+            color: #f9fafb;
+        }
+
+        .department-doctors {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .dark-mode .department-doctors {
+            color: #9ca3af;
+        }
+
+        .view-doctors-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .view-doctors-btn:hover {
+            color: #2563eb;
+            gap: 0.75rem;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 2rem;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .review-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .dark-mode .reviewer-avatar {
+            background: #374151;
+            color: #9ca3af;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .dark-mode .reviewer-name {
+            color: #f9fafb;
+        }
+
+        .review-date {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .dark-mode .review-date {
+            color: #9ca3af;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #fbbf24;
+        }
+
+        .review-content {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .dark-mode .review-content {
+            color: #d1d5db;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .contact-info {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .contact-item {
+            background: #1f2937;
+        }
+
+        .dark-mode .contact-item:hover {
+            background: #2d3748;
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-content h4 {
+            margin: 0 0 0.25rem 0;
+            color: #1f2937;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .dark-mode .contact-content h4 {
+            color: #f9fafb;
+        }
+
+        .contact-content p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .dark-mode .contact-content p {
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .hospital-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .hospital-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .hospital-logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .hospital-name {
+                font-size: 2rem;
+            }
+
+            .hospital-meta {
+                justify-content: center;
+            }
+
+            .tabs-navigation {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+            }
+
+            .doctors-grid,
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hospital-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .hospital-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .hospital-name {
+                font-size: 1.6rem;
+            }
+
+            .doctor-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+}
+
+<div class="container">
+    <!-- Back Navigation -->
+    <div style="margin-bottom: 2rem;">
+        <a href="javascript:history.back()" class="btn" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem;">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Hospitals</span>
+        </a>
+    </div>
+
+    @if (Model != null)
+    {
+        <!-- Hospital Header -->
+        <div class="hospital-header fade-in">
+            <div class="hospital-header-content">
+                <div class="hospital-logo @(string.IsNullOrEmpty(Model.ImageUrl) ? "placeholder" : "")">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@(Url.Content("~/files/Imgs/" + Model.ImageUrl))"
+                             alt="@Model.Name Logo"
+                             onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='<i class=\'fas fa-hospital\'></i>'" />
+                    }
+                    else
+                    {
+                        <i class="fas fa-hospital"></i>
+                    }
+                </div>
+                <div class="hospital-info">
+                    <div class="hospital-title">
+                        <h1 class="hospital-name">@Model.Name</h1>
+                        @if (!string.IsNullOrEmpty(Model.Rank))
+                        {
+                            <span class="hospital-rank">@Model.Rank</span>
+                        }
+                    </div>
+                    
+                    <div class="hospital-meta">
+                        @if (Model.AverageCost > 0)
+                        {
+                            <div class="meta-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span class="meta-label">Average Cost:</span>
+                                <span class="meta-value">@Model.AverageCost.ToString("C")</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.HospitalPhone))
+                        {
+                            <div class="meta-item">
+                                <i class="fas fa-phone"></i>
+                                <span class="meta-label">Hospital Phone:</span>
+                                <span class="meta-value">@Model.HospitalPhone</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.EmergencyPhone))
+                        {
+                            <div class="meta-item">
+                                <i class="fas fa-ambulance"></i>
+                                <span class="meta-label">Emergency:</span>
+                                <span class="meta-value">@Model.EmergencyPhone</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hospital Stats -->
+        <div class="hospital-stats fade-in">
+            <div class="stat-card slide-up">
+                <div class="stat-icon doctors">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">@Model.Doctors?.Count ?? 0</div>
+                    <div class="stat-label">Total Doctors</div>
+                </div>
+            </div>
+            <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                <div class="stat-icon departments">
+                    <i class="fas fa-clinic-medical"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">@Model.Departments?.Count ?? 0</div>
+                    <div class="stat-label">Departments</div>
+                </div>
+            </div>
+            <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                <div class="stat-icon cost">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">@Model.AverageCost.ToString("C")</div>
+                    <div class="stat-label">Average Cost</div>
+                </div>
+            </div>
+            <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                <div class="stat-icon rating">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-content">
+                    @{
+                        var reviews = Model.PatientHospitalReviews?.ToList() ?? new List<PatientHospitalReview>();
+                        var averageRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0;
+                    }
+                    <div class="stat-value">@averageRating.ToString("0.0")</div>
+                    <div class="stat-label">Average Rating (@reviews.Count reviews)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-navigation fade-in">
+            <button class="tab-btn active" onclick="showTab('doctors')">
+                <i class="fas fa-user-md"></i> Doctors (@Model.Doctors?.Count ?? 0)
+            </button>
+            <button class="tab-btn" onclick="showTab('departments')">
+                <i class="fas fa-clinic-medical"></i> Departments (@Model.Departments?.Count ?? 0)
+            </button>
+            <button class="tab-btn" onclick="showTab('reviews')">
+                <i class="fas fa-star"></i> Reviews (@Model.PatientHospitalReviews?.Count ?? 0)
+            </button>
+            <button class="tab-btn" onclick="showTab('contact')">
+                <i class="fas fa-map-marker-alt"></i> Contact & Address
+            </button>
+        </div>
+
+        <!-- Doctors Tab -->
+        <div id="doctorsTab" class="doctors-section tab-content active">
+            <div class="section-header">
+                <h2 class="section-title">Available Doctors</h2>
+                <div class="doctor-filters">
+                    <select id="specialtyFilter" class="btn" style="padding: 0.75rem 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 10px;">
+                        <option value="">All Specialties</option>
+                        @if (Model.Doctors != null)
+                        {
+                            var specialties = Model.Doctors.Select(d => d.Specialization).Distinct();
+                            foreach (var specialty in specialties)
+                            {
+                                <option value="@specialty">@specialty</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            @if (Model.Doctors != null && Model.Doctors.Any())
+            {
+                <div class="doctors-grid" id="doctorsContainer">
+                    @foreach (var doctor in Model.Doctors.OrderBy(d => d.FirstName))
+                    {
+                        <div class="doctor-card slide-up" data-specialty="@doctor.Specialization">
+                            <div class="doctor-header">
+                                <div class="doctor-avatar @(string.IsNullOrEmpty(doctor.ImageUrl) ? "placeholder" : "")">
+                                    @if (!string.IsNullOrEmpty(doctor.ImageUrl))
+                                    {
+                                        <img src="~/files/Imgs/@doctor.ImageUrl" alt="Dr. @doctor.FirstName @doctor.LastName" onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='@($"{doctor.FirstName?[0]}{doctor.LastName?[0]}")'">
+                                    }
+                                    else
+                                    {
+                                        @($"{doctor.FirstName?[0]}{doctor.LastName?[0]}")
+                                    }
+                                </div>
+                                <div class="doctor-info">
+                                    <h3 class="doctor-name">Dr. @doctor.FirstName @doctor.LastName</h3>
+                                    <p class="doctor-specialty">
+                                        <i class="fas fa-stethoscope"></i> @doctor.Specialization
+                                    </p>
+                                    @if (!string.IsNullOrEmpty(doctor.SubSpecialization))
+                                    {
+                                        <p class="doctor-experience">
+                                            <i class="fas fa-plus-circle"></i> @doctor.SubSpecialization
+                                        </p>
+                                    }
+                                    <p class="doctor-experience">
+                                        <i class="fas fa-briefcase"></i> @doctor.YearsOfExperience years experience
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="doctor-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-venus-mars"></i>
+                                    <span>@doctor.Gender</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>@doctor.Rank</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(doctor.Department?.Name))
+                                {
+                                    <div class="detail-item">
+                                        <i class="fas fa-clinic-medical"></i>
+                                        <span>@doctor.Department.Name</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="doctor-actions">
+                                <button class="btn btn-primary" onclick="viewDoctorProfile('@doctor.Id')">
+                                    <i class="fas fa-user-md"></i> View Profile
+                                </button>
+                                <button class="btn btn-secondary" onclick="bookAppointment('@doctor.Id')">
+                                    <i class="fas fa-calendar-check"></i> Book Appointment
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state" style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                    <i class="fas fa-user-md" style="font-size: 4rem; color: #6b7280; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #1f2937; margin-bottom: 0.5rem;">No Doctors Available</h3>
+                    <p style="color: #6b7280; max-width: 500px; margin: 0 auto;">There are currently no doctors available at this hospital.</p>
+                </div>
+            }
+        </div>
+
+        <!-- Departments Tab -->
+        <div id="departmentsTab" class="departments-section tab-content">
+            @if (Model.Departments != null && Model.Departments.Any())
+            {
+                <div class="departments-grid">
+                    @foreach (var department in Model.Departments.OrderBy(d => d.Name))
+                    {
+                        <div class="department-card slide-up">
+                            <div class="department-header">
+                                <div class="department-icon">
+                                    <i class="fas fa-clinic-medical"></i>
+                                </div>
+                                <div>
+                                    <h3 class="department-name">@department.Name</h3>
+                                    @if (department.Doctors != null)
+                                    {
+                                        <p class="department-doctors">@department.Doctors.Count doctors available</p>
+                                    }
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)" class="view-doctors-btn" onclick="filterDoctorsByDepartment('@department.Name')">
+                                <span>View Doctors</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state" style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                    <i class="fas fa-clinic-medical" style="font-size: 4rem; color: #6b7280; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #1f2937; margin-bottom: 0.5rem;">No Departments Available</h3>
+                    <p style="color: #6b7280; max-width: 500px; margin: 0 auto;">No departments are currently listed for this hospital.</p>
+                </div>
+            }
+        </div>
+
+        @* <!-- Reviews Tab -->
+        <div id="reviewsTab" class="reviews-section tab-content">
+            @if (Model.PatientHospitalReviews != null && Model.PatientHospitalReviews.Any())
+            {
+                foreach (var review in Model.PatientHospitalReviews.OrderByDescending(r => r.CreatedAt))
+                {
+                    <div class="review-card slide-up">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">
+                                    @if (review.Patient != null)
+                                    {
+                                        @($"{review.Patient.FirstName?[0]}{review.Patient.LastName?[0]}")
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-user"></i>
+                                    }
+                                </div>
+                                <div>
+                                    <h4 class="reviewer-name">
+                                        @if (review.Patient != null)
+                                        {
+                                            @($"{review.Patient.FirstName} {review.Patient.LastName}")
+                                        }
+                                        else
+                                        {
+                                            @:Anonymous Patient
+                                        }
+                                    </h4>
+                                    <p class="review-date">@review.CreatedAt.ToString("MMMM dd, yyyy")</p>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    else if (i - 0.5 <= review.Rating)
+                                    {
+                                        <i class="fas fa-star-half-alt"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <p>@review.Comment</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state" style="text-align: center; padding: 4rem 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                    <i class="fas fa-star" style="font-size: 4rem; color: #6b7280; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #1f2937; margin-bottom: 0.5rem;">No Reviews Yet</h3>
+                    <p style="color: #6b7280; max-width: 500px; margin: 0 auto;">Be the first to review this hospital!</p>
+                    <button class="btn btn-primary" onclick="leaveReview('@Model.Id')" style="margin-top: 1.5rem;">
+                        <i class="fas fa-star"></i> Leave a Review
+                    </button>
+                </div>
+            }
+        </div> *@
+
+        <!-- Contact Tab -->
+        <div id="contactTab" class="contact-section tab-content">
+            <div class="contact-info slide-up">
+                <h3 style="color: #1f2937; margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Contact Information</h3>
+                
+                <div class="contact-grid">
+                    @if (!string.IsNullOrEmpty(Model.HospitalPhone))
+                    {
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Hospital Phone</h4>
+                                <p>@Model.HospitalPhone</p>
+                            </div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.EmergencyPhone))
+                    {
+                        <div class="contact-item">
+                            <div class="contact-icon" style="background: #ef4444;">
+                                <i class="fas fa-ambulance"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Emergency Phone</h4>
+                                <p>@Model.EmergencyPhone</p>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.AverageCost > 0)
+                    {
+                        <div class="contact-item">
+                            <div class="contact-icon" style="background: #10b981;">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Average Cost</h4>
+                                <p>@Model.AverageCost.ToString("C")</p>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.HospitalAddresses != null && Model.HospitalAddresses.Any())
+                    {
+                        <div class="contact-item">
+                            <div class="contact-icon" style="background: #8b5cf6;">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h4>Address</h4>
+
+                                <div>
+                                    @foreach (var address in Model.HospitalAddresses)
+                                    {
+                                        <div class="address-block">
+                                            @address.Street<br />
+                                            @address.City, @address.Country<br />
+                                            @address.ZipCode
+                                        </div>
+
+                                        <br />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                @if (Model.HospitalAddresses != null && Model.HospitalAddresses.Any())
+                {
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: #f9fafb; border-radius: 12px;">
+                        <h4 style="color: #1f2937; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </h4>
+                        <div id="map" style="height: 300px; border-radius: 10px; overflow: hidden; background: #e5e7eb;"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state" style="text-align: center; padding: 6rem 2rem;">
+            <i class="fas fa-hospital" style="font-size: 5rem; color: #6b7280; margin-bottom: 1.5rem;"></i>
+            <h3 style="font-size: 2rem; margin-bottom: 1rem; color: #1f2937;">Hospital Not Found</h3>
+            <p style="font-size: 1.1rem; color: #6b7280; max-width: 500px; margin: 0 auto 2rem;">The hospital you're looking for doesn't exist or has been removed.</p>
+            <a href="/Hospital" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                <i class="fas fa-arrow-left"></i> Back to Hospitals
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tab system
+            initializeTabs();
+            
+            // Initialize specialty filter
+            initializeFilters();
+            
+            // Initialize map if addresses exist
+            @if (Model?.HospitalAddresses != null && Model.HospitalAddresses.Any())
+            {
+                <text>
+                setTimeout(initializeMap, 500);
+                </text>
+            }
+        });
+
+        function initializeTabs() {
+            // Show first tab by default
+            showTab('doctors');
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const tabContent = document.getElementById(tabName + 'Tab');
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+            
+            // Set active tab button
+            const activeBtn = event.target;
+            activeBtn.classList.add('active');
+            
+            // Scroll to tab content
+            tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function initializeFilters() {
+            const specialtyFilter = document.getElementById('specialtyFilter');
+            if (specialtyFilter) {
+                specialtyFilter.addEventListener('change', function() {
+                    const selectedSpecialty = this.value;
+                    const doctors = document.querySelectorAll('.doctor-card');
+                    
+                    doctors.forEach(doctor => {
+                        const doctorSpecialty = doctor.getAttribute('data-specialty');
+                        if (!selectedSpecialty || doctorSpecialty === selectedSpecialty) {
+                            doctor.style.display = 'block';
+                            doctor.classList.add('slide-up');
+                        } else {
+                            doctor.style.display = 'none';
+                        }
+                    });
+                    
+                    // Check if any doctors are visible
+                    const visibleDoctors = Array.from(doctors).filter(d => d.style.display !== 'none');
+                    if (visibleDoctors.length === 0 && selectedSpecialty) {
+                        showNoDoctorsMessage(selectedSpecialty);
+                    } else {
+                        removeNoDoctorsMessage();
+                    }
+                });
+            }
+        }
+
+        function showNoDoctorsMessage(specialty) {
+            removeNoDoctorsMessage();
+            
+            const container = document.getElementById('doctorsContainer');
+            const message = document.createElement('div');
+            message.className = 'empty-state';
+            message.style.cssText = 'text-align: center; padding: 4rem 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); grid-column: 1 / -1;';
+            message.innerHTML = `
+                <i class="fas fa-user-md" style="font-size: 4rem; color: #6b7280; margin-bottom: 1rem;"></i>
+                <h3 style="color: #1f2937; margin-bottom: 0.5rem;">No Doctors Found</h3>
+                <p style="color: #6b7280; max-width: 500px; margin: 0 auto;">No doctors found for specialty "${specialty}".</p>
+                <button onclick="resetFilters()" class="btn btn-primary" style="margin-top: 1.5rem;">
+                    <i class="fas fa-redo"></i> Show All Doctors
+                </button>
+            `;
+            
+            container.appendChild(message);
+        }
+
+        function removeNoDoctorsMessage() {
+            const existingMessage = document.querySelector('#doctorsContainer .empty-state');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+        }
+
+        function resetFilters() {
+            const specialtyFilter = document.getElementById('specialtyFilter');
+            if (specialtyFilter) {
+                specialtyFilter.value = '';
+                specialtyFilter.dispatchEvent(new Event('change'));
+            }
+        }
+
+        function filterDoctorsByDepartment(departmentName) {
+            // Switch to doctors tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.tab-btn:first-child').classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('doctorsTab').classList.add('active');
+            
+            // Filter doctors by department
+            const doctors = document.querySelectorAll('.doctor-card');
+            doctors.forEach(doctor => {
+                const doctorDepartment = doctor.querySelector('.detail-item:nth-child(3) span')?.textContent;
+                if (doctorDepartment === departmentName) {
+                    doctor.style.display = 'block';
+                    doctor.classList.add('slide-up');
+                } else {
+                    doctor.style.display = 'none';
+                }
+            });
+            
+            // Update specialty filter
+            const specialtyFilter = document.getElementById('specialtyFilter');
+            if (specialtyFilter) {
+                specialtyFilter.value = '';
+            }
+            
+            // Scroll to doctors section
+            document.getElementById('doctorsTab').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function viewDoctorProfile(doctorId) {
+            window.location.href = `/Doctor/DoctorProfile/${doctorId}`;
+        }
+
+        function bookAppointment(doctorId) {
+            window.location.href = `/Appointment/Create?doctorId=${doctorId}`;
+        }
+
+        function leaveReview(hospitalId) {
+            showToast('Review feature coming soon!', 'info');
+        }
+
+        function initializeMap() {
+            // This is a placeholder for Google Maps or other map service
+            const mapContainer = document.getElementById('map');
+            if (mapContainer) {
+                // You would typically initialize a map here
+                // For example: new google.maps.Map(mapContainer, {...});
+                
+                // For now, show a placeholder
+                mapContainer.innerHTML = `
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem;">
+                        <div style="text-align: center;">
+                            <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <p>Map would be displayed here<br>with hospital location</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            // You can implement a toast notification system here
+            alert(message);
+        }
+    </script>
+}

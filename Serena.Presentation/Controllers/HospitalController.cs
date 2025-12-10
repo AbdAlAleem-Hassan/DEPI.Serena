@@ -183,5 +183,12 @@ namespace Serena.Presentation.Controllers
             await _hospitalService.DeleteHospitalAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        [ActionName("Details")]
+        public async Task<IActionResult> HospitalDetails(int id)
+        {
+            var hospital= await _hospitalService.GetHospitalDetails(id);
+            return View(hospital);
+        }
     }
 }

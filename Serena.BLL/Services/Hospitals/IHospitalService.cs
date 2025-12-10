@@ -14,5 +14,7 @@ namespace Serena.BLL.Services.Hospitals
 		Task<int> DeleteHospitalAsync(int id);
 		Task<List<HospitalDetailsDTO?>> FilterHospital(QueryParamsForHospital queryParams);
 
+		Task<Hospital?> GetHospitalDetails(int id);
+
     }
 }
