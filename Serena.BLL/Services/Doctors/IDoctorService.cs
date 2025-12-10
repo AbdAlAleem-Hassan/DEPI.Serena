@@ -11,5 +11,6 @@ namespace Serena.BLL.Services.Doctors
 		Task<int> DeleteDoctorAsync(int id);
         Task<DoctorDetailsDTO?> GetDoctorByUserIdAsync(string id);
 		Task<List<DoctorDetailsDTO?>> FilterDoctors(QueryParams filter);
+		Task<List<Appointment?>> GetPatientForDoctor(int id);
     }
 }

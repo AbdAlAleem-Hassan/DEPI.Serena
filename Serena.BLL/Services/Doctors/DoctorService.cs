@@ -257,5 +257,13 @@ namespace Serena.BLL.Services.Doctors
 
             return results;
         }
+        public async Task<List<Appointment?>> GetPatientForDoctor(int id)
+        {
+            var result = await _unitOfWork.AppointmentRepository.GetIQueryable()
+                .Where(x => x.DoctorId == id).
+                 Include(x => x.Patient)
+                .Include(x=>x.Schedule).ToListAsync();
+            return result;
+        }
     }
 }

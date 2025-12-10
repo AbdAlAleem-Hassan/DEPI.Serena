@@ -402,7 +402,7 @@
                 </p>
 
                 <div class="hero-actions">
-                    <a asp-controller="Appointment" asp-action="Create" class="hero-btn hero-btn-primary">
+                    <a asp-controller="Hospital" asp-action="Index" class="hero-btn hero-btn-primary">
                         <span>Book Appointment</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -824,6 +824,7 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
+
     </div>
 </section>
 
@@ -844,7 +845,7 @@
                 Our platform connects multiple hospitals under one unified ecosystem, enabling efficient resource
                 management, improved patient care, and advanced medical research capabilities.
             </p>
-            <button class="btn btn-primary about-btn" data-en="Learn More" data-ar="تعرف أكثر">Learn More</button>
+            <a asp-controller="Home" asp-action="About" class="btn btn-primary about-btn" data-en="Learn More" data-ar="تعرف أكثر">Learn More</a>
         </div>
         <div class="about-image-grid">
             <div class="image-grid">
