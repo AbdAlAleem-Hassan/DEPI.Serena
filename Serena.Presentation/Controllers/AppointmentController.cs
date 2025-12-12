@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serena.BLL.Models.Appointements;
 using Serena.BLL.Services.Appointments;
@@ -56,7 +57,7 @@ namespace Serena.Presentation.Controllers
                     ScheduleId = scheduleId
                 });
 
-                return Json(new { Success = true, Message = "Appointment booked successfully!" });
+                return RedirectToAction("Appointments", "Patient");
             }
             catch (Exception ex)
             {

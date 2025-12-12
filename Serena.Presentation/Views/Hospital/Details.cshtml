@@ -1332,6 +1332,8 @@
             const activeBtn = document.querySelector(`.tab-btn[onclick="showTab('${tabName}')"]`);
             if (activeBtn) {
                 activeBtn.classList.add('active');
+                // Scroll to tab content
+                tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
@@ -1429,11 +1431,11 @@
         }
 
         function viewDoctorProfile(doctorId) {
-            window.location.href = `/Doctor/Details/${doctorId}`;
+            window.location.href = `/Doctor/DoctorProfile/${doctorId}`;
         }
 
         function bookAppointment(doctorId) {
-            window.location.href = `/Appointment/Create?doctorId=${doctorId}`;
+            window.location.href = `/Doctor/DoctorProfile/${doctorId}`;
         }
 
         function showToast(message, type = 'info') {

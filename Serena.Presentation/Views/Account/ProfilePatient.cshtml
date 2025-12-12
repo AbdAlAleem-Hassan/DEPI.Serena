@@ -32,7 +32,7 @@
             position: sticky;
             top: 100px;
             height: fit-content;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .profile-avatar-upload {
@@ -48,6 +48,10 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
         }
 
         .upload-icon {
@@ -71,7 +75,7 @@
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 2rem;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .form-section-title {
@@ -194,7 +198,9 @@
 <div class="container" style="padding-top: 100px; padding-bottom: 50px;">
     <div class="profile-header">
         <h1 class="section-title" style="text-align: left;">Patient Profile</h1>
-        <p class="section-subtitle" style="text-align: left; margin: 0;">Manage your personal and medical information.</p>
+        <p class="section-subtitle" style="text-align: left; margin: 0;">
+            Manage your personal and medical information.
+        </p>
     </div>
 
     <!-- Display validation errors summary -->
@@ -222,10 +228,13 @@
         <!-- SIDEBAR -->
         <div class="profile-sidebar-card">
             <div class="profile-avatar-upload">
+                <div class="profile-img">
+                    <i class="fas fa-user-circle"></i>
+                </div>
                 <label for="avatarUpload" class="upload-icon">
                     <i class="fas fa-camera"></i>
                 </label>
-                <input type="file" id="avatarUpload" name="photo" style="display:none;" accept="image/*">
+                @* <input type="file" id="avatarUpload" name="photo" style="display:none;" accept="image/*"> *@
             </div>
             <h3 style="margin-bottom: 0.5rem;">@($"{Model.FirstName} {Model.LastName}")</h3>
             <p style="color: var(--accent-blue); margin-bottom: 1rem;">Patient</p>
@@ -248,7 +257,8 @@
 
         <!-- FORM -->
         <div class="profile-form-card">
-            <form id="profileForm" action="@Url.Action("ProfilePatient", "Account")" method="post" enctype="multipart/form-data">
+            <form id="profileForm" action="@Url.Action("ProfilePatient", "Account")" method="post"
+                  enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
 
                 <!-- Hidden fields -->
@@ -274,7 +284,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" asp-for="Email"></label>
-                        <input type="email" class="form-input" asp-for="Email" readonly style="opacity:0.7; cursor:not-allowed;">
+                        <input type="email" class="form-input" asp-for="Email" readonly
+                               style="opacity:0.7; cursor:not-allowed;">
                     </div>
                     <div class="form-group">
                         <label class="form-label" asp-for="PhoneNumber"></label>
@@ -367,7 +378,10 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="hero-btn hero-btn-secondary" onclick="window.location.goBack()">Cancel</button>
+                    <button type="button" class="hero-btn hero-btn-secondary"
+                            onclick="window.location.goBack()">
+                        Cancel
+                    </button>
                     <button type="submit" class="hero-btn hero-btn-primary">Save Changes</button>
                 </div>
             </form>
@@ -377,15 +391,15 @@
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const avatarUpload = document.getElementById('avatarUpload');
             const profilePreview = document.getElementById('profilePreview');
 
             // Preview image when selected
-            avatarUpload.addEventListener('change', function(e) {
+            avatarUpload.addEventListener('change', function (e) {
                 if (e.target.files && e.target.files[0]) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         profilePreview.src = e.target.result;
                     }
                     reader.readAsDataURL(e.target.files[0]);
@@ -394,7 +408,7 @@
 
             // Handle form submission
             const form = document.getElementById('profileForm');
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 const btn = form.querySelector('.hero-btn-primary');
                 const originalText = btn.innerText;
 
@@ -420,7 +434,7 @@
                 const ageElement = document.querySelector('.fa-calendar-alt').closest('div');
                 if (ageElement && !isNaN(age) && age > 0) {
                     const ageText = ageElement.textContent.split('years old')[0].trim();
-                    ageElement.innerHTML = `<i class="fas fa-calendar-alt" style="color: var(--accent-blue); width: 20px;"></i> ${age} years old`;
+                    ageElement.innerHTML = <i class="fas fa-calendar-alt" style="color: var(--accent-blue); width: 20px;"></i> ${age} years old;
                 }
             };
 

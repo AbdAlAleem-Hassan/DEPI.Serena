@@ -99,8 +99,6 @@
                                 @* <a asp-controller="Doctor" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
                                         <a asp-controller="Doctor" asp-action="Appointments"
                                     class="dropdown-link @IsActive("Doctor", "Appointments")">My Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients"
-                                    class="dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
                                 <a asp-controller="Doctor" asp-action="Schedule"
                                     class="dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
                                 <a href="#" class="dropdown-link">Blogs</a>
@@ -221,8 +219,8 @@
                                     <i class="fas fa-user"></i> My Profile
                                 </a>
                             }
-                            <a asp-controller="Account" asp-action="Settings"
-                                class="dropdown-link @IsActive("Account", "Settings")">
+                            <a asp-controller="Account" asp-action="ProfilePatient" asp-route-Id="@user?.Id"
+                               class="dropdown-link @IsActive("Account", "ProfilePatient")">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
@@ -327,8 +325,6 @@
                                         <a asp-controller="Doctor" asp-action="Appointments"
                                     class="mobile-dropdown-link @IsActive("Doctor", "Appointments")">My
                                     Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients"
-                                    class="mobile-dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
                                 <a asp-controller="Doctor" asp-action="Schedule"
                                     class="mobile-dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
                                 <a href="#" class="mobile-dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
@@ -409,12 +405,12 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a asp-controller="Account" asp-action="Profile"
+                    <a asp-controller="Account" asp-action="ProfilePatient"
                         class="mobile-user-action @IsActive("Account", "Profile")">
                         <i class="fas fa-user"></i> <span data-en="My Profile" data-ar="ملفي الشخصي">My Profile</span>
                     </a>
-                    <a asp-controller="Account" asp-action="Settings"
-                        class="mobile-user-action @IsActive("Account", "Settings")">
+                    <a asp-controller="Account" asp-action="ProfilePatient"
+                        class="mobile-user-action @IsActive("Account", "ProfilePatient")">
                         <i class="fas fa-cog"></i> <span data-en="Settings" data-ar="الإعدادات">Settings</span>
                     </a>
 

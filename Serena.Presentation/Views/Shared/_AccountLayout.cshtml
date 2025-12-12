@@ -99,8 +99,6 @@
                                 @* <a asp-controller="Doctor" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
                                 <a asp-controller="Doctor" asp-action="Appointments"
                                     class="dropdown-link @IsActive("Doctor", "Appointments")">My Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients"
-                                    class="dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
                                 <a asp-controller="Doctor" asp-action="Schedule"
                                     class="dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
                                 <a href="#" class="dropdown-link">Blogs</a>
@@ -221,8 +219,8 @@
                                     <i class="fas fa-user"></i> My Profile
                                 </a>
                             }
-                            <a asp-controller="Account" asp-action="Settings"
-                                class="dropdown-link @IsActive("Account", "Settings")">
+                            <a asp-controller="Account" asp-action="ProfilePatient" asp-route-Id="@user?.Id"
+                               class="dropdown-link @IsActive("Account", "ProfilePatient")">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
@@ -327,8 +325,6 @@
                                 <a asp-controller="Doctor" asp-action="Appointments"
                                     class="mobile-dropdown-link @IsActive("Doctor", "Appointments")">My
                                     Appointments</a>
-                                <a asp-controller="Doctor" asp-action="Patients"
-                                    class="mobile-dropdown-link @IsActive("Doctor", "Patients")">My Patients</a>
                                 <a asp-controller="Doctor" asp-action="Schedule"
                                     class="mobile-dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
                                 <a href="#" class="mobile-dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
@@ -488,63 +484,6 @@
     <main>
         @RenderBody()
     </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <div class="footer-logo">
-                        <div class="logo-placeholder">S</div>
-                        <span class="footer-logo-text">Serena</span>
-                    </div>
-                    <p class="footer-text">
-                        Next-generation healthcare management platform connecting patients, doctors, and hospitals.
-                    </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-heading">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="footer-link"><a asp-controller="Doctor" asp-action="Index">Find a Doctor</a></li>
-                        <li class="footer-link"><a asp-controller="Hospital" asp-action="Index">Find a Hospital</a></li>
-                        <li class="footer-link"><a href="#">Blog</a></li>
-                        <li class="footer-link"><a asp-controller="Home" asp-action="About">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-heading">Services</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link"><a href="#">Patient Portal</a></li>
-                        <li class="footer-link"><a href="#">Doctor Dashboard</a></li>
-                        <li class="footer-link"><a href="#">Hospital Management</a></li>
-                        <li class="footer-link"><a href="#">Medical Records</a></li>
-                        <li class="footer-link"><a href="#">Appointments</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-heading">Contact Info</h3>
-                    <ul class="footer-links">
-                        <li class="footer-link"><a href="#"><i class="fas fa-map-marker-alt"></i> <span>123 Healthcare
-                                    St, Medical City</span></a></li>
-                        <li class="footer-link"><a href="#"><i class="fas fa-phone"></i> +1 234 567 8900</a></li>
-                        <li class="footer-link"><a href="#"><i class="fas fa-envelope"></i> info@serena.com</a></li>
-                        <li class="footer-link"><a href="#"><i class="fas fa-clock"></i> <span>Mon-Fri:
-                                    9AM-6PM</span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Serena Healthcare. <span>All rights reserved.</span></p>
-            </div>
-        </div>
-    </footer>
 
     <!-- JavaScript Files -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
