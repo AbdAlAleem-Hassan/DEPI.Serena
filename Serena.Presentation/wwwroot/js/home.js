@@ -2,7 +2,7 @@
 function initializePartnersCarousel() {
     const partnersTrack = document.querySelector('.partners-track');
     if (!partnersTrack) return;
-    
+
     const partnerLogos = [
         { name: 'MedTech Solutions', color: '#3B82F6' },
         { name: 'HealthInnovate', color: '#10B981' },
@@ -11,7 +11,7 @@ function initializePartnersCarousel() {
         { name: 'HealthPlus', color: '#EF4444' },
         { name: 'Wellness Corp', color: '#06B6D4' }
     ];
-    
+
     // Create two sets of logos for infinite scrolling
     for (let i = 0; i < 2; i++) {
         partnerLogos.forEach(logo => {
@@ -66,7 +66,7 @@ function initializeHospitals() {
     ];
 
     hospitalsGrid.innerHTML = '';
-    
+
     hospitals.forEach(hospital => {
         const hospitalCard = createHospitalCard(hospital);
         hospitalsGrid.appendChild(hospitalCard);
@@ -77,7 +77,7 @@ function createHospitalCard(hospital) {
     const card = document.createElement('div');
     card.className = 'hospital-card';
     card.setAttribute('data-hospital-id', hospital.id);
-    
+
     card.innerHTML = `
         <div class="hospital-image">
             <img src="${hospital.image}" alt="${hospital.name}">
@@ -110,19 +110,19 @@ function createHospitalCard(hospital) {
             </div>
         </div>
     `;
-    
+
     // Add click event to redirect to hospital details page
     const viewBtn = card.querySelector('.view-hospital-btn');
-    viewBtn.addEventListener('click', function(e) {
+    viewBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         window.location.href = `hospital-details.html?id=${hospital.id}`;
     });
-    
+
     // Also make the whole card clickable
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
         window.location.href = `hospital-details.html?id=${hospital.id}`;
     });
-    
+
     return card;
 }
 
@@ -171,7 +171,7 @@ function initializeDoctors() {
     ];
 
     doctorsGrid.innerHTML = '';
-    
+
     doctors.forEach(doctor => {
         const doctorCard = createDoctorCard(doctor);
         doctorsGrid.appendChild(doctorCard);
@@ -182,7 +182,7 @@ function createDoctorCard(doctor) {
     const card = document.createElement('div');
     card.className = 'doctor-card';
     card.setAttribute('data-doctor-id', doctor.id);
-    
+
     card.innerHTML = `
         <div class="doctor-image">
             <img src="${doctor.image}" alt="${doctor.name}">
@@ -229,25 +229,25 @@ function createDoctorCard(doctor) {
             </div>
         </div>
     `;
-    
+
     // Add click events
     const viewBtn = card.querySelector('.view-doctor-btn');
-    viewBtn.addEventListener('click', function(e) {
+    viewBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         window.location.href = `doctor-details.html?id=${doctor.id}`;
     });
-    
+
     const bookBtn = card.querySelector('.book-appointment-btn');
-    bookBtn.addEventListener('click', function(e) {
+    bookBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         window.location.href = `doctor-details.html?id=${doctor.id}&book=true`;
     });
-    
+
     // Make the whole card clickable for viewing details
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
         window.location.href = `doctor-details.html?id=${doctor.id}`;
     });
-    
+
     return card;
 }
 
@@ -255,7 +255,7 @@ function createDoctorCard(doctor) {
 function initializeReviews() {
     const reviewsGrid = document.querySelector('.reviews-grid');
     if (!reviewsGrid) return;
-    
+
     const reviews = [
         {
             id: 1,
@@ -291,13 +291,13 @@ function initializeReviews() {
             image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80'
         }
     ];
-    
+
     reviewsGrid.innerHTML = '';
-    
+
     reviews.forEach(review => {
         const reviewCard = document.createElement('div');
         reviewCard.className = 'review-card';
-        
+
         let stars = '';
         for (let i = 0; i < 5; i++) {
             if (i < review.rating) {
@@ -306,7 +306,7 @@ function initializeReviews() {
                 stars += '<i class="far fa-star review-star"></i>';
             }
         }
-        
+
         reviewCard.innerHTML = `
             <p class="review-text"><span data-en="${review.comment}" data-ar="${review.commentAr}">${review.comment}</span></p>
             <div class="review-rating">
@@ -322,7 +322,7 @@ function initializeReviews() {
                 </div>
             </div>
         `;
-        
+
         reviewsGrid.appendChild(reviewCard);
     });
 }
@@ -348,21 +348,21 @@ if (aboutBtn) {
 // function initializeMap() {
 //     const mapElement = document.getElementById('map');
 //     if (!mapElement) return;
-    
+
 //     const map = L.map('map').setView([30.81, 30.99], 13); // New York coordinates
-    
+
 //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 //     }).addTo(map);
-    
+
 //     // Add some marker examples
 //     L.marker([40.7128, -74.0060]).addTo(map)
 //         .bindPopup('Serena Headquarters')
 //         .openPopup();
-        
+
 //     L.marker([40.7211, -74.0050]).addTo(map)
 //         .bindPopup('MediCare General Hospital');
-        
+
 //     L.marker([40.7048, -74.0100]).addTo(map)
 //         .bindPopup('City Health Center');
 // }
@@ -370,8 +370,8 @@ if (aboutBtn) {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initializePartnersCarousel();
-    initializeHospitals();
-    initializeDoctors();
+    // initializeHospitals(); // Disabled to use server-side real data
+    // initializeDoctors();   // Disabled to use server-side real data
     initializeReviews();
     // Initialize home page map
     if (document.getElementById('map')) {

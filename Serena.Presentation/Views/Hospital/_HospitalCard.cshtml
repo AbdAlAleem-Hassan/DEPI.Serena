@@ -3,7 +3,7 @@
 @{
     var primaryAddress = Model.Addresses?.FirstOrDefault();
     // Placeholder image logic
-    var randomImageId = Model.Id % 5 + 1; // 1-5
+  // var randomImageId = Model.Id % 5 + 1; // 1-5
 }
 
 <a asp-action="Details" asp-route-id="@Model.Id" class="hospital-card-link">
@@ -13,10 +13,9 @@
         <!-- GRID VIEW CONTENT -->
         <!-- ============================================= -->
         <div class="hospital-card-header grid-only">
-            <!-- Using a gradient/pattern placeholder from CSS -->
-            <div class="grid-icon-placeholder">
-                <i class="fas fa-hospital-alt"></i>
-            </div>
+            <img src="@Model.ImageUrl" alt="@Model.Name Logo"
+                 onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='<i class=\'fas fa-hospital\'></i>'" />
+
         </div>
 
         <div class="hospital-card-body grid-only">

@@ -86,76 +86,94 @@
             {
                 <!-- Navbar when user is logged in -->
                 <div class="nav-links">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")"><span
+                            data-en="Home" data-ar="الرئيسية">Home</span></a>
 
                     <!-- Role-based navigation -->
                     @if (User.IsInRole("Doctor"))
                     {
                         <div class="dropdown">
                             <button class="nav-link dropdown-toggle @IsActive("Doctor", "Index")">
-                                <span>Doctor Dashboard</span> <i class="fas fa-chevron-down"></i>
+                                <span><span data-en="Doctor Dashboard" data-ar="لوحة تحكم الطبيب">Doctor Dashboard</span></span>
+                                <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
                                 @* <a asp-controller="Doctor" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
                                 <a asp-controller="Doctor" asp-action="Appointments"
-                                    class="dropdown-link @IsActive("Doctor", "Appointments")">My Appointments</a>
+                                    class="dropdown-link @IsActive("Doctor", "Appointments")"><span data-en="My Appointments"
+                                        data-ar="مواعيدي">My Appointments</span></a>
                                 <a asp-controller="Doctor" asp-action="Schedule"
-                                    class="dropdown-link @IsActive("Doctor", "Schedule")">My Schedule</a>
-                                <a href="#" class="dropdown-link">Blogs</a>
-                                <a href="#" class="dropdown-link">Reviews</a>
+                                    class="dropdown-link @IsActive("Doctor", "Schedule")"><span data-en="My Schedule"
+                                        data-ar="جدولي">My Schedule</span></a>
+                                <a href="#" class="dropdown-link"><span data-en="Blogs" data-ar="المدونات">Blogs</span></a>
+                                <a href="#" class="dropdown-link"><span data-en="Reviews" data-ar="المراجعات">Reviews</span></a>
                             </div>
                         </div>
-                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
-                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
-                            Us</a>
+                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")"><span
+                                data-en="About Us" data-ar="من نحن">About Us</span></a>
+                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")"><span
+                                data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span></a>
                     }
                     else if (User.IsInRole("Patient"))
                     {
                         <div class="dropdown">
                             <button class="nav-link dropdown-toggle">
-                                <span>Patient Portal</span> <i class="fas fa-chevron-down"></i>
+                                <span><span data-en="Patient Portal" data-ar="بوابة المريض">Patient Portal</span></span> <i
+                                    class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
                                 @* <a asp-controller="Patient" asp-action="Dashboard" class="dropdown-link">My Dashboard</a> *@
                                 <a asp-controller="Patient" asp-action="Appointments"
-                                    class="dropdown-link @IsActive("Patient", "Appointments")">My Appointments</a>
+                                    class="dropdown-link @IsActive("Patient", "Appointments")"><span data-en="My Appointments"
+                                        data-ar="مواعيدي">My Appointments</span></a>
                                 <a asp-controller="Patient" asp-action="Doctors"
-                                    class="dropdown-link @IsActive("Patient", "GetMyDoctors")">My Doctors</a>
+                                    class="dropdown-link @IsActive("Patient", "GetMyDoctors")"><span data-en="My Doctors"
+                                        data-ar="أطبائي">My Doctors</span></a>
                                 <a asp-controller="Hospital" asp-action="Index"
-                                    class="dropdown-link @IsActive("Hospital", "Index")">Find
-                                    Hospital</a>
-                                <a asp-controller="Doctor" asp-action="Index" class="dropdown-link @IsActive("Doctor", "Index")">Find
-                                    Doctors</a>
-                                <a href="#" class="dropdown-link @IsActive("Home", "Blogs")">Blogs</a>
-                                <a href="#" class="dropdown-link @IsActive("Home", "Reviews")">Reviews</a>
+                                    class="dropdown-link @IsActive("Hospital", "Index")"><span data-en="Find Hospital"
+                                        data-ar="البحث عن مستشفى">Find Hospital</span></a>
+                                <a asp-controller="Doctor" asp-action="Index"
+                                    class="dropdown-link @IsActive("Doctor", "Index")"><span data-en="Find Doctors"
+                                        data-ar="البحث عن أطباء">Find Doctors</span></a>
+                                <a href="#" class="dropdown-link @IsActive("Home", "Blogs")"><span data-en="Blogs"
+                                        data-ar="المدونات">Blogs</span></a>
+                                <a href="#" class="dropdown-link @IsActive("Home", "Reviews")"><span data-en="Reviews"
+                                        data-ar="المراجعات">Reviews</span></a>
                             </div>
                         </div>
-                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
-                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
-                            Us</a>
+                        <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")"><span
+                                data-en="About Us" data-ar="من نحن">About Us</span></a>
+                        <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")"><span
+                                data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span></a>
                     }
                     else if (User.IsInRole("Admin"))
                     {
                         <div class="dropdown">
                             <button class="nav-link dropdown-toggle">
-                                <span>Admin Panel</span> <i class="fas fa-chevron-down"></i>
+                                <span><span data-en="Admin Panel" data-ar="لوحة المشرف">Admin Panel</span></span> <i
+                                    class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
                                 <a asp-controller="Department" asp-action="Index"
-                                    class="dropdown-link @IsActive("Department", "Index")">Departments</a>
+                                    class="dropdown-link @IsActive("Department", "Index")"><span data-en="Departments"
+                                        data-ar="الأقسام">Departments</span></a>
                                 <a asp-controller="Service" asp-action="Index"
-                                    class="dropdown-link @IsActive("Service", "Index")">Services</a>
+                                    class="dropdown-link @IsActive("Service", "Index")"><span data-en="Services"
+                                        data-ar="الخدمات">Services</span></a>
                                 <a asp-controller="Schedule" asp-action="Index"
-                                    class="dropdown-link @IsActive("Schedule", "Index")">Schedules</a>
+                                    class="dropdown-link @IsActive("Schedule", "Index")"><span data-en="Schedules"
+                                        data-ar="المواعيد">Schedules</span></a>
                                 <a asp-controller="DoctorHospitalReview" asp-action="Index"
-                                    class="dropdown-link @IsActive("DoctorHospitalReview", "Index")">Doctor
-                                    Reviews</a>
+                                    class="dropdown-link @IsActive("DoctorHospitalReview", "Index")"><span
+                                        data-en="Doctor Reviews" data-ar="مراجعات الأطباء">Doctor Reviews</span></a>
                                 <a asp-controller="PatientDoctorReview" asp-action="Index"
-                                    class="dropdown-link @IsActive("PatientDoctorReview", "Index")">Patient-Doctor
-                                    Reviews</a>
+                                    class="dropdown-link @IsActive("PatientDoctorReview", "Index")"><span
+                                        data-en="Patient-Doctor Reviews" data-ar="مراجعات المرضى للأطباء">Patient-Doctor
+                                        Reviews</span></a>
                                 <a asp-controller="PatientHospitalReview" asp-action="Index"
-                                    class="dropdown-link @IsActive("PatientHospitalReview", "Index")">Patient-Hospital
-                                    Reviews</a>
+                                    class="dropdown-link @IsActive("PatientHospitalReview", "Index")"><span
+                                        data-en="Patient-Hospital Reviews" data-ar="مراجعات المرضى للمستشفيات">Patient-Hospital
+                                        Reviews</span></a>
                             </div>
                         </div>
                     }
@@ -192,15 +210,16 @@
                                     <div class="user-role">
                                         @if (User.IsInRole("Doctor"))
                                         {
-                                            <span class="role-badge">Doctor</span>
+                                            <span class="role-badge"><span data-en="Doctor" data-ar="طبيب">Doctor</span></span>
                                         }
                                         else if (User.IsInRole("Patient"))
                                         {
-                                            <span class="role-badge">Patient</span>
+                                            <span class="role-badge"><span data-en="Patient"
+                                                    data-ar="مريض">Patient</span></span>
                                         }
                                         else if (User.IsInRole("Admin"))
                                         {
-                                            <span class="role-badge">Admin</span>
+                                            <span class="role-badge"><span data-en="Admin" data-ar="مشرف">Admin</span></span>
                                         }
                                     </div>
                                 </div>
@@ -209,24 +228,27 @@
                             {
                                 <a asp-controller="Account" asp-action="Profile" asp-route-Id="@user?.Id"
                                     class="dropdown-link @IsActive("Account", "Profile")">
-                                    <i class="fas fa-user"></i> My Profile
+                                    <i class="fas fa-user"></i> <span data-en="My Profile" data-ar="ملفي الشخصي">My
+                                        Profile</span>
                                 </a>
                             }
                             else if (User.IsInRole("Patient"))
                             {
                                 <a asp-controller="Account" asp-action="ProfilePatient" asp-route-Id="@user?.Id"
                                     class="dropdown-link @IsActive("Account", "ProfilePatient")">
-                                    <i class="fas fa-user"></i> My Profile
+                                    <i class="fas fa-user"></i> <span data-en="My Profile" data-ar="ملفي الشخصي">My
+                                        Profile</span>
                                 </a>
                             }
                             <a asp-controller="Account" asp-action="ProfilePatient" asp-route-Id="@user?.Id"
-                               class="dropdown-link @IsActive("Account", "ProfilePatient")">
-                                <i class="fas fa-cog"></i> Settings
+                                class="dropdown-link @IsActive("Account", "ProfilePatient")">
+                                <i class="fas fa-cog"></i> <span data-en="Settings" data-ar="الإعدادات">Settings</span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
                                 <button type="submit" class="dropdown-link logout-btn">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                    <i class="fas fa-sign-out-alt"></i> <span data-en="Logout"
+                                        data-ar="تسجيل الخروج">Logout</span>
                                 </button>
                             </form>
                         </div>
@@ -241,23 +263,30 @@
             {
                 <!-- Navbar when user is NOT logged in (Original) -->
                 <div class="nav-links">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")">Home</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @IsActive("Home", "Index")"><span
+                            data-en="Home" data-ar="الرئيسية">Home</span></a>
                     <div class="dropdown">
                         <button class="nav-link dropdown-toggle">
-                            <span>Services</span> <i class="fas fa-chevron-down"></i>
+                            <span><span data-en="Services" data-ar="الخدمات">Services</span></span> <i
+                                class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content">
                             <a asp-controller="Hospital" asp-action="Index"
-                                class="dropdown-link @IsActive("Hospital", "Index")">Find Hospital</a>
+                                class="dropdown-link @IsActive("Hospital", "Index")"><span data-en="Find Hospital"
+                                    data-ar="البحث عن مستشفى">Find Hospital</span></a>
                             <a asp-controller="Doctor" asp-action="Index"
-                                class="dropdown-link @IsActive("Doctor", "Index")">Find Doctors</a>
-                            <a href="#" class="dropdown-link @IsActive("Blogs", "Index")">Blogs</a>
-                            <a href="#" class="dropdown-link @IsActive("Reviews", "Index")">Reviews</a>
+                                class="dropdown-link @IsActive("Doctor", "Index")"><span data-en="Find Doctors"
+                                    data-ar="البحث عن أطباء">Find Doctors</span></a>
+                            <a href="#" class="dropdown-link @IsActive("Blogs", "Index")"><span data-en="Blogs"
+                                    data-ar="المدونات">Blogs</span></a>
+                            <a href="#" class="dropdown-link @IsActive("Reviews", "Index")"><span data-en="Reviews"
+                                    data-ar="المراجعات">Reviews</span></a>
                         </div>
                     </div>
-                    <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")">About Us</a>
-                    <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")">Contact
-                        Us</a>
+                    <a asp-controller="Home" asp-action="About" class="nav-link @IsActive("Home", "About")"><span
+                            data-en="About Us" data-ar="من نحن">About Us</span></a>
+                    <a asp-controller="Home" asp-action="Contact" class="nav-link @IsActive("Home", "Contact")"><span
+                            data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span></a>
                 </div>
 
                 <div class="nav-actions">
@@ -267,8 +296,10 @@
                     <button class="lang-toggle" id="langToggle">
                         EN
                     </button>
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-login">Login</a>
-                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Register</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-login"><span data-en="Login"
+                            data-ar="تسجيل الدخول">Login</span></a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary"><span data-en="Register"
+                            data-ar="التسجيل">Register</span></a>
                     <button class="mobile-menu-btn" id="mobileMenuBtn">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -321,7 +352,8 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="mobile-dropdown-content">
-                                @* <a asp-controller="Doctor" asp-action="Dashboard" class="mobile-dropdown-link">My Dashboard</a> *@
+                                @* <a asp-controller="Doctor" asp-action="Dashboard" class="mobile-dropdown-link">My
+                        Dashboard</a> *@
                                 <a asp-controller="Doctor" asp-action="Appointments"
                                     class="mobile-dropdown-link @IsActive("Doctor", "Appointments")">My
                                     Appointments</a>
@@ -340,7 +372,8 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="mobile-dropdown-content">
-                                @* <a asp-controller="Patient" asp-action="Dashboard" class="mobile-dropdown-link">My Dashboard</a> *@
+                                @* <a asp-controller="Patient" asp-action="Dashboard" class="mobile-dropdown-link">My
+                        Dashboard</a> *@
                                 <a asp-controller="Patient" asp-action="Appointments"
                                     class="mobile-dropdown-link @IsActive("Patient", "Appointments")">My
                                     Appointments</a>

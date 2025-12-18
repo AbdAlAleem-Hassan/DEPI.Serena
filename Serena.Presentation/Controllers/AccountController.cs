@@ -308,6 +308,14 @@ namespace Serena.Presentation.Controllers
                 {
                     // Get user roles for greeting
                     var roles = await _userManager.GetRolesAsync(user);
+
+                    // Check for Admin role and redirect
+                    if (roles.Contains("Admin"))
+                    {
+                        TempData["Success"] = $"👋 Welcome back Admin {user.FirstName}!";
+                        return RedirectToAction("Index", "Admin");
+                    }
+
                     var roleGreeting = roles.Contains("Doctor") ? "Dr." : "";
 
                     TempData["Success"] = $"👋 Welcome back {roleGreeting} {user.FirstName}!";
@@ -361,7 +369,7 @@ namespace Serena.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var userId = _userManager.GetUserId(User); 
+            var userId = _userManager.GetUserId(User);
             var doctor = await _doctorService.GetDoctorByUserIdAsync(userId);
 
             if (doctor == null)
@@ -505,7 +513,7 @@ namespace Serena.Presentation.Controllers
                 //TempData["Error"] = $"❌ An error occurred: {ex.Message}";
                 return View(model);
             }
-      
+
         }
         [HttpGet]
         public async Task<IActionResult> ProfilePatient()
@@ -534,7 +542,7 @@ namespace Serena.Presentation.Controllers
             {
                 await _patientService.UpdatePatientAsync(patientDetailsDTO.Id, new CreateAndUpdatePatientDTO
                 {
-                    UserId=patientDetailsDTO.UserId,
+                    UserId = patientDetailsDTO.UserId,
                     FirstName = patientDetailsDTO.FirstName,
                     MiddleName = patientDetailsDTO.MiddleName,
                     LastName = patientDetailsDTO.LastName,

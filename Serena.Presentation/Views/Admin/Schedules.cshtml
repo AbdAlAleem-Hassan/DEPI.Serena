@@ -1,0 +1,50 @@
+@model IEnumerable<Serena.BLL.Models.Schedules.ScheduleDTO>
+@{
+    ViewData["Title"] = "Schedules";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="card">
+    <div class="card-header"
+        style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;"><span data-en="All Schedules" data-ar="جميع المواعيد">All Schedules</span></h3>
+        <div>
+            <!-- Add filter or create new button here -->
+        </div>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Date" data-ar="التاريخ">Date</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Doctor" data-ar="الطبيب">Doctor</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Price" data-ar="السعر">Price</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Status" data-ar="الحالة">Status</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions" data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var schedule in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@schedule.Date.ToString("g")</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@schedule.DoctorName</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@schedule.Price.ToString("C")</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            @if (schedule.IsAvailable)
+                            {
+                                <span class="badge bg-success" style="color: white;"><span data-en="Available" data-ar="متاح">Available</span></span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary" style="color: white;"><span data-en="Booked" data-ar="محجوز">Booked</span></span>
+                            }
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <button class="btn btn-sm btn-outline-primary"><span data-en="Details" data-ar="تفاصيل">Details</span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

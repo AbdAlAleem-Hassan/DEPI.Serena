@@ -16,8 +16,9 @@ namespace Serena.BLL.Models.Hospitals
 		public decimal AverageCost { get; set; }
 		public string HospitalPhone { get; set; }
 		public string EmergencyPhone { get; set; }
+		public string ImageUrl { get; set; }
 
-		public List<AddressDTO> Addresses { get; set; } = new List<AddressDTO>();
+        public List<AddressDTO> Addresses { get; set; } = new List<AddressDTO>();
 		public List<DepartmentDTO> Departments { get; set; } = new List<DepartmentDTO>();
 		public List<PatientHospitalReview>  PatientHospitalReviews { get; set; } = new List<PatientHospitalReview>();
 		public List<DoctorHospitalReview>  DoctorHospitalReviews { get; set; } = new List<DoctorHospitalReview>();

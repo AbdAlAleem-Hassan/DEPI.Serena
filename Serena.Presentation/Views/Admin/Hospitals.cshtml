@@ -1,0 +1,65 @@
+@model IEnumerable<Serena.BLL.Models.Hospitals.HospitalDTO>
+@{
+    ViewData["Title"] = "Hospitals";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header"
+        style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;"><span data-en="All Hospitals" data-ar="جميع المستشفيات">All Hospitals</span></h3>
+        <a asp-action="RegisterHospital" asp-controller="Account" class="btn btn-primary"><span
+                data-en="Add New Hospital" data-ar="إضافة مستشفى جديد">Add New Hospital</span></a>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name"
+                            data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Rank"
+                            data-ar="التصنيف">Rank</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Phone"
+                            data-ar="الهاتف">Phone</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Emergency"
+                            data-ar="الطوارئ">Emergency</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Rating"
+                            data-ar="التقييم">Rating</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions"
+                            data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hospital in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                @if (!string.IsNullOrEmpty(hospital.ImageUrl))
+                                {
+                                    <img src="@hospital.ImageUrl" alt="@hospital.Name"
+                                        style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover;">
+                                }
+                                <span>@hospital.Name</span>
+                            </div>
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@hospital.Rank</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@hospital.HospitalPhone</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@hospital.EmergencyPhone</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            @if (hospital.PatientsReviews > 0)
+                            {
+                                <span>@hospital.PatientsReviews <span data-en="(Patients)"
+                                        data-ar="(مرضى)">(Patients)</span></span>
+                            }
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <button class="btn btn-sm btn-outline-primary"><span data-en="Edit"
+                                    data-ar="تعديل">Edit</span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

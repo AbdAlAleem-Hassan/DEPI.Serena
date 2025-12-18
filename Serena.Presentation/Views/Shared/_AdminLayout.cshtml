@@ -1,0 +1,111 @@
+@using Microsoft.AspNetCore.Identity
+@using Serena.DAL.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var firstName = user?.FirstName ?? "Admin";
+
+    string IsActive(string controller, string action)
+    {
+        var routeData = ViewContext.RouteData.Values;
+        var currentController = routeData["controller"] as string;
+        var currentAction = routeData["action"] as string;
+
+        return string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Serena Admin</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/css/admin.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body class="admin-body">
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a asp-controller="Admin" asp-action="Index" class="sidebar-logo">
+                    <div class="logo-placeholder" style="width: 32px; height: 32px; font-size: 1.2rem;">S</div>
+                    <span>Serena Admin</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a asp-controller="Admin" asp-action="Index" class="menu-item @IsActive("Admin", "Index")">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a asp-controller="Admin" asp-action="Doctors" class="menu-item @IsActive("Admin", "Doctors")">
+                    <i class="fas fa-user-md"></i> Doctors
+                </a>
+                <a asp-controller="Admin" asp-action="Patients" class="menu-item @IsActive("Admin", "Patients")">
+                    <i class="fas fa-user-injured"></i> Patients
+                </a>
+                <a asp-controller="Admin" asp-action="Hospitals" class="menu-item @IsActive("Admin", "Hospitals")">
+                    <i class="fas fa-hospital"></i> Hospitals
+                </a>
+                <a asp-controller="Admin" asp-action="Departments" class="menu-item @IsActive("Admin", "Departments")">
+                    <i class="fas fa-building"></i> Departments
+                </a>
+                <a asp-controller="Admin" asp-action="Services" class="menu-item @IsActive("Admin", "Services")">
+                    <i class="fas fa-stethoscope"></i> Services
+                </a>
+                <a asp-controller="Admin" asp-action="Schedules" class="menu-item @IsActive("Admin", "Schedules")">
+                    <i class="fas fa-calendar-alt"></i> Schedules
+                </a>
+                <a asp-controller="Admin" asp-action="NewRequests" class="menu-item @IsActive("Admin", "NewRequests")">
+                    <i class="fas fa-bell"></i> New Requests
+                </a>
+
+                <div style="border-top: 1px solid #e5e7eb; margin: 1rem 0;"></div>
+
+                <a asp-controller="Home" asp-action="Index" class="menu-item">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <button type="submit" class="menu-item"
+                        style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="page-title">@ViewData["Title"]</h1>
+
+                <div class="user-profile">
+                    <span style="font-weight: 500;">Hello, @firstName</span>
+                </div>
+            </header>
+
+            <div class="content-container">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

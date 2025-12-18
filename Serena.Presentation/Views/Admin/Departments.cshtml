@@ -1,0 +1,39 @@
+@model IEnumerable<Serena.BLL.Models.Departments.DepartmentDTO>
+@{
+    ViewData["Title"] = "Departments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header"
+        style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;"><span data-en="All Departments" data-ar="جميع الأقسام">All Departments</span></h3>
+        <button class="btn btn-primary"><span data-en="Add New Department" data-ar="إضافة قسم جديد">Add New Department</span></button>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name" data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Hospital" data-ar="المستشفى">Hospital</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Doctors Count" data-ar="عدد الأطباء">Doctors Count</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions" data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dept in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@dept.Name</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@dept.HospitalName</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@dept.DoctorsNumber</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <button class="btn btn-sm btn-outline-primary"><span data-en="Edit" data-ar="تعديل">Edit</span></button>
+                            <button class="btn btn-sm btn-outline-danger"><span data-en="Delete" data-ar="حذف">Delete</span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+@using Serena.DAL.Entities
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "New Requests";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header" style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb;">
+        <h3 style="margin: 0;"><span data-en="Recent Registrations (Last 30 Days)"
+                data-ar="التسجيلات الأخيرة (آخر 30 يومًا)">Recent Registrations (Last 30 Days)</span></h3>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name"
+                            data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Email"
+                            data-ar="البريد الإلكتروني">Email</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Joined"
+                            data-ar="تاريخ الانضمام">Joined</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Status"
+                            data-ar="الحالة">Status</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions"
+                            data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@user.FirstName @user.LastName</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@user.Email</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@user.CreatedAt.ToShortDateString()
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            @if (user.IsActive)
+                            {
+                                <span class="badge bg-success"
+                                    style="color: white; padding: 5px 10px; border-radius: 20px;"><span data-en="Active"
+                                        data-ar="نشط">Active</span></span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning" style="text-dark; padding: 5px 10px; border-radius: 20px;"><span
+                                        data-en="Pending" data-ar="قيد الانتظار">Pending</span></span>
+                            }
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            @if (!user.IsActive)
+                            {
+                                <div style="display: flex; gap: 5px;">
+                                    <form asp-action="ApproveUser" method="post" style="display:inline;">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm btn-success"><span data-en="Approve"
+                                                data-ar="قبول">Approve</span></button>
+                                    </form>
+                                    <form asp-action="RejectUser" method="post" style="display:inline;">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger"><span data-en="Reject"
+                                                data-ar="رفض">Reject</span></button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-success"><i class="fas fa-check-circle"></i> <span data-en="Approved"
+                                        data-ar="مقبول">Approved</span></span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

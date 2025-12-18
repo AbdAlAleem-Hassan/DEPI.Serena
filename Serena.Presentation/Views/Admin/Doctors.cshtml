@@ -1,0 +1,56 @@
+@model IEnumerable<Serena.BLL.Models.Doctors.DoctorDTO>
+@{
+    ViewData["Title"] = "Doctors";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header" style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;"><span data-en="All Doctors" data-ar="جميع الأطباء">All Doctors</span></h3>
+        <a asp-action="RegisterDoctor" asp-controller="Account" class="btn btn-primary"><span data-en="Add New Doctor" data-ar="إضافة طبيب جديد">Add New Doctor</span></a>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name" data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Specialization" data-ar="التخصص">Specialization</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Department" data-ar="القسم">Department</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Hospital" data-ar="المستشفى">Hospital</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Experience" data-ar="الخبرة">Experience</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions" data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doctor in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                @if (!string.IsNullOrEmpty(doctor.Image))
+                                {
+                                    <img src="@doctor.Image" alt="@doctor.FirstName" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user" style="color: #9ca3af; font-size: 0.8rem;"></i>
+                                    </div>
+                                }
+                                <span>@doctor.Rank @doctor.FirstName @doctor.LastName</span>
+                            </div>
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@doctor.Specialization</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@doctor.Department</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@doctor.Hospital</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@doctor.YearsOfExperience <span data-en="Years" data-ar="سنة">Years</span></td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <!-- Placeholder actions -->
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

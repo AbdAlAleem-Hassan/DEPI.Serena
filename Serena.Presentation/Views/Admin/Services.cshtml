@@ -1,0 +1,49 @@
+@model IEnumerable<Serena.BLL.Models.DoctorService.ServiceDTO>
+@{
+    ViewData["Title"] = "Services";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header"
+        style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0;"><span data-en="All Services" data-ar="جميع الخدمات">All Services</span></h3>
+        <button class="btn btn-primary"><span data-en="Add New Service" data-ar="إضافة خدمة جديدة">Add New
+                Service</span></button>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name"
+                            data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Price"
+                            data-ar="السعر">Price</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Description"
+                            data-ar="الوصف">Description</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Doctor"
+                            data-ar="الطبيب">Doctor</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions"
+                            data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@service.Name</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@service.Price.ToString("C")</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@service.Description</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@service.DoctorName</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <button class="btn btn-sm btn-outline-primary"><span data-en="Edit"
+                                    data-ar="تعديل">Edit</span></button>
+                            <button class="btn btn-sm btn-outline-danger"><span data-en="Delete"
+                                    data-ar="حذف">Delete</span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -175,7 +175,8 @@ namespace Serena.BLL.Services.Hospitals
 				Id = h.Id,
                 Name = h.Name,
 				Rank = h.Rank,
-				AverageCost = h.AverageCost,
+				ImageUrl = h.ImageUrl,
+                AverageCost = h.AverageCost,
 				HospitalPhone = h.HospitalPhone,
 				EmergencyPhone = h.EmergencyPhone,
 				Addresses = h.HospitalAddresses.Select(ha => new AddressDTO

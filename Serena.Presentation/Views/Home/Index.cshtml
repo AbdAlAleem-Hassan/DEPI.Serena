@@ -80,8 +80,7 @@
         .hospital-name {
             font-size: 1.5rem;
             font-weight: 700;
-            @* color: #1f2937; *@
-            margin-bottom: 8px;
+            @*color:#1f2937;*@margin-bottom: 8px;
             line-height: 1.3;
         }
 
@@ -240,8 +239,7 @@
         .doctor-name {
             font-size: 1.35rem;
             font-weight: 700;
-            @* color: #1f2937; *@
-            margin-bottom: 4px;
+            @*color:#1f2937;*@margin-bottom: 4px;
         }
 
         .doctor-specialization {
@@ -390,40 +388,44 @@
     <div class="hero-container">
         <div class="hero-grid">
             <div class="hero-content">
-                <div class="hero-badge">
+                <div class="hero-badge" data-en="✨ Powered by AI & Advanced Technology"
+                    data-ar="✨ مدعوم بالذكاء الاصطناعي والتكنولوجيا المتقدمة">
                     ✨ Powered by AI & Advanced Technology
                 </div>
-                <h1 class="hero-title">
+                <h1 class="hero-title" data-en="Next-Generation Healthcare Management"
+                    data-ar="الجيل القادم من إدارة الرعاية الصحية">
                     Next-Generation Healthcare Management
                 </h1>
-                <p class="hero-subtitle">
+                <p class="hero-subtitle"
+                    data-en="Serena connects and manages multiple hospitals under one unified ecosystem, providing advanced healthcare technology for patients, doctors, and administrators."
+                    data-ar="سيرينا تربط وتدير مستشفيات متعددة تحت نظام بيئي موحد، موفرة تكنولوجيا رعاية صحية متقدمة للمرضى، الأطباء، والمسؤولين.">
                     Serena connects and manages multiple hospitals under one unified ecosystem, providing advanced
                     healthcare technology for patients, doctors, and administrators.
                 </p>
 
                 <div class="hero-actions">
                     <a asp-controller="Hospital" asp-action="Index" class="hero-btn hero-btn-primary">
-                        <span>Book Appointment</span>
+                        <span data-en="Book Appointment" data-ar="احجز موعداً">Book Appointment</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                     <a asp-controller="Home" asp-action="About" class="hero-btn hero-btn-secondary">
                         <i class="fas fa-play"></i>
-                        <span>Explore Platform</span>
+                        <span data-en="Explore Platform" data-ar="اكتشف المنصة">Explore Platform</span>
                     </a>
                 </div>
 
                 <div class="hero-stats">
                     <div class="hero-stat">
                         <div class="hero-stat-value">@Model.TotalHospitals+</div>
-                        <div class="hero-stat-label">Hospitals</div>
+                        <div class="hero-stat-label" data-en="Hospitals" data-ar="مستشفى">Hospitals</div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-value">@Model.TotalDoctors+</div>
-                        <div class="hero-stat-label">Doctors</div>
+                        <div class="hero-stat-label" data-en="Doctors" data-ar="طبيب">Doctors</div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-value">@Model.TotalPatients+</div>
-                        <div class="hero-stat-label">Patients</div>
+                        <div class="hero-stat-label" data-en="Patients" data-ar="مريض">Patients</div>
                     </div>
                 </div>
             </div>
@@ -439,7 +441,8 @@
                     <div class="floating-card-content">
                         <div class="floating-card-icon">❤️</div>
                         <div class="floating-card-text">
-                            <div class="floating-card-label">Health Score</div>
+                            <div class="floating-card-label" data-en="Health Score" data-ar="مؤشر الصحة">Health Score
+                            </div>
                             <div class="floating-card-value">@Model.HealthScore%</div>
                         </div>
                     </div>
@@ -449,8 +452,10 @@
                     <div class="floating-card-content">
                         <div class="floating-card-icon">🏥</div>
                         <div class="floating-card-text">
-                            <div class="floating-card-label">Appointments</div>
-                            <div class="floating-card-value">@Model.TodayAppointments Today</div>
+                            <div class="floating-card-label" data-en="Appointments" data-ar="المواعيد">Appointments
+                            </div>
+                            <div class="floating-card-value">@Model.TodayAppointments <span data-en="Today"
+                                    data-ar="اليوم">Today</span></div>
                         </div>
                     </div>
                 </div>
@@ -466,15 +471,16 @@
 </section>
 
 @* <section class="partners">
-    <div class="partners-track">
-    </div>
+<div class="partners-track">
+</div>
 </section> *@
 
 
 <section class="services">
     <div class="container">
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-subtitle">
+        <h2 class="section-title" data-en="Our Services" data-ar="خدماتنا">Our Services</h2>
+        <p class="section-subtitle" data-en="Comprehensive healthcare solutions for patients, doctors, and hospitals"
+            data-ar="حلول رعاية صحية شاملة للمرضى، الأطباء، والمستشفيات">
             Comprehensive healthcare solutions for patients, doctors, and hospitals
         </p>
 
@@ -483,8 +489,11 @@
                 <div class="service-icon">
                     <i class="fas fa-hospital"></i>
                 </div>
-                <h3 class="service-title">Hospital Management</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Hospital Management" data-ar="إدارة المستشفيات">Hospital Management
+                </h3>
+                <p class="service-description"
+                    data-en="Streamline hospital operations with our comprehensive management system."
+                    data-ar="تبسيط عمليات المستشفى من خلال نظام الإدارة الشامل لدينا.">
                     Streamline hospital operations with our comprehensive management system.
                 </p>
             </div>
@@ -493,8 +502,9 @@
                 <div class="service-icon">
                     <i class="fas fa-user-md"></i>
                 </div>
-                <h3 class="service-title">Doctor Portal</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Doctor Portal" data-ar="بوابة الأطباء">Doctor Portal</h3>
+                <p class="service-description" data-en="Manage appointments, patients, and medical records efficiently."
+                    data-ar="إدارة المواعيد والمرضى والسجلات الطبية بكفاءة.">
                     Manage appointments, patients, and medical records efficiently.
                 </p>
             </div>
@@ -503,8 +513,10 @@
                 <div class="service-icon">
                     <i class="fas fa-user-injured"></i>
                 </div>
-                <h3 class="service-title">Patient Portal</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Patient Portal" data-ar="بوابة المرضى">Patient Portal</h3>
+                <p class="service-description"
+                    data-en="Book appointments, access medical records, and connect with doctors."
+                    data-ar="حجز المواعيد، الوصول إلى السجلات الطبية، والتواصل مع الأطباء.">
                     Book appointments, access medical records, and connect with doctors.
                 </p>
             </div>
@@ -513,8 +525,10 @@
                 <div class="service-icon">
                     <i class="fas fa-prescription-bottle-alt"></i>
                 </div>
-                <h3 class="service-title">Pharmacy Integration</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Pharmacy Integration" data-ar="تكامل الصيدلية">Pharmacy Integration
+                </h3>
+                <p class="service-description" data-en="Seamlessly connect with pharmacies for prescription management."
+                    data-ar="الاتصال بسلاسة مع الصيدليات لإدارة الوصفات الطبية.">
                     Seamlessly connect with pharmacies for prescription management.
                 </p>
             </div>
@@ -523,8 +537,10 @@
                 <div class="service-icon">
                     <i class="fas fa-file-medical"></i>
                 </div>
-                <h3 class="service-title">Medical Records</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Medical Records" data-ar="السجلات الطبية">Medical Records</h3>
+                <p class="service-description"
+                    data-en="Secure and accessible digital medical records for patients and providers."
+                    data-ar="سجلات طبية رقمية آمنة ويمكن الوصول إليها للمرضى ومقدمي الخدمات.">
                     Secure and accessible digital medical records for patients and providers.
                 </p>
             </div>
@@ -533,8 +549,9 @@
                 <div class="service-icon">
                     <i class="fas fa-ambulance"></i>
                 </div>
-                <h3 class="service-title">Emergency Services</h3>
-                <p class="service-description">
+                <h3 class="service-title" data-en="Emergency Services" data-ar="خدمات الطوارئ">Emergency Services</h3>
+                <p class="service-description" data-en="Quick access to emergency care and ambulance services."
+                    data-ar="وصول سريع إلى رعاية الطوارئ وخدمات الإسعاف.">
                     Quick access to emergency care and ambulance services.
                 </p>
             </div>
@@ -672,11 +689,12 @@
 <section class="hospitals">
     <div class="container">
         <div class="text-center mb-12">
-            <div class="features-badge">
+            <div class="features-badge" data-en="🏥 Our Network" data-ar="🏥 شبكتنا">
                 🏥 Our Network
             </div>
-            <h2 class="section-title">Top Hospitals</h2>
-            <p class="section-subtitle">Discover the best hospitals in our network</p>
+            <h2 class="section-title" data-en="Top Hospitals" data-ar="أفضل المستشفيات">Top Hospitals</h2>
+            <p class="section-subtitle" data-en="Discover the best hospitals in our network"
+                data-ar="اكتشف أفضل المستشفيات في شبكتنا">Discover the best hospitals in our network</p>
         </div>
 
         <div class="hospitals-grid" id="hospitalsGrid">
@@ -689,7 +707,8 @@
                             <div class="hospital-card-header">
                                 @if (!string.IsNullOrEmpty(hospital.ImageUrl))
                                 {
-                                    <img src="~/files/hospitals/@hospital.ImageUrl" class="hospital-image">
+                                    <img src="@hospital.ImageUrl" class="hospital-image"
+                                        style="width:100%; height:100%; object-fit:cover;">
                                 }
                                 else
                                 {
@@ -705,7 +724,7 @@
                                     <div class="hospital-cost">
                                         <i class="fas fa-dollar-sign"></i>
                                         <span>@hospital.AverageCost.ToString("N2")</span>
-                                        <span>per visit</span>
+                                        <span data-en="per visit" data-ar="للزيارة">per visit</span>
                                     </div>
 
                                     <div class="hospital-phone">
@@ -730,14 +749,16 @@
             {
                 <div class="no-data">
                     <i class="fas fa-hospital fa-3x"></i>
-                    <p>No hospitals available yet. Be the first to add one!</p>
+                    <p data-en="No hospitals available yet. Be the first to add one!"
+                        data-ar="لا توجد مستشفيات متاحة بعد. كن أول من يضيف!">No hospitals available yet. Be the first to
+                        add one!</p>
                 </div>
             }
         </div>
 
         <div class="text-center">
             <a asp-controller="Hospital" asp-action="Index" class="view-all-btn">
-                <span>View All Hospitals</span>
+                <span data-en="View All Hospitals" data-ar="عرض كل المستشفيات">View All Hospitals</span>
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -747,11 +768,13 @@
 <section class="doctors">
     <div class="container">
         <div class="text-center mb-12">
-            <div class="features-badge">
+            <div class="features-badge" data-en="👨‍⚕️ Our Specialists" data-ar="👨‍⚕️ أطباؤنا">
                 👨‍⚕️ Our Specialists
             </div>
-            <h2 class="section-title">Top Doctors</h2>
-            <p class="section-subtitle">Meet our highly qualified medical professionals</p>
+            <h2 class="section-title" data-en="Top Doctors" data-ar="أفضل الأطباء">Top Doctors</h2>
+            <p class="section-subtitle" data-en="Meet our highly qualified medical professionals"
+                data-ar="تعرف على المتخصصين الطبيين المؤهلين تأهيلا عاليا">Meet our highly qualified medical
+                professionals</p>
         </div>
 
         <div class="doctors-grid" id="doctorsGrid">
@@ -763,7 +786,7 @@
                         <div class="doctor-card-header">
                             @if (!string.IsNullOrEmpty(doctor.Image))
                             {
-                                <img src="~/files/Imgs/@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image">
+                                <img src="@doctor.Image" alt="@doctor.FirstName @doctor.LastName" class="doctor-image">
                             }
                             else
                             {
@@ -773,7 +796,7 @@
                             }
                             <div class="doctor-status">
                                 <span class="status-dot"></span>
-                                <span>Available</span>
+                                <span data-en="Available" data-ar="متاح">Available</span>
                             </div>
                         </div>
 
@@ -784,25 +807,28 @@
                             <div class="doctor-meta">
                                 <div class="doctor-experience">
                                     <i class="fas fa-briefcase"></i>
-                                    <span>@doctor.YearsOfExperience years experience</span>
+                                    <span>@doctor.YearsOfExperience <span data-en="years experience" data-ar="سنوات خبرة">years
+                                            experience</span></span>
                                 </div>
 
 
                                 <div class="doctor-rating">
                                     <i class="fas fa-star"></i>
-                                    <span>Rank: @doctor.Rank/5</span>
+                                    <span><span data-en="Rank:" data-ar="التقييم:">Rank:</span> @doctor.Rank/5</span>
                                 </div>
 
                             </div>
 
                             <div class="doctor-actions">
-                                <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="view-profile-btn">
+                                <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id"
+                                    class="view-profile-btn">
                                     <i class="fas fa-user-circle"></i>
-                                    <span>Profile</span>
+                                    <span data-en="View Profile" data-ar="عرض الملف">View Profile</span>
                                 </a>
-                                <a asp-controller="Doctor" asp-action="DoctorProfile" asp-route-id="@doctor.Id" class="book-appointment-btn">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <span>Book Now</span>
+                                <a asp-controller="Appointment" asp-action="Book" asp-route-doctorId="@doctor.Id"
+                                    class="book-appointment-btn">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span data-en="Book Now" data-ar="احجز الآن">Book Now</span>
                                 </a>
                             </div>
                         </div>
@@ -813,14 +839,14 @@
             {
                 <div class="no-data">
                     <i class="fas fa-user-md fa-3x"></i>
-                    <p>No doctors available yet. Be the first to register!</p>
+                    <p data-en="No doctors available yet." data-ar="لا يوجد أطباء متاحين بعد.">No doctors available yet.</p>
                 </div>
             }
         </div>
 
         <div class="text-center">
             <a asp-controller="Doctor" asp-action="Index" class="view-all-btn">
-                <span>View All Doctors</span>
+                <span data-en="View All Doctors" data-ar="عرض كل الأطباء">View All Doctors</span>
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -845,7 +871,8 @@
                 Our platform connects multiple hospitals under one unified ecosystem, enabling efficient resource
                 management, improved patient care, and advanced medical research capabilities.
             </p>
-            <a asp-controller="Home" asp-action="About" class="btn btn-primary about-btn" data-en="Learn More" data-ar="تعرف أكثر">Learn More</a>
+            <a asp-controller="Home" asp-action="About" class="btn btn-primary about-btn" data-en="Learn More"
+                data-ar="تعرف أكثر">Learn More</a>
         </div>
         <div class="about-image-grid">
             <div class="image-grid">

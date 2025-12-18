@@ -855,7 +855,7 @@
                 <div class="hospital-logo @(string.IsNullOrEmpty(Model.ImageUrl) ? "placeholder" : "")">
                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                     {
-                        <img src="@(Url.Content("~/files/Imgs/" + Model.ImageUrl))" alt="@Model.Name Logo"
+                        <img src="@Model.ImageUrl" alt="@Model.Name Logo"
                             onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='<i class=\'fas fa-hospital\'></i>'" />
                     }
                     else
@@ -992,7 +992,7 @@
                                 <div class="doctor-avatar @(string.IsNullOrEmpty(doctor.ImageUrl) ? "placeholder" : "")">
                                     @if (!string.IsNullOrEmpty(doctor.ImageUrl))
                                     {
-                                        <img src="~/files/Imgs/@doctor.ImageUrl" alt="Dr. @doctor.FirstName @doctor.LastName"
+                                        <img src="~@doctor.ImageUrl" alt="Dr. @doctor.FirstName @doctor.LastName"
                                             onerror="this.style.display='none'; this.parentElement.classList.add('placeholder'); this.parentElement.innerHTML='@($"{doctor.FirstName?[0]}{doctor.LastName?[0]}")'">
                                     }
                                     else

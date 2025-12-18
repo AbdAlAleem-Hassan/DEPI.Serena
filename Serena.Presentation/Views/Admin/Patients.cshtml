@@ -1,0 +1,45 @@
+@model IEnumerable<Serena.BLL.Models.Patients.PatientDtoGet>
+@{
+    ViewData["Title"] = "Patients";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header" style="background: white; padding: 1.5rem; border-bottom: 1px solid #e5e7eb;">
+        <h3 style="margin: 0;"><span data-en="All Patients" data-ar="جميع المرضى">All Patients</span></h3>
+    </div>
+    <div class="card-body" style="background: white; padding: 0;">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f9fafb; text-align: left;">
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Name"
+                            data-ar="الاسم">Name</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Email"
+                            data-ar="البريد الإلكتروني">Email</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Phone"
+                            data-ar="الهاتف">Phone</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="City"
+                            data-ar="المدينة">City</span></th>
+                    <th style="padding: 1rem; border-bottom: 1px solid #e5e7eb;"><span data-en="Actions"
+                            data-ar="الإجراءات">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in Model)
+                {
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@patient.FirstName @patient.LastName
+                        </td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@patient.Email</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@patient.PhoneNumber</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">@patient.City</td>
+                        <td style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <button class="btn btn-sm btn-outline-primary"><span data-en="View"
+                                    data-ar="عرض">View</span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -534,7 +534,7 @@
                         <div class="doctor-avatar">
                             @if (!string.IsNullOrEmpty(doctor.ImageUrl))
                             {
-                                <img src="~/files/Imgs/@doctor.ImageUrl" alt="Doctor Photo" />
+                                <img src="@doctor.ImageUrl" alt="Doctor Photo" />
                             }
                             else
                             {

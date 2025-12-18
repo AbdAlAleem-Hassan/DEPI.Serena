@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3><span data-en="Total Doctors" data-ar="إجمالي الأطباء">Total Doctors</span></h3>
+            <p class="stat-value">@ViewData["DoctorsCount"]</p>
+        </div>
+        <div class="stat-icon bg-blue">
+            <i class="fas fa-user-md"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3><span data-en="Total Patients" data-ar="إجمالي المرضى">Total Patients</span></h3>
+            <p class="stat-value">@ViewData["PatientsCount"]</p>
+        </div>
+        <div class="stat-icon bg-green">
+            <i class="fas fa-user-injured"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3><span data-en="Hospitals" data-ar="المستشفيات">Hospitals</span></h3>
+            <p class="stat-value">@ViewData["HospitalsCount"]</p>
+        </div>
+        <div class="stat-icon bg-purple">
+            <i class="fas fa-hospital"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3><span data-en="New Requests" data-ar="طلبات جديدة">New Requests</span></h3>
+            <p class="stat-value">@ViewData["NewRequestsCount"]</p>
+        </div>
+        <div class="stat-icon bg-orange">
+            <i class="fas fa-bell"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- Chart or Activity Feed could go here -->
+    </div>
+</div>
